@@ -94,7 +94,7 @@ export function Preloader() {
 
             <div className="loading-text mt-24 text-center">
                 <p className="font-serif text-2xl text-[#c9a959] tracking-widest animate-pulse">
-                    M & C
+                    Cristopher & Gabriela
                 </p>
             </div>
         </div>
