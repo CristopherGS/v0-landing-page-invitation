@@ -16,11 +16,8 @@ export async function submitRSVP(formData: FormData) {
         name: formData.get("name") as string,
         email: formData.get("email") as string,
         phone: formData.get("phone") as string,
-        guests: 1, // Reverted from guests_count
         attendance: attendance,
-        dietary: "", // Reverted from dietary_restrictions
-        transport: false, // Reverted from needs_transport
-        songs: "", // Reverted from song_suggestions
+        family: formData.get("family") as string,
         message: formData.get("message") as string,
     };
 
