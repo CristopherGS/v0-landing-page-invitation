@@ -100,7 +100,7 @@ export function PhotoGallery({ id }: { id?: string }) {
   ];
 
   return (
-    <section id={id} ref={sectionRef} className="relative h-[100dvh] flex flex-col justify-center py-10 md:py-20 px-6 bg-[#0f172a] overflow-hidden snap-start">
+    <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-12 md:py-20 px-6 bg-[#0f172a] overflow-hidden snap-start">
 
       {/* Background pattern */}
       <div

@@ -83,7 +83,7 @@ export function Footer() {
   const names = "Maria & Carlos";
 
   return (
-    <section ref={footerRef} className="relative h-[100dvh] flex flex-col justify-center items-center py-10 px-6 bg-[#0a1628] text-white overflow-hidden snap-start">
+    <section ref={footerRef} className="relative min-h-screen flex flex-col justify-center items-center py-10 px-6 bg-[#0a1628] text-white overflow-hidden snap-start">
       {/* Background decorations */}
       <div className="absolute top-10 left-10 opacity-10">
         <div className="footer-rings">

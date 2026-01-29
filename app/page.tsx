@@ -15,9 +15,12 @@ import { Accommodation } from "@/components/wedding/accommodation";
 import { SmoothScrollProvider } from "@/components/wedding/smooth-scroll-provider";
 import { Toaster } from "sonner";
 
+import { Preloader } from "@/components/wedding/preloader";
+
 export default function WeddingInvitation() {
   return (
     <SmoothScrollProvider>
+      <Preloader />
       <main className="min-h-screen overflow-x-hidden">
         <Navigation />
         <HeroSection />

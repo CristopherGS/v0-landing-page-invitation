@@ -21,6 +21,34 @@ export function HeroSection() {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
+      // Rings Animation Setup
+      gsap.set(".hero-ring-left", { x: -60, opacity: 0 });
+      gsap.set(".hero-ring-right", { x: 60, opacity: 0 });
+
+      // Rings Animation Sequence (independent of main timeline to start immediately/parallel)
+      const ringsTl = gsap.timeline({ delay: 0.5 });
+      ringsTl.to([".hero-ring-left", ".hero-ring-right"], {
+        x: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: "power2.out"
+      })
+        .to(".hero-rings-container", {
+          scale: 1.1,
+          duration: 0.4,
+          yoyo: true,
+          repeat: 1,
+          ease: "power1.inOut"
+        })
+        .to(".hero-ring-flash", {
+          opacity: 1,
+          duration: 0.1
+        }, "-=0.4")
+        .to(".hero-ring-flash", {
+          opacity: 0,
+          duration: 0.4
+        });
+
       tl.fromTo(
         ".bg-circle",
         { scale: 0, opacity: 0 },
@@ -161,7 +189,7 @@ export function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative h-screen w-full flex flex-col items-center justify-center bg-[#0a1628] text-white overflow-hidden snap-start"
+      className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center bg-[#0a1628] text-white overflow-hidden snap-start py-20 px-4"
     >
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
@@ -198,20 +226,41 @@ export function HeroSection() {
           <AnimatedHeart className="w-12 h-12 text-[#c9a959]" />
         </div>
 
-        <div ref={titleRef}>
-          <span className="block font-sans text-xs md:text-sm tracking-[0.5em] uppercase mb-6 text-[#c9a959] opacity-80">
+        <div className="relative text-center flex flex-col items-center justify-center h-full w-full max-w-4xl mx-auto md:mt-0">
+
+          {/* Animated Rings - Hero Version */}
+          <div className="hero-rings-container relative h-24 w-40 mb-8 flex items-center justify-center">
+            {/* Left Ring */}
+            <div className="hero-ring-left absolute opacity-0">
+              <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+                <circle cx="40" cy="40" r="30" stroke="#c9a959" strokeWidth="3" />
+                <circle cx="40" cy="40" r="30" stroke="white" strokeWidth="1" strokeOpacity="0.5" />
+                <path d="M20 20 Q40 10 60 20" stroke="white" strokeWidth="2" strokeOpacity="0.4" strokeLinecap="round" />
+              </svg>
+            </div>
+
+            {/* Right Ring */}
+            <div className="hero-ring-right absolute opacity-0">
+              <svg width="60" height="60" viewBox="0 0 80 80" fill="none" style={{ transform: "rotate(180deg)" }}>
+                <circle cx="40" cy="40" r="30" stroke="#c9a959" strokeWidth="3" />
+                <circle cx="40" cy="40" r="30" stroke="white" strokeWidth="1" strokeOpacity="0.5" />
+                <path d="M20 20 Q40 10 60 20" stroke="white" strokeWidth="2" strokeOpacity="0.4" strokeLinecap="round" />
+              </svg>
+            </div>
+
+            {/* Flash effect */}
+            <div className="hero-ring-flash absolute w-1 h-1 bg-white shadow-[0_0_30px_15px_white] rounded-full opacity-0" />
+          </div>
+
+          <p className="subtitle font-sans text-sm md:text-xl tracking-[0.2em] md:tracking-[0.3em] uppercase mb-4 md:mb-6 text-[#c9a959]">
             Nos Casamos
-          </span>
-          <h1 className="font-serif text-4xl md:text-7xl lg:text-8xl font-light tracking-wide text-balance leading-tight drop-shadow-2xl">
-            <span className="inline-block text-white">
-              {brideName}
-            </span>
-            <span className="block md:inline mx-4 text-[#c9a959] font-light italic text-3xl md:text-6xl my-2 md:my-0">
+          </p>
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-wide text-balance leading-tight drop-shadow-2xl">
+            <span className="title-word inline-block">Cristopher</span>
+            <span className="ampersand text-[#c9a959] mx-2 md:mx-4 inline-block italic font-light">
               &
             </span>
-            <span className="inline-block text-white">
-              {groomName}
-            </span>
+            <span className="title-word inline-block">Gabriela</span>
           </h1>
         </div>
 

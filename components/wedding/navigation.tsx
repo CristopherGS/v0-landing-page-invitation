@@ -87,11 +87,10 @@ export function Navigation() {
       {/* Desktop/Mobile navigation bar */}
       <nav
         ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
             ? "bg-[#0a1628]/95 backdrop-blur-md shadow-xl py-3"
             : "bg-transparent py-5"
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between">
@@ -102,7 +101,7 @@ export function Navigation() {
             >
               <AnimatedHeart className="w-5 h-5 group-hover:scale-125 transition-transform" />
               <span className="font-serif text-xl text-white hover:text-[#c9a959] transition-colors">
-                M & C
+                C & G
               </span>
             </button>
 
@@ -119,7 +118,7 @@ export function Navigation() {
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[#c9a959] group-hover:w-2/3 transition-all duration-300" />
                 </button>
               ))}
-              
+
               {/* RSVP button highlighted */}
               <button
                 onClick={() => scrollToSection("#rsvp")}
