@@ -8,7 +8,7 @@ import { AnimatedHeart } from "./animated-icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function PhotoGallery() {
+export function PhotoGallery({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -100,28 +100,38 @@ export function PhotoGallery() {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-white overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+    <section id={id} ref={sectionRef} className="relative h-[100dvh] flex flex-col justify-center py-10 md:py-20 px-6 bg-[#0f172a] overflow-hidden snap-start">
+
+      {/* Background pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+          backgroundSize: "50px 50px",
+        }}
+      />
+
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Title section */}
         <div className="text-center mb-16">
-          <div className="floating-camera w-20 h-20 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-[#c9a959] mx-auto mb-8 shadow-xl">
+          <div className="floating-camera w-20 h-20 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-[#c9a959] mx-auto mb-8 shadow-xl border border-white/10">
             <Camera className="w-10 h-10" />
           </div>
-          
+
           <div className="gallery-title overflow-hidden">
-            <h2 className="font-serif text-4xl md:text-6xl text-[#0a1628]">
+            <h2 className="font-serif text-4xl md:text-6xl text-white">
               <span className="gallery-title-word inline-block">Nuestra</span>{" "}
               <span className="gallery-title-word inline-block">Galeria</span>
             </h2>
           </div>
-          
+
           <div className="flex items-center justify-center gap-4 mt-4">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#c9a959]/50" />
-            <AnimatedHeart className="w-5 h-5" />
+            <AnimatedHeart className="w-5 h-5 text-[#c9a959]" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
           </div>
-          
-          <p className="text-[#0a1628]/60 font-sans mt-6 text-lg max-w-xl mx-auto">
+
+          <p className="text-white/60 font-sans mt-6 text-lg max-w-xl mx-auto">
             Momentos especiales de nuestra historia juntos
           </p>
         </div>
@@ -131,14 +141,14 @@ export function PhotoGallery() {
           {galleryItems.map((item) => (
             <div
               key={item.id}
-              className={`gallery-item ${item.span} relative bg-gradient-to-br from-[#f0f4f8] to-[#e2e8f0] rounded-2xl overflow-hidden border border-[#0a1628]/5 flex items-center justify-center group cursor-pointer shadow-lg`}
+              className={`gallery-item ${item.span} relative bg-gradient-to-br from-[#1e3a5f] to-[#0a1628] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center group cursor-pointer shadow-lg`}
             >
               {/* Placeholder content */}
               <div className="text-center p-4 relative z-10">
-                <div className="gallery-icon w-12 h-12 rounded-full bg-white/80 flex items-center justify-center mx-auto mb-3 shadow-md">
-                  <Camera className="w-6 h-6 text-[#0a1628]/40" />
+                <div className="gallery-icon w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3 shadow-md backdrop-blur-sm">
+                  <Camera className="w-6 h-6 text-white/40" />
                 </div>
-                <span className="text-[#0a1628]/40 font-sans text-sm">
+                <span className="text-white/40 font-sans text-sm">
                   {item.label}
                 </span>
               </div>
@@ -160,10 +170,10 @@ export function PhotoGallery() {
 
         {/* Instagram hashtag */}
         <div className="mt-12 text-center">
-          <p className="text-[#0a1628]/40 font-sans text-sm mb-2">
+          <p className="text-white/40 font-sans text-sm mb-2">
             Comparte tus fotos con nosotros usando
           </p>
-          <span className="inline-block px-6 py-3 bg-[#0a1628]/5 rounded-full font-sans text-[#0a1628] font-medium">
+          <span className="inline-block px-6 py-3 bg-white/5 rounded-full font-sans text-[#c9a959] font-medium border border-[#c9a959]/20">
             #MariaYCarlos2026
           </span>
         </div>

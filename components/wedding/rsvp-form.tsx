@@ -22,7 +22,7 @@ import { AnimatedHeart, AnimatedCalendar } from "./animated-icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function RSVPForm() {
+export function RSVPForm({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -168,8 +168,8 @@ export function RSVPForm() {
   return (
     <section
       ref={sectionRef}
-      id="rsvp"
-      className="relative py-24 md:py-32 px-6 bg-[#0a1628] overflow-hidden"
+      id={id}
+      className="relative flex flex-col justify-center py-6 md:py-16 px-4 md:px-6 bg-[#0a1628] overflow-hidden snap-start"
     >
       {/* Background pattern */}
       <div
@@ -183,10 +183,10 @@ export function RSVPForm() {
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Title section */}
         <div className="text-center mb-12">
-          <div className="floating-rsvp-icon w-24 h-24 rounded-full bg-gradient-to-br from-[#c9a959]/30 to-[#c9a959]/10 flex items-center justify-center mx-auto mb-8 shadow-xl">
+          <div className="floating-rsvp-icon w-24 h-24 rounded-full bg-gradient-to-br from-[#c9a959]/30 to-[#c9a959]/10 flex items-center justify-center mx-auto mb-8 shadow-xl border border-white/10">
             <AnimatedCalendar className="w-12 h-12" />
           </div>
-          
+
           <div className="rsvp-title overflow-hidden">
             <h2 className="font-serif text-4xl md:text-6xl text-white mb-4">
               <span className="rsvp-title-word inline-block">Confirma</span>{" "}
@@ -194,13 +194,13 @@ export function RSVPForm() {
               <span className="rsvp-title-word inline-block">Asistencia</span>
             </h2>
           </div>
-          
+
           <div className="flex items-center justify-center gap-4 mt-4">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#c9a959]/50" />
-            <AnimatedHeart className="w-5 h-5" />
+            <AnimatedHeart className="w-5 h-5 text-[#c9a959]" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
           </div>
-          
+
           <p className="text-white/60 font-sans mt-6 mb-2 text-lg">
             Por favor confirma tu asistencia antes del
           </p>
@@ -242,7 +242,7 @@ export function RSVPForm() {
           <form
             ref={formRef}
             onSubmit={handleSubmit}
-            className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl space-y-6 relative overflow-hidden"
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl space-y-6 relative overflow-hidden"
           >
             {/* Decorative corners */}
             <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-[#c9a959]/20 rounded-tr-3xl" />
@@ -250,7 +250,7 @@ export function RSVPForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-field space-y-2">
-                <Label htmlFor="name" className="text-[#0a1628] font-sans font-medium">
+                <Label htmlFor="name" className="text-white font-sans font-medium">
                   Nombre Completo *
                 </Label>
                 <Input
@@ -258,12 +258,12 @@ export function RSVPForm() {
                   name="name"
                   required
                   placeholder="Tu nombre completo"
-                  className="border-[#0a1628]/20 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
                 />
               </div>
 
               <div className="form-field space-y-2">
-                <Label htmlFor="email" className="text-[#0a1628] font-sans font-medium">
+                <Label htmlFor="email" className="text-white font-sans font-medium">
                   Correo Electronico *
                 </Label>
                 <Input
@@ -272,14 +272,14 @@ export function RSVPForm() {
                   type="email"
                   required
                   placeholder="tu@email.com"
-                  className="border-[#0a1628]/20 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-field space-y-2">
-                <Label htmlFor="phone" className="text-[#0a1628] font-sans font-medium">
+                <Label htmlFor="phone" className="text-white font-sans font-medium">
                   Telefono / WhatsApp
                 </Label>
                 <Input
@@ -287,19 +287,19 @@ export function RSVPForm() {
                   name="phone"
                   type="tel"
                   placeholder="+52 123 456 7890"
-                  className="border-[#0a1628]/20 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
                 />
               </div>
 
               <div className="form-field space-y-2">
-                <Label htmlFor="guests" className="text-[#0a1628] font-sans font-medium">
+                <Label htmlFor="guests" className="text-white font-sans font-medium">
                   Numero de Invitados *
                 </Label>
                 <Select name="guests" required>
-                  <SelectTrigger className="border-[#0a1628]/20 rounded-xl py-6">
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl py-6">
                     <SelectValue placeholder="Selecciona" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#0a1628] border-white/10 text-white">
                     <SelectItem value="1">1 persona</SelectItem>
                     <SelectItem value="2">2 personas</SelectItem>
                     <SelectItem value="3">3 personas</SelectItem>
@@ -311,7 +311,7 @@ export function RSVPForm() {
             </div>
 
             <div className="form-field space-y-3">
-              <Label className="text-[#0a1628] font-sans font-medium">
+              <Label className="text-white font-sans font-medium">
                 Asistiras al evento? *
               </Label>
               <RadioGroup
@@ -319,21 +319,21 @@ export function RSVPForm() {
                 name="attendance"
                 className="flex flex-wrap gap-4"
               >
-                <div className="flex items-center space-x-2 bg-[#f8fafc] px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                  <RadioGroupItem value="yes" id="yes" />
-                  <Label htmlFor="yes" className="font-normal cursor-pointer text-[#0a1628]">
+                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
+                  <RadioGroupItem value="yes" id="yes" className="border-white text-[#c9a959]" />
+                  <Label htmlFor="yes" className="font-normal cursor-pointer text-white">
                     Si, ahi estare
                   </Label>
                 </div>
-                <div className="flex items-center space-x-2 bg-[#f8fafc] px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                  <RadioGroupItem value="maybe" id="maybe" />
-                  <Label htmlFor="maybe" className="font-normal cursor-pointer text-[#0a1628]">
+                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
+                  <RadioGroupItem value="maybe" id="maybe" className="border-white text-[#c9a959]" />
+                  <Label htmlFor="maybe" className="font-normal cursor-pointer text-white">
                     Aun no estoy seguro
                   </Label>
                 </div>
-                <div className="flex items-center space-x-2 bg-[#f8fafc] px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                  <RadioGroupItem value="no" id="no" />
-                  <Label htmlFor="no" className="font-normal cursor-pointer text-[#0a1628]">
+                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
+                  <RadioGroupItem value="no" id="no" className="border-white text-[#c9a959]" />
+                  <Label htmlFor="no" className="font-normal cursor-pointer text-white">
                     No podre asistir
                   </Label>
                 </div>
@@ -342,14 +342,14 @@ export function RSVPForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-field space-y-2">
-                <Label htmlFor="dietary" className="text-[#0a1628] font-sans font-medium">
+                <Label htmlFor="dietary" className="text-white font-sans font-medium">
                   Restricciones Alimenticias
                 </Label>
                 <Select name="dietary">
-                  <SelectTrigger className="border-[#0a1628]/20 rounded-xl py-6">
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl py-6">
                     <SelectValue placeholder="Selecciona si aplica" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#0a1628] border-white/10 text-white">
                     <SelectItem value="none">Ninguna</SelectItem>
                     <SelectItem value="vegetarian">Vegetariano</SelectItem>
                     <SelectItem value="vegan">Vegano</SelectItem>
@@ -361,14 +361,14 @@ export function RSVPForm() {
               </div>
 
               <div className="form-field space-y-2">
-                <Label htmlFor="transport" className="text-[#0a1628] font-sans font-medium">
+                <Label htmlFor="transport" className="text-white font-sans font-medium">
                   Necesitas transporte?
                 </Label>
                 <Select name="transport">
-                  <SelectTrigger className="border-[#0a1628]/20 rounded-xl py-6">
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl py-6">
                     <SelectValue placeholder="Selecciona" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-[#0a1628] border-white/10 text-white">
                     <SelectItem value="no">No, llegare por mi cuenta</SelectItem>
                     <SelectItem value="yes">Si, necesito transporte</SelectItem>
                   </SelectContent>
@@ -377,19 +377,19 @@ export function RSVPForm() {
             </div>
 
             <div className="form-field space-y-2">
-              <Label htmlFor="songs" className="text-[#0a1628] font-sans font-medium">
+              <Label htmlFor="songs" className="text-white font-sans font-medium">
                 Sugerencias de Canciones
               </Label>
               <Input
                 id="songs"
                 name="songs"
                 placeholder="Que canciones te ponen a bailar?"
-                className="border-[#0a1628]/20 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
               />
             </div>
 
             <div className="form-field space-y-2">
-              <Label htmlFor="message" className="text-[#0a1628] font-sans font-medium">
+              <Label htmlFor="message" className="text-white font-sans font-medium">
                 Mensaje para los Novios (Opcional)
               </Label>
               <Textarea
@@ -397,14 +397,14 @@ export function RSVPForm() {
                 name="message"
                 placeholder="Escribe un mensaje especial para los novios..."
                 rows={4}
-                className="border-[#0a1628]/20 focus:border-[#c9a959] focus:ring-[#c9a959] resize-none rounded-xl"
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] resize-none rounded-xl"
               />
             </div>
 
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="submit-btn w-full bg-gradient-to-r from-[#0a1628] to-[#1e3a5f] hover:from-[#1e3a5f] hover:to-[#0a1628] text-white font-sans tracking-wide py-7 text-lg rounded-xl transition-all duration-500 hover:shadow-xl hover:shadow-[#0a1628]/30"
+              className="submit-btn w-full bg-[#c9a959] hover:bg-[#b8963d] text-[#0a1628] font-bold font-sans tracking-wide py-7 text-lg rounded-xl transition-all duration-500 hover:shadow-xl hover:shadow-[#c9a959]/20"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">
@@ -420,30 +420,30 @@ export function RSVPForm() {
             </Button>
           </form>
         ) : (
-          <div className="success-message relative bg-white rounded-3xl p-12 md:p-16 shadow-2xl text-center overflow-hidden">
+          <div className="success-message relative bg-white/5 backdrop-blur-md rounded-3xl p-12 md:p-16 shadow-2xl text-center overflow-hidden border border-white/10">
             {/* Success particles */}
             {[...Array(12)].map((_, i) => (
               <div
                 key={i}
                 className="success-particle absolute left-1/2 top-1/2 w-3 h-3 rounded-full"
-                style={{ backgroundColor: i % 2 === 0 ? "#c9a959" : "#0a1628" }}
+                style={{ backgroundColor: i % 2 === 0 ? "#c9a959" : "white" }}
               />
             ))}
 
-            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center mx-auto mb-8 shadow-xl">
-              <CheckCircle2 className="w-14 h-14 text-green-500" />
+            <div className="w-28 h-28 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-8 shadow-xl">
+              <CheckCircle2 className="w-14 h-14 text-green-400" />
             </div>
-            <h3 className="font-serif text-4xl text-[#0a1628] mb-4">
+            <h3 className="font-serif text-4xl text-white mb-4">
               Gracias por Confirmar
             </h3>
-            <p className="text-[#0a1628]/60 font-sans max-w-md mx-auto text-lg leading-relaxed">
+            <p className="text-white/60 font-sans max-w-md mx-auto text-lg leading-relaxed">
               Hemos recibido tu confirmacion. Estamos muy emocionados de
               celebrar este dia tan especial contigo. Te enviaremos un
               recordatorio antes del evento.
             </p>
-            
+
             <div className="mt-8">
-              <AnimatedHeart className="w-8 h-8 mx-auto" />
+              <AnimatedHeart className="w-8 h-8 mx-auto text-[#c9a959]" />
             </div>
           </div>
         )}

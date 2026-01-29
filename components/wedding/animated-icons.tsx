@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 // Animated Heart Icon
@@ -399,8 +399,20 @@ export function AnimatedChurch({ className = "w-12 h-12", color = "#c9a959" }: {
 // Floating Particles Component
 export function FloatingParticles() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [particles, setParticles] = useState<Array<{ left: string; top: string }>>([]);
 
   useEffect(() => {
+    // Generate particles only on client-side to avoid hydration mismatch
+    const newParticles = [...Array(8)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+    }));
+    setParticles(newParticles);
+  }, []);
+
+  useEffect(() => {
+    if (particles.length === 0) return;
+
     const ctx = gsap.context(() => {
       gsap.utils.toArray(".particle").forEach((particle: any, i) => {
         gsap.to(particle, {
@@ -416,18 +428,15 @@ export function FloatingParticles() {
       });
     }, containerRef);
     return () => ctx.revert();
-  }, []);
+  }, [particles]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(15)].map((_, i) => (
+      {particles.map((style, i) => (
         <div
           key={i}
           className="particle absolute w-2 h-2 rounded-full bg-[#c9a959]/20"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
+          style={style}
         />
       ))}
     </div>

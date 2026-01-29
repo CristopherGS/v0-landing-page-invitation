@@ -83,7 +83,7 @@ export function Footer() {
   const names = "Maria & Carlos";
 
   return (
-    <footer ref={footerRef} className="relative py-20 px-6 bg-[#0a1628] text-white overflow-hidden">
+    <section ref={footerRef} className="relative h-[100dvh] flex flex-col justify-center items-center py-10 px-6 bg-[#0a1628] text-white overflow-hidden snap-start">
       {/* Background decorations */}
       <div className="absolute top-10 left-10 opacity-10">
         <div className="footer-rings">
@@ -118,7 +118,7 @@ export function Footer() {
             ))}
           </h3>
         </div>
-        
+
         <p className="footer-element font-sans text-white/60 text-center tracking-widest mb-12 text-lg">
           15 de Junio, 2026
         </p>
@@ -196,6 +196,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+    </section>
   );
 }

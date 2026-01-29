@@ -9,15 +9,18 @@ import { AnimatedCalendar, AnimatedClock, AnimatedChurch, AnimatedPin } from "./
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { Navigation, MapPin } from "lucide-react";
+
 interface DetailCardProps {
   icon: React.ReactNode;
   title: string;
   details: string[];
-  mapLink?: string;
+  googleMapsLink?: string;
+  wazeLink?: string;
   delay: number;
 }
 
-function DetailCard({ icon, title, details, mapLink, delay }: DetailCardProps) {
+function DetailCard({ icon, title, details, googleMapsLink, wazeLink, delay }: DetailCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,16 +51,16 @@ function DetailCard({ icon, title, details, mapLink, delay }: DetailCardProps) {
     >
       {/* Glow effect */}
       <div className="card-glow absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0 transition-opacity" />
-      
+
       {/* Icon container */}
       <div className="card-icon relative w-20 h-20 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-[#c9a959] mb-6 shadow-lg">
         {icon}
         {/* Animated ring */}
         <div className="absolute inset-0 rounded-full border-2 border-[#c9a959]/30 animate-ping" style={{ animationDuration: "2s" }} />
       </div>
-      
+
       <h3 className="font-serif text-2xl text-[#0a1628] mb-4">{title}</h3>
-      
+
       {details.map((detail, index) => (
         <p
           key={index}
@@ -66,20 +69,33 @@ function DetailCard({ icon, title, details, mapLink, delay }: DetailCardProps) {
           {detail}
         </p>
       ))}
-      
-      {mapLink && (
-        <a
-          href={mapLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-5 inline-flex items-center gap-2 text-[#0a1628] font-sans text-sm hover:text-[#c9a959] transition-colors group"
-        >
-          <span className="relative">
-            Ver en Google Maps
-            <span className="absolute bottom-0 left-0 w-0 h-px bg-[#c9a959] group-hover:w-full transition-all duration-300" />
-          </span>
-          <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-        </a>
+
+      {/* Navigation Buttons */}
+      {(googleMapsLink || wazeLink) && (
+        <div className="mt-6 flex flex-wrap justify-center gap-3 w-full">
+          {wazeLink && (
+            <a
+              href={wazeLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-[#0a1628] hover:bg-[#1e3a5f] text-white text-xs font-bold transition-all border border-white/10 flex-1 min-w-[100px]"
+            >
+              <Navigation className="w-3 h-3" />
+              Waze
+            </a>
+          )}
+          {googleMapsLink && (
+            <a
+              href={googleMapsLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white hover:bg-gray-50 text-[#0a1628] border border-[#0a1628]/10 text-xs font-bold transition-all flex-1 min-w-[100px]"
+            >
+              <MapPin className="w-3 h-3" />
+              Maps
+            </a>
+          )}
+        </div>
       )}
 
       {/* Corner accents */}
@@ -89,7 +105,7 @@ function DetailCard({ icon, title, details, mapLink, delay }: DetailCardProps) {
   );
 }
 
-export function EventDetails() {
+export function EventDetails({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
@@ -172,35 +188,38 @@ export function EventDetails() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-[#f8fafc] overflow-hidden">
+    <section id={id} ref={sectionRef} className="relative h-[100dvh] flex flex-col justify-center py-10 md:py-20 px-6 bg-[#0a1628] overflow-hidden snap-start">
       {/* Background pattern */}
       <div
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, #0a1628 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
           backgroundSize: "50px 50px",
         }}
       />
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628] via-[#0a1628]/95 to-[#0f172a] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Title section */}
         <div className="text-center mb-16">
           <h2
             ref={titleRef}
-            className="font-serif text-4xl md:text-6xl text-[#0a1628] mb-4 overflow-hidden"
+            className="font-serif text-4xl md:text-6xl text-white mb-4 overflow-hidden"
           >
             <span className="event-title-word inline-block">Detalles</span>{" "}
             <span className="event-title-word inline-block">del</span>{" "}
             <span className="event-title-word inline-block">Evento</span>
           </h2>
-          
+
           <div className="flex items-center justify-center gap-4 mt-4">
             <div className="deco-line h-px w-20 bg-gradient-to-r from-transparent to-[#c9a959]/50 origin-left" />
             <div className="w-2 h-2 rounded-full bg-[#c9a959]" />
             <div className="deco-line h-px w-20 bg-gradient-to-l from-transparent to-[#c9a959]/50 origin-right" />
           </div>
-          
-          <p className="text-[#0a1628]/60 font-sans mt-6 text-lg">
+
+          <p className="text-white/60 font-sans mt-6 text-lg">
             Toda la informacion que necesitas saber
           </p>
         </div>
@@ -223,37 +242,39 @@ export function EventDetails() {
             icon={<AnimatedChurch className="w-10 h-10" />}
             title="Ceremonia"
             details={["Parroquia San Antonio", "Calle Principal #123"]}
-            mapLink="https://maps.google.com/?q=Parroquia+San+Antonio"
+            googleMapsLink="https://maps.google.com/?q=Parroquia+San+Antonio"
+            wazeLink="https://waze.com/ul?q=Parroquia%20San%20Antonio"
             delay={300}
           />
           <DetailCard
             icon={<AnimatedPin className="w-10 h-10" />}
             title="Recepcion"
             details={["Salon de Eventos Luna", "Av. Central #456"]}
-            mapLink="https://maps.google.com/?q=Salon+de+Eventos+Luna"
+            googleMapsLink="https://maps.google.com/?q=Salon+de+Eventos+Luna"
+            wazeLink="https://waze.com/ul?q=Salon%20de%20Eventos%20Luna"
             delay={450}
           />
         </div>
 
         {/* Map section */}
-        <div className="map-container mt-16 rounded-3xl overflow-hidden shadow-2xl border border-[#0a1628]/5 relative">
-          <div className="aspect-[16/9] md:aspect-[21/9] bg-gradient-to-br from-[#e2e8f0] to-[#f1f5f9] flex items-center justify-center relative">
+        <div className="map-container mt-16 rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative">
+          <div className="aspect-[16/9] md:aspect-[21/9] bg-gradient-to-br from-[#1e3a5f] to-[#0f172a] flex items-center justify-center relative">
             {/* Map placeholder with styled content */}
             <div className="text-center p-8 relative z-10">
-              <div className="w-20 h-20 rounded-full bg-[#0a1628]/10 flex items-center justify-center mx-auto mb-6">
-                <AnimatedPin className="w-10 h-10" color="#0a1628" />
+              <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/10">
+                <AnimatedPin className="w-10 h-10" color="#c9a959" />
               </div>
-              <p className="text-[#0a1628]/60 font-sans text-lg">
+              <p className="text-white/60 font-sans text-lg">
                 Aqui ira el mapa de Google Maps
               </p>
-              <p className="text-[#0a1628]/40 font-sans text-sm mt-2">
+              <p className="text-white/40 font-sans text-sm mt-2">
                 Reemplaza este div con un iframe de Google Maps
               </p>
             </div>
 
             {/* Decorative elements */}
-            <div className="absolute top-4 left-4 w-20 h-20 border-t-2 border-l-2 border-[#0a1628]/10 rounded-tl-2xl" />
-            <div className="absolute bottom-4 right-4 w-20 h-20 border-b-2 border-r-2 border-[#0a1628]/10 rounded-br-2xl" />
+            <div className="absolute top-4 left-4 w-20 h-20 border-t-2 border-l-2 border-white/10 rounded-tl-2xl" />
+            <div className="absolute bottom-4 right-4 w-20 h-20 border-b-2 border-r-2 border-white/10 rounded-br-2xl" />
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ interface TimeLeft {
   seconds: number;
 }
 
-export function Countdown() {
+export function Countdown({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
@@ -24,7 +24,7 @@ export function Countdown() {
   });
   const [isWeddingPassed, setIsWeddingPassed] = useState(false);
 
-  const weddingDate = new Date("2026-07-11T16:00:00");
+  const weddingDate = new Date("2026-04-11T16:00:00");
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -144,7 +144,7 @@ export function Countdown() {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-[#0a1628] overflow-hidden">
+    <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-24 md:py-32 px-6 bg-[#0a1628] overflow-hidden snap-start">
       {/* Animated background pattern */}
       <div
         className="countdown-bg-pattern absolute inset-0 opacity-[0.02]"
@@ -226,7 +226,7 @@ export function Countdown() {
                 >
                   {/* Animated glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
+
                   {/* Number with flip animation effect */}
                   <div className="relative">
                     <span className="countdown-number font-serif text-5xl md:text-7xl text-[#c9a959] block transition-transform duration-300">

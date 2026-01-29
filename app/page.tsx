@@ -11,48 +11,38 @@ import { FAQ } from "@/components/wedding/faq";
 import { RSVPForm } from "@/components/wedding/rsvp-form";
 import { Footer } from "@/components/wedding/footer";
 import { MusicPlayer } from "@/components/wedding/music-player";
+import { Accommodation } from "@/components/wedding/accommodation";
 import { SmoothScrollProvider } from "@/components/wedding/smooth-scroll-provider";
 import { Toaster } from "sonner";
 
 export default function WeddingInvitation() {
   return (
     <SmoothScrollProvider>
-      <main className="min-h-screen overflow-x-hidden scroll-smooth">
+      <main className="min-h-screen overflow-x-hidden">
         <Navigation />
         <HeroSection />
-        
-        <section id="historia">
-          <OurStory />
-        </section>
-        
+
+        <OurStory id="historia" />
+
         <Countdown />
-        
-        <section id="evento">
-          <EventDetails />
-        </section>
-        
-        <section id="itinerario">
-          <Itinerary />
-        </section>
-        
+
+        <EventDetails id="evento" />
+
+        <Itinerary id="itinerario" />
+
+        <Accommodation id="hospedaje" />
+
         <DressCode />
-        
-        <section id="galeria">
-          <PhotoGallery />
-        </section>
-        
-        <section id="regalos">
-          <GiftRegistry />
-        </section>
-        
-        <section id="faq">
-          <FAQ />
-        </section>
-        
-        <RSVPForm />
+
+        <PhotoGallery id="galeria" />
+
+        <GiftRegistry id="regalos" />
+
+        <FAQ id="faq" />
+
+        <RSVPForm id="rsvp" />
         <Footer />
         <MusicPlayer />
-        <Toaster position="top-center" richColors />
       </main>
     </SmoothScrollProvider>
   );

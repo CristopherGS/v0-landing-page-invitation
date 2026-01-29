@@ -9,7 +9,7 @@ import { AnimatedGift } from "./animated-icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function GiftRegistry() {
+export function GiftRegistry({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
@@ -135,7 +135,7 @@ export function GiftRegistry() {
   };
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-[#0a1628] overflow-hidden">
+    <section id={id} ref={sectionRef} className="relative h-[100dvh] flex flex-col justify-center py-10 md:py-20 px-6 bg-[#0a1628] overflow-hidden snap-start">
       {/* Background pattern */}
       <div
         className="absolute inset-0 opacity-[0.02]"
@@ -151,7 +151,7 @@ export function GiftRegistry() {
           <div className="floating-gift w-24 h-24 rounded-full bg-gradient-to-br from-[#c9a959]/30 to-[#c9a959]/10 flex items-center justify-center mx-auto mb-8 shadow-xl">
             <AnimatedGift className="w-12 h-12" />
           </div>
-          
+
           <div className="gift-title overflow-hidden">
             <h2 className="font-serif text-4xl md:text-6xl text-white mb-4">
               <span className="gift-title-word inline-block">Mesa</span>{" "}
@@ -159,13 +159,13 @@ export function GiftRegistry() {
               <span className="gift-title-word inline-block">Regalos</span>
             </h2>
           </div>
-          
+
           <div className="flex items-center justify-center gap-4 mt-4">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#c9a959]/50" />
             <div className="w-2 h-2 rounded-full bg-[#c9a959]" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
           </div>
-          
+
           <p className="text-white/60 font-sans mt-6 text-lg max-w-xl mx-auto">
             Tu presencia es nuestro mejor regalo. Sin embargo, si deseas obsequiarnos algo,
             aqui te dejamos algunas opciones.
@@ -177,7 +177,7 @@ export function GiftRegistry() {
           <div className="gift-card relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 overflow-hidden">
             {/* Glow effect */}
             <div className="card-glow absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0" />
-            
+
             {/* Corner accents */}
             <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-[#c9a959]/20 rounded-tr-3xl" />
             <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-[#c9a959]/20 rounded-bl-3xl" />
@@ -250,7 +250,7 @@ export function GiftRegistry() {
           <div className="gift-card relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 overflow-hidden">
             {/* Glow effect */}
             <div className="card-glow absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0" />
-            
+
             {/* Corner accents */}
             <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-[#c9a959]/20 rounded-tr-3xl" />
             <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-[#c9a959]/20 rounded-bl-3xl" />

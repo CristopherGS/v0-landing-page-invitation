@@ -58,7 +58,7 @@ const faqItems = [
   },
 ];
 
-export function FAQ() {
+export function FAQ({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -127,7 +127,7 @@ export function FAQ() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-[#f8fafc] overflow-hidden">
+    <section id={id} ref={sectionRef} className="relative h-[100dvh] flex flex-col justify-center py-10 md:py-20 px-6 bg-[#f8fafc] overflow-hidden snap-start">
       {/* Background pattern */}
       <div
         className="absolute inset-0 opacity-[0.015]"
@@ -137,26 +137,26 @@ export function FAQ() {
         }}
       />
 
-      <div className="max-w-3xl mx-auto relative z-10">
+      <div className="max-w-3xl mx-auto relative z-10 h-full overflow-y-auto hide-scrollbar">
         {/* Title section */}
         <div className="text-center mb-16">
           <div className="floating-question w-24 h-24 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-white mx-auto mb-8 shadow-2xl">
             <HelpCircle className="w-12 h-12" />
           </div>
-          
+
           <div className="faq-title overflow-hidden">
             <h2 className="font-serif text-4xl md:text-6xl text-[#0a1628]">
               <span className="faq-title-word inline-block">Preguntas</span>{" "}
               <span className="faq-title-word inline-block">Frecuentes</span>
             </h2>
           </div>
-          
+
           <div className="flex items-center justify-center gap-4 mt-4">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#c9a959]/50" />
             <div className="w-2 h-2 rounded-full bg-[#c9a959]" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
           </div>
-          
+
           <p className="text-[#0a1628]/60 font-sans mt-6 text-lg">
             Aqui resolvemos tus dudas mas comunes
           </p>

@@ -58,7 +58,7 @@ function AnimatedSuit({ className = "w-12 h-12" }: { className?: string }) {
   );
 }
 
-export function DressCode() {
+export function DressCode({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -163,20 +163,23 @@ export function DressCode() {
   const title = "Codigo de Vestimenta";
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-[#f8fafc] overflow-hidden">
+    <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-24 md:py-32 px-6 bg-[#0a1628] overflow-hidden snap-start">
       {/* Background pattern */}
       <div
-        className="absolute inset-0 opacity-[0.015]"
+        className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, #0a1628 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
           backgroundSize: "40px 40px",
         }}
       />
 
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628] via-[#0a1628]/95 to-[#0f172a] pointer-events-none" />
+
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Title with character animation */}
         <div className="dresscode-title text-center mb-12 overflow-hidden">
-          <h2 className="font-serif text-4xl md:text-6xl text-[#0a1628]">
+          <h2 className="font-serif text-4xl md:text-6xl text-white">
             {title.split("").map((char, i) => (
               <span
                 key={i}
@@ -192,20 +195,20 @@ export function DressCode() {
             <div className="w-2 h-2 rounded-full bg-[#c9a959]" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
           </div>
-          <p className="text-[#0a1628]/60 font-sans mt-6 text-lg">
+          <p className="text-white/60 font-sans mt-6 text-lg">
             Te pedimos vestir de manera formal siguiendo nuestra paleta de colores
           </p>
         </div>
 
         {/* Main card */}
-        <div className="dresscode-card bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-[#0a1628]/5 relative overflow-hidden">
+        <div className="dresscode-card bg-white/5 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10 relative overflow-hidden">
           {/* Decorative corner elements */}
           <div className="absolute top-0 right-0 w-32 h-32 border-t-2 border-r-2 border-[#c9a959]/20 rounded-tr-3xl" />
           <div className="absolute bottom-0 left-0 w-32 h-32 border-b-2 border-l-2 border-[#c9a959]/20 rounded-bl-3xl" />
 
           {/* Formal badge */}
           <div className="text-center mb-10">
-            <span className="inline-block px-6 py-2 bg-[#0a1628] text-white font-sans text-sm tracking-widest uppercase rounded-full">
+            <span className="inline-block px-6 py-2 bg-[#0a1628] text-white font-sans text-sm tracking-widest uppercase rounded-full border border-white/20">
               Formal / Etiqueta
             </span>
           </div>
@@ -213,46 +216,46 @@ export function DressCode() {
           {/* Color swatches */}
           <div className="color-swatches flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-12">
             <div className="color-swatch flex flex-col items-center gap-3 cursor-pointer">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-[#0a1628] shadow-xl border-4 border-white relative overflow-hidden">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-[#0a1628] shadow-xl border-4 border-white transform transition-transform duration-300 hover:scale-110 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
               </div>
-              <span className="text-sm font-sans text-[#0a1628]/70 font-medium">Azul Marino</span>
+              <span className="text-sm font-sans text-white/70 font-medium">Azul Marino</span>
             </div>
             <div className="color-swatch flex flex-col items-center gap-3 cursor-pointer">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white shadow-xl border-4 border-[#e2e8f0] relative overflow-hidden">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white shadow-xl border-4 border-[#e2e8f0] transform transition-transform duration-300 hover:scale-110 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-100/50 to-transparent" />
               </div>
-              <span className="text-sm font-sans text-[#0a1628]/70 font-medium">Blanco</span>
+              <span className="text-sm font-sans text-white/70 font-medium">Blanco</span>
             </div>
             <div className="color-swatch flex flex-col items-center gap-3 cursor-pointer">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[#c9a959] to-[#b8963d] shadow-xl border-4 border-white relative overflow-hidden">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[#c9a959] to-[#b8963d] shadow-xl border-4 border-white transform transition-transform duration-300 hover:scale-110 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent" />
               </div>
-              <span className="text-sm font-sans text-[#0a1628]/70 font-medium">Dorado</span>
+              <span className="text-sm font-sans text-white/70 font-medium">Dorado</span>
             </div>
           </div>
 
           {/* Instructions with icons */}
           <div className="dresscode-instructions grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <div className="dresscode-instruction flex items-start gap-4 p-5 bg-[#f8fafc] rounded-2xl">
+            <div className="dresscode-instruction flex items-start gap-4 p-5 bg-[#0a1628]/40 rounded-2xl border border-white/5 hover:border-[#c9a959]/30 transition-colors">
               <div className="floating-icon w-14 h-14 rounded-xl bg-[#c9a959]/10 flex items-center justify-center shrink-0">
                 <AnimatedDress className="w-8 h-8 text-[#c9a959]" />
               </div>
               <div>
-                <h4 className="font-serif text-lg text-[#0a1628] mb-1">Damas</h4>
-                <p className="text-[#0a1628]/60 font-sans text-sm leading-relaxed">
+                <h4 className="font-serif text-lg text-white mb-1">Damas</h4>
+                <p className="text-white/60 font-sans text-sm leading-relaxed">
                   Vestido largo o coctel en tonos azul marino, blanco, plateado o dorado
                 </p>
               </div>
             </div>
 
-            <div className="dresscode-instruction flex items-start gap-4 p-5 bg-[#f8fafc] rounded-2xl">
-              <div className="floating-icon w-14 h-14 rounded-xl bg-[#0a1628]/10 flex items-center justify-center shrink-0">
-                <AnimatedSuit className="w-8 h-8 text-[#0a1628]" />
+            <div className="dresscode-instruction flex items-start gap-4 p-5 bg-[#0a1628]/40 rounded-2xl border border-white/5 hover:border-[#c9a959]/30 transition-colors">
+              <div className="floating-icon w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center shrink-0">
+                <AnimatedSuit className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h4 className="font-serif text-lg text-[#0a1628] mb-1">Caballeros</h4>
-                <p className="text-[#0a1628]/60 font-sans text-sm leading-relaxed">
+                <h4 className="font-serif text-lg text-white mb-1">Caballeros</h4>
+                <p className="text-white/60 font-sans text-sm leading-relaxed">
                   Traje formal en tonos oscuros, preferentemente azul marino
                 </p>
               </div>
@@ -261,7 +264,7 @@ export function DressCode() {
 
           {/* Note */}
           <div className="mt-8 text-center">
-            <p className="inline-flex items-center gap-2 text-[#0a1628]/50 font-sans text-sm bg-[#c9a959]/10 px-5 py-2 rounded-full">
+            <p className="inline-flex items-center gap-2 text-white/50 font-sans text-sm bg-[#c9a959]/10 px-5 py-2 rounded-full border border-[#c9a959]/20">
               <span className="w-2 h-2 rounded-full bg-[#c9a959]" />
               Por favor evitar el color blanco en vestidos largos (reservado para la novia)
             </p>

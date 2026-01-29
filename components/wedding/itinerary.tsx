@@ -66,7 +66,7 @@ const itineraryItems = [
   },
 ];
 
-export function Itinerary() {
+export function Itinerary({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
 
@@ -152,7 +152,7 @@ export function Itinerary() {
       gsap.utils.toArray(".itinerary-item").forEach((item: any) => {
         const card = item.querySelector(".item-card");
         const icon = item.querySelector(".item-icon");
-        
+
         item.addEventListener("mouseenter", () => {
           gsap.to(card, { scale: 1.03, y: -5, duration: 0.3 });
           gsap.to(icon, { scale: 1.2, rotation: 10, duration: 0.3 });
@@ -168,14 +168,15 @@ export function Itinerary() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-white overflow-hidden">
+    <section id={id} ref={sectionRef} className="relative h-[100dvh] flex flex-col justify-center py-12 md:py-20 px-6 bg-[#0a1628] overflow-hidden snap-start">
       {/* Background decoration */}
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#f8fafc] to-transparent" />
-      
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0f172a] to-transparent" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#c9a959]/5 rounded-full blur-3xl opacity-30" />
+
       <div className="max-w-5xl mx-auto relative z-10">
         {/* Title */}
         <div className="itinerary-title text-center mb-16 overflow-hidden">
-          <h2 className="font-serif text-4xl md:text-6xl text-[#0a1628] mb-4">
+          <h2 className="font-serif text-4xl md:text-6xl text-white mb-4">
             <span className="itinerary-title-word inline-block">Itinerario</span>
           </h2>
           <div className="flex items-center justify-center gap-4 mt-4">
@@ -183,15 +184,15 @@ export function Itinerary() {
             <div className="w-2 h-2 rounded-full bg-[#c9a959]" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
           </div>
-          <p className="text-[#0a1628]/60 font-sans mt-6 text-lg">
+          <p className="text-white/60 font-sans mt-6 text-lg">
             Programa del dia
           </p>
         </div>
 
         {/* Timeline */}
-        <div ref={timelineRef} className="itinerary-timeline relative">
+        <div ref={timelineRef} className="itinerary-timeline relative h-full overflow-y-auto hide-scrollbar pb-20">
           {/* Central line */}
-          <div className="timeline-line absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#c9a959] via-[#0a1628]/20 to-[#c9a959] md:-translate-x-1/2 origin-top" />
+          <div className="timeline-line absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#c9a959] via-white/10 to-[#c9a959] md:-translate-x-1/2 origin-top" />
 
           {itineraryItems.map((item, index) => {
             const Icon = item.icon;
@@ -200,9 +201,8 @@ export function Itinerary() {
             return (
               <div
                 key={index}
-                className={`itinerary-item relative flex items-center gap-6 mb-8 last:mb-0 ${
-                  isLeft ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
+                className={`itinerary-item relative flex items-center gap-6 mb-8 last:mb-0 ${isLeft ? "md:flex-row" : "md:flex-row-reverse"
+                  }`}
               >
                 {/* Timeline dot */}
                 <div
@@ -212,36 +212,34 @@ export function Itinerary() {
 
                 {/* Content card */}
                 <div
-                  className={`flex-1 pl-12 md:pl-0 ${
-                    isLeft ? "md:text-right md:pr-16" : "md:text-left md:pl-16"
-                  }`}
+                  className={`flex-1 pl-12 md:pl-0 ${isLeft ? "md:text-right md:pr-16" : "md:text-left md:pl-16"
+                    }`}
                 >
                   <div
-                    className={`item-card inline-block bg-gradient-to-br from-[#f8fafc] to-white rounded-2xl p-6 border border-[#0a1628]/5 shadow-lg cursor-default ${
-                      isLeft ? "md:mr-0" : "md:ml-0"
-                    }`}
+                    className={`item-card inline-block bg-white/5 backdrop-blur-md rounded-2xl p-4 md:p-6 border border-white/10 shadow-lg cursor-default hover:bg-white/10 transition-colors w-full md:w-auto ${isLeft ? "md:mr-0" : "md:ml-0"
+                      }`}
                   >
                     <div className={`flex items-center gap-4 ${isLeft ? "md:flex-row-reverse" : ""}`}>
                       {/* Icon */}
                       <div
-                        className="item-icon w-14 h-14 rounded-2xl flex items-center justify-center shadow-md"
-                        style={{ backgroundColor: `${item.color}20` }}
+                        className="item-icon w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center shadow-md bg-[#0a1628]/50 shrink-0"
+                        style={{ borderColor: `${item.color}40`, borderWidth: '1px' }}
                       >
-                        <Icon className="w-7 h-7" style={{ color: item.color }} />
+                        <Icon className="w-6 h-6 md:w-7 md:h-7" style={{ color: item.color }} />
                       </div>
-                      
+
                       {/* Text */}
-                      <div className={isLeft ? "md:text-right" : ""}>
+                      <div className={`min-w-0 flex-1 ${isLeft ? "md:text-right" : "text-left"}`}>
                         <span
-                          className="font-sans font-bold text-lg block"
+                          className="font-sans font-bold text-base md:text-lg block"
                           style={{ color: item.color }}
                         >
                           {item.time}
                         </span>
-                        <h3 className="font-serif text-xl text-[#0a1628] mt-1">
+                        <h3 className="font-serif text-lg md:text-xl text-white mt-1 break-words">
                           {item.title}
                         </h3>
-                        <p className="text-[#0a1628]/50 font-sans text-sm mt-1">
+                        <p className="text-white/50 font-sans text-xs md:text-sm mt-1 break-words">
                           {item.description}
                         </p>
                       </div>
@@ -260,7 +258,7 @@ export function Itinerary() {
         <div className="mt-16 text-center">
           <svg
             viewBox="0 0 200 30"
-            className="w-40 mx-auto text-[#0a1628]/10"
+            className="w-40 mx-auto text-white/10"
             fill="none"
             stroke="currentColor"
           >
