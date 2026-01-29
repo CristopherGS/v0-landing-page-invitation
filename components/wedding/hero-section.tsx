@@ -19,10 +19,8 @@ export function HeroSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Initial entrance animation
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      // Animate background elements first
       tl.fromTo(
         ".bg-circle",
         { scale: 0, opacity: 0 },
@@ -71,7 +69,6 @@ export function HeroSection() {
           "-=0.2"
         );
 
-      // Continuous animations
       gsap.to(".bg-circle", {
         y: "random(-20, 20)",
         x: "random(-20, 20)",
@@ -90,7 +87,6 @@ export function HeroSection() {
         ease: "power1.inOut",
       });
 
-      // Photo frame floating animation
       gsap.to(photoFrameRef.current, {
         y: -10,
         duration: 3,
@@ -99,7 +95,6 @@ export function HeroSection() {
         ease: "sine.inOut",
       });
 
-      // Photo rings rotation
       gsap.to(".photo-ring-1", {
         rotation: 360,
         duration: 30,
@@ -114,7 +109,6 @@ export function HeroSection() {
         ease: "linear",
       });
 
-      // Parallax on scroll
       gsap.to(".parallax-slow", {
         yPercent: 30,
         ease: "none",
@@ -136,14 +130,33 @@ export function HeroSection() {
           scrub: true,
         },
       });
+
+      // Animate decorative leaves
+      gsap.to(".leaf-left", {
+        rotation: 5,
+        x: 5,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      gsap.to(".leaf-right", {
+        rotation: -5,
+        x: -5,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 0.5,
+      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Split title into characters for animation
-  const brideName = "Maria";
-  const groomName = "Carlos";
+  const brideName = "Cristopher";
+  const groomName = "Gabriela";
 
   return (
     <section
@@ -155,10 +168,31 @@ export function HeroSection() {
         <div className="bg-circle parallax-slow absolute top-[10%] left-[10%] w-72 h-72 md:w-96 md:h-96 bg-gradient-to-br from-[#1e3a5f]/30 to-transparent rounded-full blur-3xl" />
         <div className="bg-circle parallax-fast absolute bottom-[20%] right-[5%] w-64 h-64 md:w-80 md:h-80 bg-gradient-to-tl from-[#c9a959]/10 to-transparent rounded-full blur-3xl" />
         <div className="bg-circle absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#1e3a5f]/5 rounded-full blur-3xl" />
+        {/* Extra decorative circles */}
+        <div className="bg-circle absolute top-[30%] right-[20%] w-32 h-32 bg-gradient-to-br from-[#c9a959]/5 to-transparent rounded-full blur-2xl" />
+        <div className="bg-circle absolute bottom-[40%] left-[15%] w-48 h-48 bg-gradient-to-tr from-[#1e3a5f]/20 to-transparent rounded-full blur-3xl" />
       </div>
 
       {/* Floating particles */}
       <FloatingParticles />
+
+      {/* Decorative leaf patterns */}
+      <svg className="leaf-left absolute left-4 md:left-10 top-1/4 w-16 md:w-24 h-auto opacity-20" viewBox="0 0 100 200" fill="none">
+        <path d="M50 0 Q20 50 50 100 Q80 150 50 200" stroke="#c9a959" strokeWidth="1" fill="none"/>
+        <path d="M50 20 Q30 50 50 80" stroke="#c9a959" strokeWidth="0.5" fill="none"/>
+        <path d="M50 60 Q70 90 50 120" stroke="#c9a959" strokeWidth="0.5" fill="none"/>
+        <circle cx="50" cy="50" r="3" fill="#c9a959"/>
+        <circle cx="50" cy="100" r="2" fill="#c9a959"/>
+        <circle cx="50" cy="150" r="3" fill="#c9a959"/>
+      </svg>
+      <svg className="leaf-right absolute right-4 md:right-10 top-1/4 w-16 md:w-24 h-auto opacity-20 transform scale-x-[-1]" viewBox="0 0 100 200" fill="none">
+        <path d="M50 0 Q20 50 50 100 Q80 150 50 200" stroke="#c9a959" strokeWidth="1" fill="none"/>
+        <path d="M50 20 Q30 50 50 80" stroke="#c9a959" strokeWidth="0.5" fill="none"/>
+        <path d="M50 60 Q70 90 50 120" stroke="#c9a959" strokeWidth="0.5" fill="none"/>
+        <circle cx="50" cy="50" r="3" fill="#c9a959"/>
+        <circle cx="50" cy="100" r="2" fill="#c9a959"/>
+        <circle cx="50" cy="150" r="3" fill="#c9a959"/>
+      </svg>
 
       {/* Animated dot pattern */}
       <div className="absolute inset-0 opacity-[0.03]">
@@ -190,11 +224,35 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Corner decorations */}
-        <div className="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 border-[#c9a959]/50 rounded-tl-lg" />
-        <div className="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-[#c9a959]/50 rounded-tr-lg" />
-        <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-[#c9a959]/50 rounded-bl-lg" />
-        <div className="absolute -bottom-2 -right-2 w-6 h-6 border-b-2 border-r-2 border-[#c9a959]/50 rounded-br-lg" />
+        {/* Corner decorations with flowers */}
+        <div className="absolute -top-2 -left-2 w-8 h-8">
+          <svg viewBox="0 0 40 40" className="w-full h-full text-[#c9a959]">
+            <circle cx="20" cy="10" r="4" fill="currentColor" opacity="0.5"/>
+            <circle cx="10" cy="20" r="4" fill="currentColor" opacity="0.5"/>
+            <circle cx="15" cy="15" r="5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div className="absolute -top-2 -right-2 w-8 h-8 transform scale-x-[-1]">
+          <svg viewBox="0 0 40 40" className="w-full h-full text-[#c9a959]">
+            <circle cx="20" cy="10" r="4" fill="currentColor" opacity="0.5"/>
+            <circle cx="10" cy="20" r="4" fill="currentColor" opacity="0.5"/>
+            <circle cx="15" cy="15" r="5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div className="absolute -bottom-2 -left-2 w-8 h-8 transform scale-y-[-1]">
+          <svg viewBox="0 0 40 40" className="w-full h-full text-[#c9a959]">
+            <circle cx="20" cy="10" r="4" fill="currentColor" opacity="0.5"/>
+            <circle cx="10" cy="20" r="4" fill="currentColor" opacity="0.5"/>
+            <circle cx="15" cy="15" r="5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div className="absolute -bottom-2 -right-2 w-8 h-8 transform scale-[-1]">
+          <svg viewBox="0 0 40 40" className="w-full h-full text-[#c9a959]">
+            <circle cx="20" cy="10" r="4" fill="currentColor" opacity="0.5"/>
+            <circle cx="10" cy="20" r="4" fill="currentColor" opacity="0.5"/>
+            <circle cx="15" cy="15" r="5" fill="currentColor"/>
+          </svg>
+        </div>
       </div>
 
       {/* Title with character animation */}
@@ -202,7 +260,7 @@ export function HeroSection() {
         <span className="block font-sans text-xs md:text-sm tracking-[0.5em] uppercase mb-4 text-[#c9a959]">
           Nos Casamos
         </span>
-        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-wide text-balance">
+        <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-light tracking-wide text-balance">
           <span className="inline-block">
             {brideName.split("").map((char, i) => (
               <span key={i} className="title-char inline-block">
@@ -210,8 +268,8 @@ export function HeroSection() {
               </span>
             ))}
           </span>
-          <span className="title-char inline-block mx-3 md:mx-6">
-            <AnimatedHeart className="w-8 h-8 md:w-12 md:h-12 inline-block align-middle" />
+          <span className="title-char inline-block mx-2 md:mx-4">
+            <AnimatedHeart className="w-6 h-6 md:w-10 md:h-10 inline-block align-middle" />
           </span>
           <span className="inline-block">
             {groomName.split("").map((char, i) => (
@@ -228,28 +286,40 @@ export function HeroSection() {
         ref={dateRef}
         className="mt-6 md:mt-8 font-sans text-lg md:text-xl tracking-[0.3em] uppercase text-white/80"
       >
-        15 de Junio, 2026
+        11 de Julio, 2026
       </p>
 
       {/* Bottom ornament */}
       <div ref={ornamentBottomRef} className="mt-8">
         <svg
-          width="200"
-          height="30"
-          viewBox="0 0 200 30"
+          width="240"
+          height="40"
+          viewBox="0 0 240 40"
           fill="none"
           className="text-[#c9a959]/50"
         >
           <path
-            d="M0 15 Q50 0 100 15 Q150 30 200 15"
+            d="M0 20 Q60 5 120 20 Q180 35 240 20"
             stroke="currentColor"
             strokeWidth="1"
             fill="none"
           />
-          <circle cx="100" cy="15" r="4" fill="currentColor" />
-          <circle cx="60" cy="10" r="2" fill="currentColor" />
-          <circle cx="140" cy="20" r="2" fill="currentColor" />
+          <circle cx="120" cy="20" r="5" fill="currentColor" />
+          <circle cx="60" cy="12" r="3" fill="currentColor" />
+          <circle cx="180" cy="28" r="3" fill="currentColor" />
+          {/* Small decorative dots */}
+          <circle cx="30" cy="16" r="1.5" fill="currentColor" opacity="0.5"/>
+          <circle cx="90" cy="14" r="1.5" fill="currentColor" opacity="0.5"/>
+          <circle cx="150" cy="26" r="1.5" fill="currentColor" opacity="0.5"/>
+          <circle cx="210" cy="24" r="1.5" fill="currentColor" opacity="0.5"/>
         </svg>
+      </div>
+
+      {/* Save the date text */}
+      <div className="mt-6 px-6 py-2 border border-[#c9a959]/30 rounded-full">
+        <span className="font-sans text-xs tracking-[0.3em] uppercase text-[#c9a959]/70">
+          Save the Date
+        </span>
       </div>
 
       {/* Scroll indicator */}
