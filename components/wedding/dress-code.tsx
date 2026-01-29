@@ -163,7 +163,7 @@ export function DressCode({ id }: { id?: string }) {
   const title = "Codigo de Vestimenta";
 
   return (
-    <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-24 md:py-32 px-6 bg-[#0a1628] overflow-hidden snap-start">
+    <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-12 md:py-32 px-6 bg-[#0a1628] overflow-hidden snap-start">
       {/* Background pattern */}
       <div
         className="absolute inset-0 opacity-[0.03]"

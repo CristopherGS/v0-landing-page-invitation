@@ -202,11 +202,11 @@ export function HeroSection() {
           <span className="block font-sans text-xs md:text-sm tracking-[0.5em] uppercase mb-6 text-[#c9a959] opacity-80">
             Nos Casamos
           </span>
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-wide text-balance leading-tight drop-shadow-2xl">
+          <h1 className="font-serif text-4xl md:text-7xl lg:text-8xl font-light tracking-wide text-balance leading-tight drop-shadow-2xl">
             <span className="inline-block text-white">
               {brideName}
             </span>
-            <span className="block md:inline mx-4 text-[#c9a959] font-light italic text-4xl md:text-6xl my-2 md:my-0">
+            <span className="block md:inline mx-4 text-[#c9a959] font-light italic text-3xl md:text-6xl my-2 md:my-0">
               &
             </span>
             <span className="inline-block text-white">

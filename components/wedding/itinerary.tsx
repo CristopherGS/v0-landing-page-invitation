@@ -168,7 +168,7 @@ export function Itinerary({ id }: { id?: string }) {
   }, []);
 
   return (
-    <section id={id} ref={sectionRef} className="relative h-[100dvh] flex flex-col justify-center py-12 md:py-20 px-6 bg-[#0a1628] overflow-hidden snap-start">
+    <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-12 md:py-20 px-6 bg-[#0a1628] overflow-hidden snap-start">
       {/* Background decoration */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0f172a] to-transparent" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#c9a959]/5 rounded-full blur-3xl opacity-30" />
@@ -192,7 +192,7 @@ export function Itinerary({ id }: { id?: string }) {
         {/* Timeline */}
         <div ref={timelineRef} className="itinerary-timeline relative h-full overflow-y-auto hide-scrollbar pb-20">
           {/* Central line */}
-          <div className="timeline-line absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#c9a959] via-white/10 to-[#c9a959] md:-translate-x-1/2 origin-top" />
+          <div className="timeline-line absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#c9a959] via-white/10 to-[#c9a959] md:-translate-x-1/2 origin-top" />
 
           {itineraryItems.map((item, index) => {
             const Icon = item.icon;
@@ -206,13 +206,13 @@ export function Itinerary({ id }: { id?: string }) {
               >
                 {/* Timeline dot */}
                 <div
-                  className="timeline-dot absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-[#c9a959] z-10 md:-translate-x-1/2 shadow-lg"
+                  className="timeline-dot absolute left-6 md:left-1/2 w-4 h-4 rounded-full bg-[#c9a959] z-10 md:-translate-x-1/2 -ml-2 md:ml-0 shadow-lg"
                   style={{ boxShadow: `0 0 20px ${item.color}40` }}
                 />
 
                 {/* Content card */}
                 <div
-                  className={`flex-1 pl-12 md:pl-0 ${isLeft ? "md:text-right md:pr-16" : "md:text-left md:pl-16"
+                  className={`flex-1 pl-16 md:pl-0 ${isLeft ? "md:text-right md:pr-16" : "md:text-left md:pl-16"
                     }`}
                 >
                   <div

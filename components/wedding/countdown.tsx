@@ -144,7 +144,7 @@ export function Countdown({ id }: { id?: string }) {
   ];
 
   return (
-    <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-24 md:py-32 px-6 bg-[#0a1628] overflow-hidden snap-start">
+    <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-12 md:py-32 px-4 md:px-6 bg-[#0a1628] overflow-hidden snap-start">
       {/* Animated background pattern */}
       <div
         className="countdown-bg-pattern absolute inset-0 opacity-[0.02]"
@@ -229,7 +229,7 @@ export function Countdown({ id }: { id?: string }) {
 
                   {/* Number with flip animation effect */}
                   <div className="relative">
-                    <span className="countdown-number font-serif text-5xl md:text-7xl text-[#c9a959] block transition-transform duration-300">
+                    <span className="countdown-number font-serif text-4xl md:text-7xl text-[#c9a959] block transition-transform duration-300">
                       {String(unit.value).padStart(2, "0")}
                     </span>
                     <span className="font-sans text-xs md:text-sm tracking-[0.2em] uppercase text-white/50 mt-3 block">

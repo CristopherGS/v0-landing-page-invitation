@@ -130,7 +130,7 @@ export function Accommodation({ id }: { id?: string }) {
     }, []);
 
     return (
-        <section id={id} ref={sectionRef} className="relative h-[100dvh] flex flex-col justify-center py-12 md:py-20 px-6 bg-[#0a1628] overflow-hidden snap-start">
+        <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-12 md:py-20 px-6 bg-[#0a1628] overflow-hidden snap-start">
             {/* Background Elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#c9a959]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#1e3a5f]/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />

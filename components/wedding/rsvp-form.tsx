@@ -169,7 +169,7 @@ export function RSVPForm({ id }: { id?: string }) {
     <section
       ref={sectionRef}
       id={id}
-      className="relative flex flex-col justify-center py-6 md:py-16 px-4 md:px-6 bg-[#0a1628] overflow-hidden snap-start"
+      className="relative flex flex-col justify-center py-12 md:py-16 px-4 md:px-6 bg-[#0a1628] overflow-hidden snap-start"
     >
       {/* Background pattern */}
       <div
