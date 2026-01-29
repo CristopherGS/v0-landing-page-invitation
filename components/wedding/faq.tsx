@@ -127,7 +127,7 @@ export function FAQ({ id }: { id?: string }) {
   }, []);
 
   return (
-    <section id={id} ref={sectionRef} className="relative h-[100dvh] flex flex-col justify-center py-10 md:py-20 px-6 bg-[#f8fafc] overflow-hidden snap-start">
+    <section id={id} ref={sectionRef} className="relative min-h-screen lg:h-[100dvh] flex flex-col justify-center py-10 md:py-20 px-6 bg-[#f8fafc] overflow-hidden snap-start">
       {/* Background pattern */}
       <div
         className="absolute inset-0 opacity-[0.015]"
@@ -137,7 +137,7 @@ export function FAQ({ id }: { id?: string }) {
         }}
       />
 
-      <div className="max-w-3xl mx-auto relative z-10 h-full overflow-y-auto hide-scrollbar">
+      <div className="max-w-3xl mx-auto relative z-10 w-full lg:h-full lg:overflow-y-auto lg:hide-scrollbar">
         {/* Title section */}
         <div className="text-center mb-16">
           <div className="floating-question w-24 h-24 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-white mx-auto mb-8 shadow-2xl">

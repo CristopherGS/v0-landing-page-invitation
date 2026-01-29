@@ -44,18 +44,24 @@ export function MusicPlayer() {
 
   useEffect(() => {
     if (isPlaying && playerRef.current) {
-      // Playing state animation
-      gsap.to(".music-bars", {
-        scaleY: "random(0.3, 1)",
-        duration: 0.3,
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.1,
-        ease: "power1.inOut",
-      });
+      const bars = document.querySelectorAll(".music-bars");
+      if (bars.length > 0) {
+        // Playing state animation
+        gsap.to(bars, {
+          scaleY: "random(0.3, 1)",
+          duration: 0.3,
+          repeat: -1,
+          yoyo: true,
+          stagger: 0.1,
+          ease: "power1.inOut",
+        });
+      }
     } else {
-      gsap.killTweensOf(".music-bars");
-      gsap.to(".music-bars", { scaleY: 0.3, duration: 0.3 });
+      const bars = document.querySelectorAll(".music-bars");
+      if (bars.length > 0) {
+        gsap.killTweensOf(bars);
+        gsap.to(bars, { scaleY: 0.3, duration: 0.3 });
+      }
     }
   }, [isPlaying]);
 
@@ -97,6 +103,7 @@ export function MusicPlayer() {
   };
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const controlsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Open by default on large screens, collapsed on mobile
@@ -106,7 +113,15 @@ export function MusicPlayer() {
   }, []);
 
   const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
+    const newState = !isExpanded;
+    setIsExpanded(newState);
+
+    if (newState) {
+      gsap.fromTo(controlsRef.current,
+        { scale: 0.5, opacity: 0, x: 50 },
+        { scale: 1, opacity: 1, x: 0, duration: 0.5, ease: "back.out(1.7)" }
+      );
+    }
   };
 
   return (
@@ -121,91 +136,98 @@ export function MusicPlayer() {
         ref={playerRef}
         className="fixed bottom-6 right-6 z-50 flex flex-col items-end"
       >
-        {/* Mobile Toggle Button (Visible when collapsed) */}
-        {!isExpanded && (
+        {/* Toggle/Player Container */}
+        <div className="relative flex items-center justify-end">
+          {/* Mobile Toggle Button (Visible when collapsed) */}
           <button
             onClick={toggleExpand}
-            className="w-12 h-12 rounded-full bg-gradient-to-br from-[#c9a959] to-[#b8963d] flex items-center justify-center text-[#0a1628] shadow-lg animate-bounce"
+            className={`w-12 h-12 rounded-full bg-gradient-to-br from-[#c9a959] to-[#b8963d] flex items-center justify-center text-[#0a1628] shadow-lg transition-all duration-500 z-30 ${isExpanded ? "opacity-0 scale-0 pointer-events-none absolute" : "opacity-100 scale-100"
+              }`}
           >
             <AnimatedMusic className="w-6 h-6" color="#0a1628" />
+            <div className="absolute inset-0 rounded-full bg-[#c9a959]/40 animate-ping" />
           </button>
-        )}
 
-        {/* Expanded Player Container */}
-        <div className={`transition-all duration-300 origin-bottom-right ${isExpanded ? "opacity-100 scale-100" : "opacity-0 scale-0 h-0 w-0 overflow-hidden"}`}>
-
-          {/* Tooltip */}
-          {!hasInteracted && isExpanded && (
-            <div className="music-tooltip absolute -top-16 right-0 bg-[#0a1628] text-white text-xs font-sans px-4 py-3 rounded-xl shadow-xl whitespace-nowrap border border-white/10 mb-2">
-              <div className="flex items-center gap-2">
-                <AnimatedMusic className="w-4 h-4" color="#c9a959" />
-                <span>Toca para escuchar musica</span>
+          {/* Expanded Player Container */}
+          <div
+            ref={controlsRef}
+            className={`transition-all duration-300 origin-right ${isExpanded ? "opacity-100 scale-100 visible" : "opacity-0 scale-0 invisible absolute"
+              }`}
+          >
+            {/* Tooltip */}
+            {!hasInteracted && isExpanded && (
+              <div className="music-tooltip absolute -top-16 right-0 bg-[#0a1628] text-white text-xs font-sans px-4 py-3 rounded-xl shadow-xl whitespace-nowrap border border-white/10 mb-2">
+                <div className="flex items-center gap-2">
+                  <AnimatedMusic className="w-4 h-4" color="#c9a959" />
+                  <span>Toca para escuchar musica</span>
+                </div>
+                <div className="absolute -bottom-2 right-8 w-4 h-4 bg-[#0a1628] rotate-45 border-r border-b border-white/10" />
               </div>
-              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-[#0a1628] rotate-45 border-r border-b border-white/10" />
-            </div>
-          )}
-
-          {/* Controls */}
-          <div className="relative">
-            {/* Close/Collapse Button (Mobile only logic essentially) */}
-            <button
-              onClick={toggleExpand}
-              className="absolute -top-3 -right-2 w-6 h-6 rounded-full bg-white/10 text-white flex items-center justify-center text-xs backdrop-blur-md z-20 hover:bg-white/20 md:hidden"
-            >
-              ✕
-            </button>
-
-            {/* Pulse effect */}
-            {!hasInteracted && (
-              <div
-                ref={pulseRef}
-                className="absolute inset-0 rounded-full bg-[#c9a959]/30"
-              />
             )}
 
-            <div className="bg-[#0a1628] backdrop-blur-sm rounded-full p-1.5 flex items-center gap-2 shadow-2xl border border-white/10">
-              {/* Play/Pause button */}
+            {/* Controls */}
+            <div className="relative">
+              {/* Close/Collapse Button (Mobile only logic essentially) */}
               <button
-                onClick={togglePlay}
-                className="relative w-14 h-14 rounded-full bg-gradient-to-br from-[#c9a959] to-[#b8963d] flex items-center justify-center text-[#0a1628] hover:shadow-lg hover:shadow-[#c9a959]/30 transition-all overflow-hidden group"
-                aria-label={isPlaying ? "Pausar musica" : "Reproducir musica"}
+                onClick={toggleExpand}
+                className="absolute -top-3 -right-2 w-7 h-7 rounded-full bg-[#0a1628] text-[#c9a959] flex items-center justify-center border border-white/20 shadow-lg z-40 hover:bg-white/10 md:hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-
-                {isPlaying ? (
-                  <Pause className="w-6 h-6 relative z-10" />
-                ) : (
-                  <Play className="w-6 h-6 ml-0.5 relative z-10" />
-                )}
+                <div className="w-3 h-0.5 bg-current rotate-45 absolute" />
+                <div className="w-3 h-0.5 bg-current -rotate-45 absolute" />
               </button>
 
-              {/* Music visualization bars */}
-              {hasInteracted && (
-                <div className="flex items-end gap-0.5 h-8 px-2 transition-all duration-300">
-                  {[...Array(4)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="music-bars w-1 bg-[#c9a959] rounded-full origin-bottom"
-                      style={{ height: "100%" }}
-                    />
-                  ))}
-                </div>
+              {/* Pulse effect for controls when not interacted */}
+              {!hasInteracted && (
+                <div
+                  ref={pulseRef}
+                  className="absolute inset-0 rounded-full bg-[#c9a959]/30"
+                />
               )}
 
-              {/* Mute button */}
-              {hasInteracted && (
+              <div className="bg-[#0a1628] backdrop-blur-sm rounded-full p-1.5 flex items-center gap-2 shadow-2xl border border-white/10">
+                {/* Play/Pause button */}
                 <button
-                  onClick={toggleMute}
-                  className="mute-btn w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all mr-1"
-                  aria-label={isMuted ? "Activar sonido" : "Silenciar"}
+                  onClick={togglePlay}
+                  className="relative w-14 h-14 rounded-full bg-gradient-to-br from-[#c9a959] to-[#b8963d] flex items-center justify-center text-[#0a1628] hover:shadow-lg hover:shadow-[#c9a959]/30 transition-all overflow-hidden group"
+                  aria-label={isPlaying ? "Pausar musica" : "Reproducir musica"}
                 >
-                  {isMuted ? (
-                    <VolumeX className="w-5 h-5" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+
+                  {isPlaying ? (
+                    <Pause className="w-6 h-6 relative z-10" />
                   ) : (
-                    <Volume2 className="w-5 h-5" />
+                    <Play className="w-6 h-6 ml-0.5 relative z-10" />
                   )}
                 </button>
-              )}
+
+                {/* Music visualization bars */}
+                {hasInteracted && (
+                  <div className="flex items-end gap-0.5 h-8 px-2 transition-all duration-300">
+                    {[...Array(4)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="music-bars w-1 bg-[#c9a959] rounded-full origin-bottom"
+                        style={{ height: "100%" }}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {/* Mute button */}
+                {hasInteracted && (
+                  <button
+                    onClick={toggleMute}
+                    className="mute-btn w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all mr-1"
+                    aria-label={isMuted ? "Activar sonido" : "Silenciar"}
+                  >
+                    {isMuted ? (
+                      <VolumeX className="w-5 h-5" />
+                    ) : (
+                      <Volume2 className="w-5 h-5" />
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

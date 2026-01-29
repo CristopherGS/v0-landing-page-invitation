@@ -50,34 +50,11 @@ export function HeroSection() {
         });
 
       tl.fromTo(
-        ".bg-circle",
-        { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.5, stagger: 0.2 }
+        ornamentTopRef.current,
+        { y: -50, opacity: 0, scale: 0.5 },
+        { y: 0, opacity: 1, scale: 1, duration: 1 },
+        "-=1"
       )
-        .fromTo(
-          ornamentTopRef.current,
-          { y: -50, opacity: 0, scale: 0.5 },
-          { y: 0, opacity: 1, scale: 1, duration: 1 },
-          "-=1"
-        )
-        .fromTo(
-          photoFrameRef.current,
-          { scale: 0, opacity: 0, rotation: -10 },
-          { scale: 1, opacity: 1, rotation: 0, duration: 1.2, ease: "back.out(1.7)" },
-          "-=0.6"
-        )
-        .fromTo(
-          ".photo-ring",
-          { scale: 0.8, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.8, stagger: 0.1 },
-          "-=0.8"
-        )
-        .fromTo(
-          ".title-char",
-          { y: 100, opacity: 0, rotationX: -90 },
-          { y: 0, opacity: 1, rotationX: 0, duration: 0.8, stagger: 0.03 },
-          "-=0.4"
-        )
         .fromTo(
           dateRef.current,
           { y: 40, opacity: 0, scale: 0.9 },
@@ -97,86 +74,12 @@ export function HeroSection() {
           "-=0.2"
         );
 
-      gsap.to(".bg-circle", {
-        y: "random(-20, 20)",
-        x: "random(-20, 20)",
-        duration: "random(4, 8)",
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        stagger: 0.5,
-      });
-
       gsap.to(scrollIndicatorRef.current, {
         y: 15,
         repeat: -1,
         yoyo: true,
         duration: 1.2,
         ease: "power1.inOut",
-      });
-
-      gsap.to(photoFrameRef.current, {
-        y: -10,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      gsap.to(".photo-ring-1", {
-        rotation: 360,
-        duration: 30,
-        repeat: -1,
-        ease: "linear",
-      });
-
-      gsap.to(".photo-ring-2", {
-        rotation: -360,
-        duration: 40,
-        repeat: -1,
-        ease: "linear",
-      });
-
-      gsap.to(".parallax-slow", {
-        yPercent: 30,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-
-      gsap.to(".parallax-fast", {
-        yPercent: 50,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-
-      // Animate decorative leaves
-      gsap.to(".leaf-left", {
-        rotation: 5,
-        x: 5,
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      gsap.to(".leaf-right", {
-        rotation: -5,
-        x: -5,
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: 0.5,
       });
     }, containerRef);
 

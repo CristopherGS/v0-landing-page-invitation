@@ -59,14 +59,6 @@ export function Footer() {
         });
       });
 
-      // Social button pulse
-      gsap.to(".social-btn", {
-        scale: 1.1,
-        duration: 1,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
 
       // Floating rings animation
       gsap.to(".footer-rings", {

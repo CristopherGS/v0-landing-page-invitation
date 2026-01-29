@@ -138,7 +138,9 @@ export function RSVPForm({ id }: { id?: string }) {
     gsap.to(".submit-btn", { scale: 0.95, duration: 0.1 });
 
     try {
+      console.log("Submitting RSVP...");
       const result = await submitRSVP(formData);
+      console.log("RSVP Result:", result);
 
       if (result.success) {
         setIsSubmitted(true);

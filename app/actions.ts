@@ -3,6 +3,11 @@
 import { createClient } from "@/lib/supabase/server";
 
 export async function submitRSVP(formData: FormData) {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+        console.error("Missing Supabase environment variables");
+        return { success: false, error: "Error de configuración en el servidor. Las variables de entorno no están configuradas." };
+    }
+
     const supabase = await createClient();
 
     const attendance = formData.get("attendance") as string;
@@ -11,11 +16,11 @@ export async function submitRSVP(formData: FormData) {
         name: formData.get("name") as string,
         email: formData.get("email") as string,
         phone: formData.get("phone") as string,
-        guests_count: 1, // Defaulting to 1 for individual registration
+        guests: 1, // Reverted from guests_count
         attendance: attendance,
-        dietary_restrictions: "", // Defaulting empty
-        needs_transport: false, // Defaulting to false
-        song_suggestions: "", // Defaulting empty
+        dietary: "", // Reverted from dietary_restrictions
+        transport: false, // Reverted from needs_transport
+        songs: "", // Reverted from song_suggestions
         message: formData.get("message") as string,
     };
 
