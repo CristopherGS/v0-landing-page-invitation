@@ -309,34 +309,51 @@ export function RSVPForm({ id }: { id?: string }) {
                   name="phone"
                   type="tel"
                   required
-                  placeholder="+52 123 456 7890"
+                  placeholder="1234 5678"
+                  pattern="[0-9]{4}[ ]?[0-9]{4}|[0-9]{8}"
+                  title="Por favor ingresa un número de 8 dígitos de Guatemala"
                   className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
                 />
               </div>
 
-              <div className="form-field space-y-3">
-                <Label className="text-white font-sans font-medium">
-                  Asistiras al evento? *
+              <div className="form-field space-y-2">
+                <Label htmlFor="family" className="text-white font-sans font-medium">
+                  Familiar de: *
                 </Label>
-                <RadioGroup
-                  defaultValue="yes"
-                  name="attendance"
-                  className="flex flex-wrap gap-4"
-                >
-                  <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                    <RadioGroupItem value="yes" id="yes" className="border-white text-[#c9a959]" />
-                    <Label htmlFor="yes" className="font-normal cursor-pointer text-white">
-                      Si, ahi estare
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                    <RadioGroupItem value="no" id="no" className="border-white text-[#c9a959]" />
-                    <Label htmlFor="no" className="font-normal cursor-pointer text-white">
-                      No podre asistir
-                    </Label>
-                  </div>
-                </RadioGroup>
+                <Select name="family" required>
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6">
+                    <SelectValue placeholder="Selecciona una opción" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#0a1628] border-white/10 text-white">
+                    <SelectItem value="bride">Familiar de la Novia (Gabriela)</SelectItem>
+                    <SelectItem value="groom">Familiar del Novio (Cristopher)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
+            </div>
+
+            <div className="form-field space-y-3">
+              <Label className="text-white font-sans font-medium">
+                Asistiras al evento? *
+              </Label>
+              <RadioGroup
+                defaultValue="yes"
+                name="attendance"
+                className="flex flex-wrap gap-4"
+              >
+                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
+                  <RadioGroupItem value="yes" id="yes" className="border-white text-[#c9a959]" />
+                  <Label htmlFor="yes" className="font-normal cursor-pointer text-white">
+                    Si, ahi estare
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
+                  <RadioGroupItem value="no" id="no" className="border-white text-[#c9a959]" />
+                  <Label htmlFor="no" className="font-normal cursor-pointer text-white">
+                    No podre asistir
+                  </Label>
+                </div>
+              </RadioGroup>
             </div>
 
             <div className="form-field space-y-2">
@@ -399,6 +416,6 @@ export function RSVPForm({ id }: { id?: string }) {
           </div>
         )}
       </div>
-    </section>
+    </section >
   );
 }
