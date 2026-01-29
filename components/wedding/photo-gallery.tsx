@@ -3,7 +3,8 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Camera } from "lucide-react";
+import { Camera, Heart } from "lucide-react";
+import { AnimatedHeart } from "./animated-icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,36 +13,77 @@ export function PhotoGallery() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Title animation
       gsap.fromTo(
-        ".gallery-title",
-        { y: 50, opacity: 0 },
+        ".gallery-title-word",
+        { y: 80, opacity: 0, rotationX: -45 },
         {
           y: 0,
           opacity: 1,
-          duration: 1,
+          rotationX: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
           scrollTrigger: {
             trigger: ".gallery-title",
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Gallery items with stagger and scale
+      gsap.fromTo(
+        ".gallery-item",
+        { scale: 0.8, opacity: 0, y: 50 },
+        {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: {
+            amount: 0.8,
+            from: "random",
+          },
+          ease: "back.out(1.4)",
+          scrollTrigger: {
+            trigger: ".gallery-grid",
             start: "top 80%",
             toggleActions: "play none none reverse",
           },
         }
       );
 
-      gsap.fromTo(
-        ".gallery-item",
-        { scale: 0.9, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: ".gallery-grid",
-            start: "top 75%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+      // Hover effects for gallery items
+      gsap.utils.toArray(".gallery-item").forEach((item: any) => {
+        const overlay = item.querySelector(".gallery-overlay");
+        const icon = item.querySelector(".gallery-icon");
+        const heart = item.querySelector(".gallery-heart");
+
+        item.addEventListener("mouseenter", () => {
+          gsap.to(item, { scale: 1.03, duration: 0.4, ease: "power2.out" });
+          gsap.to(overlay, { opacity: 1, duration: 0.3 });
+          gsap.to(icon, { scale: 1.2, rotation: 10, duration: 0.3 });
+          gsap.fromTo(heart, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" });
+        });
+
+        item.addEventListener("mouseleave", () => {
+          gsap.to(item, { scale: 1, duration: 0.4, ease: "power2.out" });
+          gsap.to(overlay, { opacity: 0, duration: 0.3 });
+          gsap.to(icon, { scale: 1, rotation: 0, duration: 0.3 });
+          gsap.to(heart, { scale: 0, opacity: 0, duration: 0.2 });
+        });
+      });
+
+      // Floating camera icon
+      gsap.to(".floating-camera", {
+        y: -8,
+        rotation: 5,
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -49,49 +91,82 @@ export function PhotoGallery() {
 
   // Layout pattern for masonry-like grid
   const galleryItems = [
-    { id: 1, span: "col-span-2 row-span-2", label: "Foto Principal" },
-    { id: 2, span: "col-span-1 row-span-1", label: "Foto 2" },
-    { id: 3, span: "col-span-1 row-span-1", label: "Foto 3" },
-    { id: 4, span: "col-span-1 row-span-2", label: "Foto 4" },
-    { id: 5, span: "col-span-1 row-span-1", label: "Foto 5" },
-    { id: 6, span: "col-span-2 row-span-1", label: "Foto 6" },
+    { id: 1, span: "col-span-2 row-span-2", label: "Foto Principal", aspect: "aspect-square" },
+    { id: 2, span: "col-span-1 row-span-1", label: "Foto 2", aspect: "aspect-square" },
+    { id: 3, span: "col-span-1 row-span-1", label: "Foto 3", aspect: "aspect-square" },
+    { id: 4, span: "col-span-1 row-span-2", label: "Foto 4", aspect: "aspect-[3/4]" },
+    { id: 5, span: "col-span-1 row-span-1", label: "Foto 5", aspect: "aspect-square" },
+    { id: 6, span: "col-span-2 row-span-1", label: "Foto 6", aspect: "aspect-[2/1]" },
   ];
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-28 px-6 bg-white">
+    <section ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-white overflow-hidden">
       <div className="max-w-6xl mx-auto">
+        {/* Title section */}
         <div className="text-center mb-16">
-          <div className="w-20 h-20 rounded-full bg-[#0a1628] flex items-center justify-center text-white mx-auto mb-8">
+          <div className="floating-camera w-20 h-20 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-[#c9a959] mx-auto mb-8 shadow-xl">
             <Camera className="w-10 h-10" />
           </div>
-          <h2 className="gallery-title font-serif text-4xl md:text-5xl text-[#0a1628] mb-4">
-            Nuestra Galeria
-          </h2>
-          <p className="text-[#0a1628]/60 font-sans max-w-xl mx-auto">
+          
+          <div className="gallery-title overflow-hidden">
+            <h2 className="font-serif text-4xl md:text-6xl text-[#0a1628]">
+              <span className="gallery-title-word inline-block">Nuestra</span>{" "}
+              <span className="gallery-title-word inline-block">Galeria</span>
+            </h2>
+          </div>
+          
+          <div className="flex items-center justify-center gap-4 mt-4">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#c9a959]/50" />
+            <AnimatedHeart className="w-5 h-5" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
+          </div>
+          
+          <p className="text-[#0a1628]/60 font-sans mt-6 text-lg max-w-xl mx-auto">
             Momentos especiales de nuestra historia juntos
           </p>
         </div>
 
         {/* Photo grid */}
-        <div className="gallery-grid grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[180px]">
+        <div className="gallery-grid grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[180px] md:auto-rows-[200px]">
           {galleryItems.map((item) => (
             <div
               key={item.id}
-              className={`gallery-item ${item.span} bg-[#f0f4f8] rounded-xl overflow-hidden border-2 border-dashed border-[#0a1628]/20 flex items-center justify-center group cursor-pointer hover:border-[#c9a959] transition-colors`}
+              className={`gallery-item ${item.span} relative bg-gradient-to-br from-[#f0f4f8] to-[#e2e8f0] rounded-2xl overflow-hidden border border-[#0a1628]/5 flex items-center justify-center group cursor-pointer shadow-lg`}
             >
-              <div className="text-center p-4">
-                <Camera className="w-8 h-8 text-[#0a1628]/30 mx-auto mb-2 group-hover:text-[#c9a959] transition-colors" />
-                <span className="text-[#0a1628]/40 font-sans text-sm group-hover:text-[#0a1628]/60 transition-colors">
+              {/* Placeholder content */}
+              <div className="text-center p-4 relative z-10">
+                <div className="gallery-icon w-12 h-12 rounded-full bg-white/80 flex items-center justify-center mx-auto mb-3 shadow-md">
+                  <Camera className="w-6 h-6 text-[#0a1628]/40" />
+                </div>
+                <span className="text-[#0a1628]/40 font-sans text-sm">
                   {item.label}
                 </span>
               </div>
+
+              {/* Hover overlay */}
+              <div className="gallery-overlay absolute inset-0 bg-gradient-to-t from-[#0a1628]/90 via-[#0a1628]/50 to-transparent opacity-0 flex flex-col items-center justify-end p-6">
+                <Heart className="gallery-heart w-8 h-8 text-[#c9a959] mb-3" />
+                <p className="text-white font-sans text-sm text-center">
+                  {item.label}
+                </p>
+              </div>
+
+              {/* Corner decorations */}
+              <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-[#c9a959]/0 group-hover:border-[#c9a959]/50 rounded-tl-lg transition-colors duration-300" />
+              <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-[#c9a959]/0 group-hover:border-[#c9a959]/50 rounded-br-lg transition-colors duration-300" />
             </div>
           ))}
         </div>
 
-        <p className="text-center text-[#0a1628]/40 font-sans text-sm mt-8">
-          Sube tus fotos favoritas para personalizar esta galeria
-        </p>
+        {/* Instagram hashtag */}
+        <div className="mt-12 text-center">
+          <p className="text-[#0a1628]/40 font-sans text-sm mb-2">
+            Comparte tus fotos con nosotros usando
+          </p>
+          <span className="inline-block px-6 py-3 bg-[#0a1628]/5 rounded-full font-sans text-[#0a1628] font-medium">
+            #MariaYCarlos2026
+          </span>
+        </div>
       </div>
     </section>
   );

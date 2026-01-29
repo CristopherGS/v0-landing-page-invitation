@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react"
-
+import type React from "react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MapPin, Clock, Calendar, Church, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
+import { AnimatedCalendar, AnimatedClock, AnimatedChurch, AnimatedPin } from "./animated-icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,15 +14,50 @@ interface DetailCardProps {
   title: string;
   details: string[];
   mapLink?: string;
+  delay: number;
 }
 
-function DetailCard({ icon, title, details, mapLink }: DetailCardProps) {
+function DetailCard({ icon, title, details, mapLink, delay }: DetailCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hover animations
+      const card = cardRef.current;
+      if (card) {
+        card.addEventListener("mouseenter", () => {
+          gsap.to(card, { y: -10, scale: 1.02, duration: 0.4, ease: "power2.out" });
+          gsap.to(card.querySelector(".card-icon"), { scale: 1.2, rotation: 10, duration: 0.4 });
+          gsap.to(card.querySelector(".card-glow"), { opacity: 1, duration: 0.4 });
+        });
+        card.addEventListener("mouseleave", () => {
+          gsap.to(card, { y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
+          gsap.to(card.querySelector(".card-icon"), { scale: 1, rotation: 0, duration: 0.4 });
+          gsap.to(card.querySelector(".card-glow"), { opacity: 0, duration: 0.4 });
+        });
+      }
+    });
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="detail-card flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-lg border border-[#0a1628]/5">
-      <div className="w-16 h-16 rounded-full bg-[#0a1628] flex items-center justify-center text-white mb-5">
+    <div
+      ref={cardRef}
+      className="detail-card relative flex flex-col items-center text-center p-8 bg-white rounded-3xl shadow-xl border border-[#0a1628]/5 overflow-hidden cursor-default"
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {/* Glow effect */}
+      <div className="card-glow absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0 transition-opacity" />
+      
+      {/* Icon container */}
+      <div className="card-icon relative w-20 h-20 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-[#c9a959] mb-6 shadow-lg">
         {icon}
+        {/* Animated ring */}
+        <div className="absolute inset-0 rounded-full border-2 border-[#c9a959]/30 animate-ping" style={{ animationDuration: "2s" }} />
       </div>
-      <h3 className="font-serif text-2xl text-[#0a1628] mb-3">{title}</h3>
+      
+      <h3 className="font-serif text-2xl text-[#0a1628] mb-4">{title}</h3>
+      
       {details.map((detail, index) => (
         <p
           key={index}
@@ -32,18 +66,25 @@ function DetailCard({ icon, title, details, mapLink }: DetailCardProps) {
           {detail}
         </p>
       ))}
+      
       {mapLink && (
         <a
           href={mapLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-2 text-[#0a1628] font-sans text-sm hover:text-[#c9a959] transition-colors"
+          className="mt-5 inline-flex items-center gap-2 text-[#0a1628] font-sans text-sm hover:text-[#c9a959] transition-colors group"
         >
-          <MapPin className="w-4 h-4" />
-          Ver en Google Maps
-          <ExternalLink className="w-3 h-3" />
+          <span className="relative">
+            Ver en Google Maps
+            <span className="absolute bottom-0 left-0 w-0 h-px bg-[#c9a959] group-hover:w-full transition-all duration-300" />
+          </span>
+          <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
         </a>
       )}
+
+      {/* Corner accents */}
+      <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-[#c9a959]/20 rounded-tr-3xl" />
+      <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-[#c9a959]/20 rounded-bl-3xl" />
     </div>
   );
 }
@@ -54,34 +95,73 @@ export function EventDetails() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Title animation with split text
       gsap.fromTo(
-        titleRef.current,
-        { y: 50, opacity: 0 },
+        ".event-title-word",
+        { y: 80, opacity: 0, rotationX: -45 },
         {
           y: 0,
           opacity: 1,
-          duration: 1,
+          rotationX: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
           scrollTrigger: {
             trigger: titleRef.current,
-            start: "top 80%",
-            end: "top 50%",
+            start: "top 85%",
             toggleActions: "play none none reverse",
           },
         }
       );
 
+      // Cards entrance with stagger
       gsap.fromTo(
         ".detail-card",
-        { y: 60, opacity: 0 },
+        { y: 80, opacity: 0, scale: 0.9 },
         {
           y: 0,
           opacity: 1,
+          scale: 1,
           duration: 0.8,
           stagger: 0.15,
+          ease: "back.out(1.7)",
           scrollTrigger: {
             trigger: ".details-grid",
-            start: "top 75%",
-            end: "top 45%",
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Map reveal animation
+      gsap.fromTo(
+        ".map-container",
+        { y: 60, opacity: 0, scale: 0.95 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".map-container",
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Decorative lines animation
+      gsap.fromTo(
+        ".deco-line",
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 80%",
             toggleActions: "play none none reverse",
           },
         }
@@ -92,56 +172,88 @@ export function EventDetails() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-28 px-6 bg-[#f8fafc]">
-      <div className="max-w-6xl mx-auto">
-        <h2
-          ref={titleRef}
-          className="font-serif text-4xl md:text-5xl text-center text-[#0a1628] mb-4"
-        >
-          Detalles del Evento
-        </h2>
-        <p className="text-center text-[#0a1628]/60 font-sans mb-16">
-          Toda la informacion que necesitas saber
-        </p>
+    <section ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-[#f8fafc] overflow-hidden">
+      {/* Background pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 2px 2px, #0a1628 1px, transparent 0)`,
+          backgroundSize: "50px 50px",
+        }}
+      />
 
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Title section */}
+        <div className="text-center mb-16">
+          <h2
+            ref={titleRef}
+            className="font-serif text-4xl md:text-6xl text-[#0a1628] mb-4 overflow-hidden"
+          >
+            <span className="event-title-word inline-block">Detalles</span>{" "}
+            <span className="event-title-word inline-block">del</span>{" "}
+            <span className="event-title-word inline-block">Evento</span>
+          </h2>
+          
+          <div className="flex items-center justify-center gap-4 mt-4">
+            <div className="deco-line h-px w-20 bg-gradient-to-r from-transparent to-[#c9a959]/50 origin-left" />
+            <div className="w-2 h-2 rounded-full bg-[#c9a959]" />
+            <div className="deco-line h-px w-20 bg-gradient-to-l from-transparent to-[#c9a959]/50 origin-right" />
+          </div>
+          
+          <p className="text-[#0a1628]/60 font-sans mt-6 text-lg">
+            Toda la informacion que necesitas saber
+          </p>
+        </div>
+
+        {/* Cards grid */}
         <div className="details-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <DetailCard
-            icon={<Calendar className="w-7 h-7" />}
+            icon={<AnimatedCalendar className="w-10 h-10" />}
             title="Fecha"
-            details={["Lunes", "15 de Junio, 2026"]}
+            details={["Sabado", "15 de Junio, 2026"]}
+            delay={0}
           />
           <DetailCard
-            icon={<Clock className="w-7 h-7" />}
+            icon={<AnimatedClock className="w-10 h-10" />}
             title="Hora"
             details={["Ceremonia: 16:00 hrs", "Recepcion: 18:00 hrs"]}
+            delay={150}
           />
           <DetailCard
-            icon={<Church className="w-7 h-7" />}
+            icon={<AnimatedChurch className="w-10 h-10" />}
             title="Ceremonia"
             details={["Parroquia San Antonio", "Calle Principal #123"]}
             mapLink="https://maps.google.com/?q=Parroquia+San+Antonio"
+            delay={300}
           />
           <DetailCard
-            icon={<MapPin className="w-7 h-7" />}
+            icon={<AnimatedPin className="w-10 h-10" />}
             title="Recepcion"
             details={["Salon de Eventos Luna", "Av. Central #456"]}
             mapLink="https://maps.google.com/?q=Salon+de+Eventos+Luna"
+            delay={450}
           />
         </div>
 
-        {/* Map embed */}
-        <div className="mt-12 rounded-2xl overflow-hidden shadow-lg border border-[#0a1628]/5">
-          <div className="aspect-[16/9] md:aspect-[21/9] bg-[#e2e8f0] flex items-center justify-center">
-            {/* Replace with actual Google Maps iframe */}
-            <div className="text-center p-8">
-              <MapPin className="w-12 h-12 text-[#0a1628]/30 mx-auto mb-4" />
-              <p className="text-[#0a1628]/50 font-sans">
+        {/* Map section */}
+        <div className="map-container mt-16 rounded-3xl overflow-hidden shadow-2xl border border-[#0a1628]/5 relative">
+          <div className="aspect-[16/9] md:aspect-[21/9] bg-gradient-to-br from-[#e2e8f0] to-[#f1f5f9] flex items-center justify-center relative">
+            {/* Map placeholder with styled content */}
+            <div className="text-center p-8 relative z-10">
+              <div className="w-20 h-20 rounded-full bg-[#0a1628]/10 flex items-center justify-center mx-auto mb-6">
+                <AnimatedPin className="w-10 h-10" color="#0a1628" />
+              </div>
+              <p className="text-[#0a1628]/60 font-sans text-lg">
                 Aqui ira el mapa de Google Maps
               </p>
               <p className="text-[#0a1628]/40 font-sans text-sm mt-2">
                 Reemplaza este div con un iframe de Google Maps
               </p>
             </div>
+
+            {/* Decorative elements */}
+            <div className="absolute top-4 left-4 w-20 h-20 border-t-2 border-l-2 border-[#0a1628]/10 rounded-tl-2xl" />
+            <div className="absolute bottom-4 right-4 w-20 h-20 border-b-2 border-r-2 border-[#0a1628]/10 rounded-br-2xl" />
           </div>
         </div>
       </div>
