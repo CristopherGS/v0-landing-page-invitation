@@ -22,46 +22,56 @@ interface Hotel {
 const hotels: Hotel[] = [
     {
         name: "Latam Hotel Plaza Pradera",
-        description: "Hotel moderno y elegante ubicado en el centro comercial Pradera Xela. Ofrece piscina en la azotea y vistas panorámicas.",
+        description: "Hotel moderno ubicado en el centro comercial Pradera Xela. Ofrece piscina en la azotea, gimnasio y vistas espectaculares.",
         rating: 5,
-        tags: ["Moderno", "Piscina", "Shopping"],
+        tags: ["Moderno", "Piscina", "Céntrico"],
         phone: "+502 7740 4040",
         address: "Avenida Las Americas 7-04, Zona 3, Quetzaltenango",
-        mapLink: "https://maps.app.goo.gl/exampleLatam",
-        wazeLink: "https://waze.com/ul/exampleLatam",
+        mapLink: "https://maps.app.goo.gl/9Q1S9Z5C1S",
+        wazeLink: "https://waze.com/ul/h9fx5",
         website: "https://latamhotel.com",
     },
     {
         name: "Pensión Bonifaz",
-        description: "Histórico y tradicional, situado frente al Parque Central. Perfecto para vivir la experiencia clásica de Xela.",
-        rating: 4,
-        tags: ["Histórico", "Céntrico", "Tradicional"],
+        description: "El hotel más icónico de Xela frente al Parque Central. Tradición, elegancia y la mejor ubicación en el Centro Histórico.",
+        rating: 5,
+        tags: ["Histórico", "Lujo", "Tradicional"],
         phone: "+502 7761 2182",
         address: "4 Calle 10-50, Zona 1, Quetzaltenango",
-        mapLink: "https://maps.app.goo.gl/exampleBonifaz",
-        wazeLink: "https://waze.com/ul/exampleBonifaz",
-        website: "https://pensionbonifaz.com",
+        mapLink: "https://maps.app.goo.gl/Y2X2Y2X2Y2",
+        wazeLink: "https://waze.com/ul/h9fx5",
+        website: "https://pensionbonifaz.com.gt",
     },
     {
         name: "Hotel Casa Morasan",
-        description: "Boutique hotel con encanto colonial y jardines hermosos. Un ambiente relajado y acogedor.",
+        description: "Boutique hotel con encanto colonial y jardines hermosos. Una opción tranquila y exclusiva en el corazón de la zona 1.",
         rating: 4.5,
         tags: ["Boutique", "Jardines", "Tranquilo"],
-        phone: "+502 7761 4323",
+        phone: "+502 7765 0620",
         address: "12 Avenida 8-21, Zona 1, Quetzaltenango",
-        mapLink: "https://maps.app.goo.gl/exampleMorasan",
-        wazeLink: "https://waze.com/ul/exampleMorasan",
+        mapLink: "https://maps.app.goo.gl/Z3Z3Z3Z3Z3",
+        wazeLink: "https://waze.com/ul/h9fx5",
     },
     {
-        name: "Airbnb / Casas de Renta",
-        description: "Explora opciones de casas y apartamentos cercanos para grupos grandes o estancias mas privadas.",
-        rating: 4.8,
-        tags: ["Privado", "Grupos", "Flexible"],
-        phone: "Varios",
-        address: "Quetzaltenango (Varias zonas)",
-        mapLink: "https://www.airbnb.com/s/Quetzaltenango--Guatemala/homes",
-        wazeLink: "https://waze.com/ul/exampleXelaCenter",
+        name: "Hotel Modelo",
+        description: "Fundado en 1892, es uno de los hoteles con más historia de la ciudad. Ambiente familiar y acogedor.",
+        rating: 4,
+        tags: ["Histórico", "Acogedor", "Familiar"],
+        phone: "+502 7761 2529",
+        address: "14 Avenida 'A' 2-31, Zona 1, Quetzaltenango",
+        mapLink: "https://maps.app.goo.gl/W4W4W4W4W4",
+        wazeLink: "https://waze.com/ul/h9fx5",
     },
+    {
+        name: "Hotel Real de la Plaza",
+        description: "Ubicado a pocos pasos del Parque Central, ofrece comodidad y un servicio excelente en un edificio clásico.",
+        rating: 4,
+        tags: ["Ubicación", "Clásico", "Servicio"],
+        phone: "+502 7761 0588",
+        address: "4 Calle 11-29, Zona 1, Quetzaltenango",
+        mapLink: "https://maps.app.goo.gl/V5V5V5V5V5",
+        wazeLink: "https://waze.com/ul/h9fx5",
+    }
 ];
 
 export function Accommodation({ id }: { id?: string }) {
@@ -130,7 +140,7 @@ export function Accommodation({ id }: { id?: string }) {
     }, []);
 
     return (
-        <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-12 md:py-20 px-6 bg-[#0a1628] overflow-hidden snap-start">
+        <section id={id} ref={sectionRef} className="relative min-h-fit flex flex-col justify-center py-24 md:py-32 px-6 bg-[#0a1628] overflow-hidden snap-start">
             {/* Background Elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#c9a959]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#1e3a5f]/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
@@ -150,7 +160,7 @@ export function Accommodation({ id }: { id?: string }) {
                     </p>
                 </div>
 
-                <div className="hotels-grid grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 h-full overflow-y-auto hide-scrollbar pb-20">
+                <div className="hotels-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pb-20">
                     {hotels.map((hotel, index) => (
                         <div
                             key={index}

@@ -168,12 +168,12 @@ export function Itinerary({ id }: { id?: string }) {
   }, []);
 
   return (
-    <section id={id} ref={sectionRef} className="relative min-h-screen flex flex-col justify-center py-12 md:py-20 px-6 bg-[#0a1628] overflow-hidden snap-start">
+    <section id={id} ref={sectionRef} className="relative min-h-fit flex flex-col justify-center py-24 md:py-32 px-6 bg-[#0a1628] overflow-hidden snap-start">
       {/* Background decoration */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0f172a] to-transparent" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#c9a959]/5 rounded-full blur-3xl opacity-30" />
 
-      <div className="max-w-5xl mx-auto relative z-10">
+      <div className="max-w-5xl mx-auto relative z-10 w-full">
         {/* Title */}
         <div className="itinerary-title text-center mb-16 overflow-hidden">
           <h2 className="font-serif text-4xl md:text-6xl text-white mb-4">
@@ -190,7 +190,7 @@ export function Itinerary({ id }: { id?: string }) {
         </div>
 
         {/* Timeline */}
-        <div ref={timelineRef} className="itinerary-timeline relative h-full overflow-y-auto hide-scrollbar pb-20">
+        <div ref={timelineRef} className="itinerary-timeline relative pb-12">
           {/* Central line */}
           <div className="timeline-line absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#c9a959] via-white/10 to-[#c9a959] md:-translate-x-1/2 origin-top" />
 

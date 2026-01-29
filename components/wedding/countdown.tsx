@@ -188,10 +188,10 @@ export function Countdown({ id }: { id?: string }) {
               <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
             </div>
             <p className="text-white/70 font-serif text-2xl md:text-3xl mb-4">
-              Cristopher & Gabriela
+              Gabriela & Christopher
             </p>
             <p className="text-[#c9a959] font-sans text-lg tracking-wider">
-              11 de Julio, 2026
+              11 de Abril, 2026
             </p>
             <p className="text-white/50 font-sans mt-6 text-lg max-w-xl mx-auto">
               Gracias por ser parte de nuestro dia especial. Los llevamos siempre en nuestro corazon.
@@ -247,7 +247,7 @@ export function Countdown({ id }: { id?: string }) {
             {/* Wedding date reminder */}
             <div className="mt-12 inline-block px-8 py-4 bg-white/5 rounded-full border border-[#c9a959]/20">
               <span className="font-sans text-sm text-white/60">Sabado, </span>
-              <span className="font-serif text-xl text-[#c9a959]">11 de Julio, 2026</span>
+              <span className="font-serif text-xl text-[#c9a959]">11 de Abril, 2026</span>
             </div>
           </>
         )}

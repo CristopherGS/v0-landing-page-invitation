@@ -128,10 +128,10 @@ export function GiftRegistry({ id }: { id?: string }) {
   };
 
   const bankDetails = {
-    bank: "Banco Nacional",
-    accountHolder: "Maria Rodriguez / Carlos Martinez",
-    accountNumber: "1234 5678 9012 3456",
-    clabe: "012345678901234567",
+    bank: "Nombre del Banco",
+    accountHolder: "Nombre del Titular",
+    accountNumber: "0000 0000 0000 0000",
+    clabe: "000000000000000000",
   };
 
   return (
@@ -267,9 +267,9 @@ export function GiftRegistry({ id }: { id?: string }) {
 
             <div className="store-links space-y-4 relative z-10">
               {[
-                { name: "Liverpool", desc: "Mesa de Regalos #123456" },
-                { name: "Amazon", desc: "Lista de deseos" },
-                { name: "Palacio de Hierro", desc: "Mesa de Regalos #789012" },
+                { name: "Tienda 1", desc: "Próximamente" },
+                { name: "Tienda 2", desc: "Próximamente" },
+                { name: "Efectivo", desc: "Sobre el día del evento" },
               ].map((store, index) => (
                 <a
                   key={index}

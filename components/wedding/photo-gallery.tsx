@@ -167,16 +167,6 @@ export function PhotoGallery({ id }: { id?: string }) {
             </div>
           ))}
         </div>
-
-        {/* Instagram hashtag */}
-        <div className="mt-12 text-center">
-          <p className="text-white/40 font-sans text-sm mb-2">
-            Comparte tus fotos con nosotros usando
-          </p>
-          <span className="inline-block px-6 py-3 bg-white/5 rounded-full font-sans text-[#c9a959] font-medium border border-[#c9a959]/20">
-            #MariaYCarlos2026
-          </span>
-        </div>
       </div>
     </section>
   );

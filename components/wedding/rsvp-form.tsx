@@ -19,6 +19,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { CheckCircle2, Calendar, Clock, Users } from "lucide-react";
 import { AnimatedHeart, AnimatedCalendar } from "./animated-icons";
+import { submitRSVP } from "@/app/actions";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -131,38 +132,51 @@ export function RSVPForm({ id }: { id?: string }) {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const formData = new FormData(e.currentTarget);
+
     // Button loading animation
     gsap.to(".submit-btn", { scale: 0.95, duration: 0.1 });
 
-    // Simulating form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const result = await submitRSVP(formData);
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast.success("Gracias por confirmar tu asistencia");
+      if (result.success) {
+        setIsSubmitted(true);
+        toast.success("Gracias por confirmar tu asistencia");
 
-    // Success animation
-    gsap.fromTo(
-      ".success-message",
-      { scale: 0.5, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.7)" }
-    );
+        // Success animation
+        gsap.fromTo(
+          ".success-message",
+          { scale: 0.5, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.7)" }
+        );
 
-    // Confetti-like particles
-    gsap.fromTo(
-      ".success-particle",
-      { scale: 0, opacity: 1, y: 0 },
-      {
-        scale: 1,
-        opacity: 0,
-        y: -100,
-        x: "random(-100, 100)",
-        rotation: "random(-180, 180)",
-        duration: 1.5,
-        stagger: 0.05,
-        ease: "power2.out",
+        // Confetti-like particles
+        gsap.fromTo(
+          ".success-particle",
+          { scale: 0, opacity: 1, y: 0 },
+          {
+            scale: 1,
+            opacity: 0,
+            y: -100,
+            x: "random(-100, 100)",
+            rotation: "random(-180, 180)",
+            duration: 1.5,
+            stagger: 0.05,
+            ease: "power2.out",
+          }
+        );
+      } else {
+        toast.error("Hubo un error al enviar tu confirmación. Por favor intenta de nuevo.");
+        console.error("Submission error:", result.error);
       }
-    );
+    } catch (error) {
+      toast.error("Error de conexión. Por favor revisa tu internet.");
+      console.error("Connection error:", error);
+    } finally {
+      setIsSubmitting(false);
+      gsap.to(".submit-btn", { scale: 1, duration: 0.2 });
+    }
   };
 
   return (
@@ -204,7 +218,13 @@ export function RSVPForm({ id }: { id?: string }) {
           <p className="text-white/60 font-sans mt-6 mb-2 text-lg">
             Por favor confirma tu asistencia antes del
           </p>
-          <p className="text-[#c9a959] font-serif text-2xl">1 de Mayo, 2026</p>
+          <p className="text-[#c9a959] font-serif text-2xl mb-4">15 de Marzo, 2026</p>
+
+          <div className="bg-[#c9a959]/10 border border-[#c9a959]/30 rounded-xl p-4 max-w-lg mx-auto mt-4">
+            <p className="text-[#c9a959] font-sans text-sm font-semibold">
+              ⚠️ IMPORTANTE: Por favor, agrega manualmente a cada persona que confirmará su asistencia de forma individual. para poder asignarle su lugar en la mesa correspondiente.
+            </p>
+          </div>
         </div>
 
         {/* Quick info cards */}
@@ -280,112 +300,41 @@ export function RSVPForm({ id }: { id?: string }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-field space-y-2">
                 <Label htmlFor="phone" className="text-white font-sans font-medium">
-                  Telefono / WhatsApp
+                  Telefono / WhatsApp *
                 </Label>
                 <Input
                   id="phone"
                   name="phone"
                   type="tel"
+                  required
                   placeholder="+52 123 456 7890"
                   className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
                 />
               </div>
 
-              <div className="form-field space-y-2">
-                <Label htmlFor="guests" className="text-white font-sans font-medium">
-                  Numero de Invitados *
+              <div className="form-field space-y-3">
+                <Label className="text-white font-sans font-medium">
+                  Asistiras al evento? *
                 </Label>
-                <Select name="guests" required>
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl py-6">
-                    <SelectValue placeholder="Selecciona" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#0a1628] border-white/10 text-white">
-                    <SelectItem value="1">1 persona</SelectItem>
-                    <SelectItem value="2">2 personas</SelectItem>
-                    <SelectItem value="3">3 personas</SelectItem>
-                    <SelectItem value="4">4 personas</SelectItem>
-                    <SelectItem value="5">5+ personas</SelectItem>
-                  </SelectContent>
-                </Select>
+                <RadioGroup
+                  defaultValue="yes"
+                  name="attendance"
+                  className="flex flex-wrap gap-4"
+                >
+                  <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
+                    <RadioGroupItem value="yes" id="yes" className="border-white text-[#c9a959]" />
+                    <Label htmlFor="yes" className="font-normal cursor-pointer text-white">
+                      Si, ahi estare
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
+                    <RadioGroupItem value="no" id="no" className="border-white text-[#c9a959]" />
+                    <Label htmlFor="no" className="font-normal cursor-pointer text-white">
+                      No podre asistir
+                    </Label>
+                  </div>
+                </RadioGroup>
               </div>
-            </div>
-
-            <div className="form-field space-y-3">
-              <Label className="text-white font-sans font-medium">
-                Asistiras al evento? *
-              </Label>
-              <RadioGroup
-                defaultValue="yes"
-                name="attendance"
-                className="flex flex-wrap gap-4"
-              >
-                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                  <RadioGroupItem value="yes" id="yes" className="border-white text-[#c9a959]" />
-                  <Label htmlFor="yes" className="font-normal cursor-pointer text-white">
-                    Si, ahi estare
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                  <RadioGroupItem value="maybe" id="maybe" className="border-white text-[#c9a959]" />
-                  <Label htmlFor="maybe" className="font-normal cursor-pointer text-white">
-                    Aun no estoy seguro
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                  <RadioGroupItem value="no" id="no" className="border-white text-[#c9a959]" />
-                  <Label htmlFor="no" className="font-normal cursor-pointer text-white">
-                    No podre asistir
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="form-field space-y-2">
-                <Label htmlFor="dietary" className="text-white font-sans font-medium">
-                  Restricciones Alimenticias
-                </Label>
-                <Select name="dietary">
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl py-6">
-                    <SelectValue placeholder="Selecciona si aplica" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#0a1628] border-white/10 text-white">
-                    <SelectItem value="none">Ninguna</SelectItem>
-                    <SelectItem value="vegetarian">Vegetariano</SelectItem>
-                    <SelectItem value="vegan">Vegano</SelectItem>
-                    <SelectItem value="gluten-free">Sin Gluten</SelectItem>
-                    <SelectItem value="lactose-free">Sin Lactosa</SelectItem>
-                    <SelectItem value="other">Otra</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="form-field space-y-2">
-                <Label htmlFor="transport" className="text-white font-sans font-medium">
-                  Necesitas transporte?
-                </Label>
-                <Select name="transport">
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl py-6">
-                    <SelectValue placeholder="Selecciona" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#0a1628] border-white/10 text-white">
-                    <SelectItem value="no">No, llegare por mi cuenta</SelectItem>
-                    <SelectItem value="yes">Si, necesito transporte</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="form-field space-y-2">
-              <Label htmlFor="songs" className="text-white font-sans font-medium">
-                Sugerencias de Canciones
-              </Label>
-              <Input
-                id="songs"
-                name="songs"
-                placeholder="Que canciones te ponen a bailar?"
-                className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
-              />
             </div>
 
             <div className="form-field space-y-2">

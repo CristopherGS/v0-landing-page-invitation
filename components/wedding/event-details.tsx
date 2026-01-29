@@ -225,40 +225,32 @@ export function EventDetails({ id }: { id?: string }) {
         </div>
 
         {/* Cards grid */}
-        <div className="details-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="details-grid grid grid-cols-1 md:grid-cols-3 gap-6">
           <DetailCard
             icon={<AnimatedCalendar className="w-10 h-10" />}
             title="Fecha"
-            details={["Sabado", "15 de Junio, 2026"]}
+            details={["Sabado", "11 de Abril, 2026"]}
             delay={0}
           />
           <DetailCard
             icon={<AnimatedClock className="w-10 h-10" />}
             title="Hora"
-            details={["Ceremonia: 16:00 hrs", "Recepcion: 18:00 hrs"]}
+            details={["Recepcion: 11:00 hrs"]}
             delay={150}
-          />
-          <DetailCard
-            icon={<AnimatedChurch className="w-10 h-10" />}
-            title="Ceremonia"
-            details={["Parroquia San Antonio", "Calle Principal #123"]}
-            googleMapsLink="https://maps.google.com/?q=Parroquia+San+Antonio"
-            wazeLink="https://waze.com/ul?q=Parroquia%20San%20Antonio"
-            delay={300}
           />
           <DetailCard
             icon={<AnimatedPin className="w-10 h-10" />}
             title="Recepcion"
-            details={["Salon de Eventos Luna", "Av. Central #456"]}
-            googleMapsLink="https://maps.google.com/?q=Salon+de+Eventos+Luna"
-            wazeLink="https://waze.com/ul?q=Salon%20de%20Eventos%20Luna"
-            delay={450}
+            details={["Salon de Eventos Gadzi", "GADZI, San Mateo, Quetzaltenango, Guatemala"]}
+            googleMapsLink="https://maps.app.goo.gl/2dEZZrXLfD43ykf76"
+            wazeLink="https://ul.waze.com/ul?venue_id=175898773.1759118798.24135262&overview=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
+            delay={300}
           />
         </div>
 
         {/* Map section */}
-        <div className="map-container mt-16 rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative">
-          <div className="aspect-[16/9] md:aspect-[21/9] bg-gradient-to-br from-[#1e3a5f] to-[#0f172a] flex items-center justify-center relative">
+        <div className="map-container mt-16 rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative max-w-4xl mx-auto">
+          <div className="aspect-[16/6] md:aspect-[21/7] bg-gradient-to-br from-[#1e3a5f] to-[#0f172a] flex items-center justify-center relative">
             {/* Map placeholder with styled content */}
             <div className="text-center p-8 relative z-10">
               <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/10">
