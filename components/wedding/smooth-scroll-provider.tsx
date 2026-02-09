@@ -13,6 +13,7 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Refresh ScrollTrigger on resize
     const handleResize = () => {
@@ -21,8 +22,8 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
 
     window.addEventListener("resize", handleResize);
 
-    // Add smooth scroll behavior via CSS
-    document.documentElement.style.scrollBehavior = "smooth";
+    // Add smooth scroll behavior via CSS when motion is allowed
+    document.documentElement.style.scrollBehavior = prefersReducedMotion ? "auto" : "smooth";
 
     return () => {
       window.removeEventListener("resize", handleResize);

@@ -30,6 +30,11 @@ export function RSVPForm({ id }: { id?: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
       // Title animation
       gsap.fromTo(
@@ -113,19 +118,30 @@ export function RSVPForm({ id }: { id?: string }) {
       });
 
       // Info card hover effects
-      gsap.utils.toArray(".info-card").forEach((card: any) => {
-        card.addEventListener("mouseenter", () => {
-          gsap.to(card, { y: -5, scale: 1.02, duration: 0.3 });
-          gsap.to(card.querySelector(".info-icon"), { scale: 1.2, rotation: 10, duration: 0.3 });
+      if (canHover) {
+        gsap.utils.toArray<HTMLElement>(".info-card").forEach((card) => {
+          const onEnter = () => {
+            gsap.to(card, { y: -5, scale: 1.02, duration: 0.3 });
+            gsap.to(card.querySelector(".info-icon"), { scale: 1.2, rotation: 10, duration: 0.3 });
+          };
+          const onLeave = () => {
+            gsap.to(card, { y: 0, scale: 1, duration: 0.3 });
+            gsap.to(card.querySelector(".info-icon"), { scale: 1, rotation: 0, duration: 0.3 });
+          };
+          card.addEventListener("mouseenter", onEnter);
+          card.addEventListener("mouseleave", onLeave);
+          cleanupFns.push(() => {
+            card.removeEventListener("mouseenter", onEnter);
+            card.removeEventListener("mouseleave", onLeave);
+          });
         });
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card, { y: 0, scale: 1, duration: 0.3 });
-          gsap.to(card.querySelector(".info-icon"), { scale: 1, rotation: 0, duration: 0.3 });
-        });
-      });
+      }
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

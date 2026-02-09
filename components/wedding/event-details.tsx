@@ -4,8 +4,7 @@ import type React from "react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ExternalLink } from "lucide-react";
-import { AnimatedCalendar, AnimatedClock, AnimatedChurch, AnimatedPin } from "./animated-icons";
+import { AnimatedCalendar, AnimatedClock, AnimatedPin } from "./animated-icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,23 +23,37 @@ function DetailCard({ icon, title, details, googleMapsLink, wazeLink, delay }: D
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
       // Hover animations
       const card = cardRef.current;
-      if (card) {
-        card.addEventListener("mouseenter", () => {
+      if (card && canHover) {
+        const onEnter = () => {
           gsap.to(card, { y: -10, scale: 1.02, duration: 0.4, ease: "power2.out" });
           gsap.to(card.querySelector(".card-icon"), { scale: 1.2, rotation: 10, duration: 0.4 });
           gsap.to(card.querySelector(".card-glow"), { opacity: 1, duration: 0.4 });
-        });
-        card.addEventListener("mouseleave", () => {
+        };
+        const onLeave = () => {
           gsap.to(card, { y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
           gsap.to(card.querySelector(".card-icon"), { scale: 1, rotation: 0, duration: 0.4 });
           gsap.to(card.querySelector(".card-glow"), { opacity: 0, duration: 0.4 });
+        };
+        card.addEventListener("mouseenter", onEnter);
+        card.addEventListener("mouseleave", onLeave);
+        cleanupFns.push(() => {
+          card.removeEventListener("mouseenter", onEnter);
+          card.removeEventListener("mouseleave", onLeave);
         });
       }
     });
-    return () => ctx.revert();
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -50,57 +63,59 @@ function DetailCard({ icon, title, details, googleMapsLink, wazeLink, delay }: D
       style={{ transitionDelay: `${delay}ms` }}
     >
       {/* Glow effect */}
-      <div className="card-glow absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0 transition-opacity" />
+      <div className="card-glow pointer-events-none absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0 transition-opacity" />
 
-      {/* Icon container */}
-      <div className="card-icon relative w-20 h-20 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-[#c9a959] mb-6 shadow-lg">
-        {icon}
-        {/* Animated ring */}
-        <div className="absolute inset-0 rounded-full border-2 border-[#c9a959]/30 animate-ping" style={{ animationDuration: "2s" }} />
+      <div className="relative z-10 w-full flex flex-col items-center">
+        {/* Icon container */}
+        <div className="card-icon relative w-20 h-20 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-[#c9a959] mb-6 shadow-lg">
+          {icon}
+          {/* Animated ring */}
+          <div className="absolute inset-0 rounded-full border-2 border-[#c9a959]/30 animate-ping" style={{ animationDuration: "2s" }} />
+        </div>
+
+        <h3 className="font-serif text-2xl text-[#0a1628] mb-4">{title}</h3>
+
+        {details.map((detail, index) => (
+          <p
+            key={index}
+            className="text-[#0a1628]/60 font-sans text-sm leading-relaxed"
+          >
+            {detail}
+          </p>
+        ))}
+
+        {/* Navigation Buttons */}
+        {(googleMapsLink || wazeLink) && (
+          <div className="mt-6 flex flex-wrap justify-center gap-3 w-full">
+            {wazeLink && (
+              <a
+                href={wazeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-[#0a1628] hover:bg-[#1e3a5f] text-white text-xs font-bold transition-all border border-white/10 flex-1 min-w-[100px]"
+              >
+                <Navigation className="w-3 h-3" />
+                Waze
+              </a>
+            )}
+            {googleMapsLink && (
+              <a
+                href={googleMapsLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white hover:bg-gray-50 text-[#0a1628] border border-[#0a1628]/10 text-xs font-bold transition-all flex-1 min-w-[100px]"
+              >
+                <MapPin className="w-3 h-3" />
+                Maps
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
-      <h3 className="font-serif text-2xl text-[#0a1628] mb-4">{title}</h3>
-
-      {details.map((detail, index) => (
-        <p
-          key={index}
-          className="text-[#0a1628]/60 font-sans text-sm leading-relaxed"
-        >
-          {detail}
-        </p>
-      ))}
-
-      {/* Navigation Buttons */}
-      {(googleMapsLink || wazeLink) && (
-        <div className="mt-6 flex flex-wrap justify-center gap-3 w-full">
-          {wazeLink && (
-            <a
-              href={wazeLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-[#0a1628] hover:bg-[#1e3a5f] text-white text-xs font-bold transition-all border border-white/10 flex-1 min-w-[100px]"
-            >
-              <Navigation className="w-3 h-3" />
-              Waze
-            </a>
-          )}
-          {googleMapsLink && (
-            <a
-              href={googleMapsLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white hover:bg-gray-50 text-[#0a1628] border border-[#0a1628]/10 text-xs font-bold transition-all flex-1 min-w-[100px]"
-            >
-              <MapPin className="w-3 h-3" />
-              Maps
-            </a>
-          )}
-        </div>
-      )}
-
       {/* Corner accents */}
-      <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-[#c9a959]/20 rounded-tr-3xl" />
-      <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-[#c9a959]/20 rounded-bl-3xl" />
+      <div className="pointer-events-none absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-[#c9a959]/20 rounded-tr-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-[#c9a959]/20 rounded-bl-3xl" />
     </div>
   );
 }
@@ -108,6 +123,9 @@ function DetailCard({ icon, title, details, googleMapsLink, wazeLink, delay }: D
 export function EventDetails({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const receptionAddress = "Salon de Eventos Gadzi, San Mateo, Quetzaltenango, Guatemala";
+  const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(receptionAddress)}`;
+  const wazeLink = `https://waze.com/ul?q=${encodeURIComponent(receptionAddress)}&navigate=yes`;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -242,32 +260,10 @@ export function EventDetails({ id }: { id?: string }) {
             icon={<AnimatedPin className="w-10 h-10" />}
             title="Recepcion"
             details={["Salon de Eventos Gadzi", "GADZI, San Mateo, Quetzaltenango, Guatemala"]}
-            googleMapsLink="https://maps.app.goo.gl/2dEZZrXLfD43ykf76"
-            wazeLink="https://ul.waze.com/ul?venue_id=175898773.1759118798.24135262&overview=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
+            googleMapsLink={googleMapsLink}
+            wazeLink={wazeLink}
             delay={300}
           />
-        </div>
-
-        {/* Map section */}
-        <div className="map-container mt-16 rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative max-w-4xl mx-auto">
-          <div className="aspect-[16/6] md:aspect-[21/7] bg-gradient-to-br from-[#1e3a5f] to-[#0f172a] flex items-center justify-center relative">
-            {/* Map placeholder with styled content */}
-            <div className="text-center p-8 relative z-10">
-              <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/10">
-                <AnimatedPin className="w-10 h-10" color="#c9a959" />
-              </div>
-              <p className="text-white/60 font-sans text-lg">
-                Aqui ira el mapa de Google Maps
-              </p>
-              <p className="text-white/40 font-sans text-sm mt-2">
-                Reemplaza este div con un iframe de Google Maps
-              </p>
-            </div>
-
-            {/* Decorative elements */}
-            <div className="absolute top-4 left-4 w-20 h-20 border-t-2 border-l-2 border-white/10 rounded-tl-2xl" />
-            <div className="absolute bottom-4 right-4 w-20 h-20 border-b-2 border-r-2 border-white/10 rounded-br-2xl" />
-          </div>
         </div>
       </div>
     </section>

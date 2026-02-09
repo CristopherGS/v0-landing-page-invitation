@@ -51,6 +51,11 @@ export function Countdown({ id }: { id?: string }) {
   }, []);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".countdown-title-word",
@@ -104,16 +109,24 @@ export function Countdown({ id }: { id?: string }) {
         }
       );
 
-      gsap.utils.toArray(".countdown-item").forEach((item: any) => {
-        item.addEventListener("mouseenter", () => {
-          gsap.to(item, { y: -10, scale: 1.05, duration: 0.3 });
-          gsap.to(item.querySelector(".countdown-number"), { scale: 1.1, duration: 0.3 });
+      if (canHover) {
+        gsap.utils.toArray<HTMLElement>(".countdown-item").forEach((item) => {
+          const onEnter = () => {
+            gsap.to(item, { y: -10, scale: 1.05, duration: 0.3 });
+            gsap.to(item.querySelector(".countdown-number"), { scale: 1.1, duration: 0.3 });
+          };
+          const onLeave = () => {
+            gsap.to(item, { y: 0, scale: 1, duration: 0.3 });
+            gsap.to(item.querySelector(".countdown-number"), { scale: 1, duration: 0.3 });
+          };
+          item.addEventListener("mouseenter", onEnter);
+          item.addEventListener("mouseleave", onLeave);
+          cleanupFns.push(() => {
+            item.removeEventListener("mouseenter", onEnter);
+            item.removeEventListener("mouseleave", onLeave);
+          });
         });
-        item.addEventListener("mouseleave", () => {
-          gsap.to(item, { y: 0, scale: 1, duration: 0.3 });
-          gsap.to(item.querySelector(".countdown-number"), { scale: 1, duration: 0.3 });
-        });
-      });
+      }
 
       gsap.to(".countdown-bg-pattern", {
         backgroundPosition: "100px 100px",
@@ -133,7 +146,10 @@ export function Countdown({ id }: { id?: string }) {
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   const timeUnits = [

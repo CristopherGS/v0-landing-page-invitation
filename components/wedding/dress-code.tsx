@@ -11,6 +11,9 @@ function AnimatedDress({ className = "w-12 h-12" }: { className?: string }) {
   const dressRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       gsap.to(".dress-skirt", {
         skewX: 3,
@@ -36,6 +39,9 @@ function AnimatedSuit({ className = "w-12 h-12" }: { className?: string }) {
   const suitRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       gsap.to(".tie", {
         rotation: 5,
@@ -62,6 +68,11 @@ export function DressCode({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
       // Title animation
       gsap.fromTo(
@@ -147,17 +158,28 @@ export function DressCode({ id }: { id?: string }) {
       });
 
       // Hover effects for color swatches
-      gsap.utils.toArray(".color-swatch").forEach((swatch: any) => {
-        swatch.addEventListener("mouseenter", () => {
-          gsap.to(swatch, { scale: 1.15, y: -5, duration: 0.3 });
+      if (canHover) {
+        gsap.utils.toArray<HTMLElement>(".color-swatch").forEach((swatch) => {
+          const onEnter = () => {
+            gsap.to(swatch, { scale: 1.15, y: -5, duration: 0.3 });
+          };
+          const onLeave = () => {
+            gsap.to(swatch, { scale: 1, y: 0, duration: 0.3 });
+          };
+          swatch.addEventListener("mouseenter", onEnter);
+          swatch.addEventListener("mouseleave", onLeave);
+          cleanupFns.push(() => {
+            swatch.removeEventListener("mouseenter", onEnter);
+            swatch.removeEventListener("mouseleave", onLeave);
+          });
         });
-        swatch.addEventListener("mouseleave", () => {
-          gsap.to(swatch, { scale: 1, y: 0, duration: 0.3 });
-        });
-      });
+      }
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   const title = "Codigo de Vestimenta";

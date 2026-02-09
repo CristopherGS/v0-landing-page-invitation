@@ -12,8 +12,12 @@ export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const playerRef = useRef<HTMLDivElement>(null);
   const pulseRef = useRef<HTMLDivElement>(null);
+  const motionAllowedRef = useRef(true);
 
   useEffect(() => {
+    motionAllowedRef.current = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!motionAllowedRef.current) return;
+
     const ctx = gsap.context(() => {
       // Entrance animation
       gsap.fromTo(
@@ -47,20 +51,24 @@ export function MusicPlayer() {
       const bars = document.querySelectorAll(".music-bars");
       if (bars.length > 0) {
         // Playing state animation
-        gsap.to(bars, {
-          scaleY: "random(0.3, 1)",
-          duration: 0.3,
-          repeat: -1,
-          yoyo: true,
-          stagger: 0.1,
-          ease: "power1.inOut",
-        });
+        if (motionAllowedRef.current) {
+          gsap.to(bars, {
+            scaleY: "random(0.3, 1)",
+            duration: 0.3,
+            repeat: -1,
+            yoyo: true,
+            stagger: 0.1,
+            ease: "power1.inOut",
+          });
+        }
       }
     } else {
       const bars = document.querySelectorAll(".music-bars");
       if (bars.length > 0) {
-        gsap.killTweensOf(bars);
-        gsap.to(bars, { scaleY: 0.3, duration: 0.3 });
+        if (motionAllowedRef.current) {
+          gsap.killTweensOf(bars);
+          gsap.to(bars, { scaleY: 0.3, duration: 0.3 });
+        }
       }
     }
   }, [isPlaying]);
@@ -68,22 +76,28 @@ export function MusicPlayer() {
   const togglePlay = () => {
     if (!hasInteracted) {
       setHasInteracted(true);
-      gsap.to(".music-tooltip", { opacity: 0, y: -10, duration: 0.3 });
+      if (motionAllowedRef.current) {
+        gsap.to(".music-tooltip", { opacity: 0, y: -10, duration: 0.3 });
+      }
     }
 
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
-        gsap.to(playerRef.current, { scale: 1, duration: 0.3 });
+        if (motionAllowedRef.current) {
+          gsap.to(playerRef.current, { scale: 1, duration: 0.3 });
+        }
       } else {
         audioRef.current.play().catch(() => {
           // Autoplay was prevented
         });
-        gsap.fromTo(
-          playerRef.current,
-          { scale: 1.1 },
-          { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.5)" }
-        );
+        if (motionAllowedRef.current) {
+          gsap.fromTo(
+            playerRef.current,
+            { scale: 1.1 },
+            { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.5)" }
+          );
+        }
       }
       setIsPlaying(!isPlaying);
     }
@@ -94,11 +108,13 @@ export function MusicPlayer() {
       audioRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
 
-      gsap.fromTo(
-        ".mute-btn",
-        { scale: 0.8 },
-        { scale: 1, duration: 0.3, ease: "back.out(2)" }
-      );
+      if (motionAllowedRef.current) {
+        gsap.fromTo(
+          ".mute-btn",
+          { scale: 0.8 },
+          { scale: 1, duration: 0.3, ease: "back.out(2)" }
+        );
+      }
     }
   };
 
@@ -117,10 +133,12 @@ export function MusicPlayer() {
     setIsExpanded(newState);
 
     if (newState) {
-      gsap.fromTo(controlsRef.current,
-        { scale: 0.5, opacity: 0, x: 50 },
-        { scale: 1, opacity: 1, x: 0, duration: 0.5, ease: "back.out(1.7)" }
-      );
+      if (motionAllowedRef.current) {
+        gsap.fromTo(controlsRef.current,
+          { scale: 0.5, opacity: 0, x: 50 },
+          { scale: 1, opacity: 1, x: 0, duration: 0.5, ease: "back.out(1.7)" }
+        );
+      }
     }
   };
 

@@ -19,6 +19,11 @@ interface Hotel {
     website?: string;
 }
 
+const buildGoogleMapsLink = (query: string) =>
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+const buildWazeLink = (query: string) =>
+    `https://waze.com/ul?q=${encodeURIComponent(query)}&navigate=yes`;
+
 const hotels: Hotel[] = [
     {
         name: "Latam Hotel Plaza Pradera",
@@ -26,9 +31,9 @@ const hotels: Hotel[] = [
         rating: 5,
         tags: ["Moderno", "Piscina", "Céntrico"],
         phone: "+502 7740 4040",
-        address: "Avenida Las Americas 7-04, Zona 3, Quetzaltenango",
-        mapLink: "https://maps.app.goo.gl/9Q1S9Z5C1S",
-        wazeLink: "https://waze.com/ul/h9fx5",
+        address: "Avenida Las Américas 7-04, Zona 3, Quetzaltenango, Guatemala",
+        mapLink: buildGoogleMapsLink("Latam Hotel Plaza Pradera, Avenida Las Américas 7-04, Zona 3, Quetzaltenango, Guatemala"),
+        wazeLink: buildWazeLink("Latam Hotel Plaza Pradera, Avenida Las Américas 7-04, Zona 3, Quetzaltenango, Guatemala"),
         website: "https://latamhotel.com",
     },
     {
@@ -37,9 +42,9 @@ const hotels: Hotel[] = [
         rating: 5,
         tags: ["Histórico", "Lujo", "Tradicional"],
         phone: "+502 7761 2182",
-        address: "4 Calle 10-50, Zona 1, Quetzaltenango",
-        mapLink: "https://maps.app.goo.gl/Y2X2Y2X2Y2",
-        wazeLink: "https://waze.com/ul/h9fx5",
+        address: "4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala",
+        mapLink: buildGoogleMapsLink("Pensión Bonifaz, 4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala"),
+        wazeLink: buildWazeLink("Pensión Bonifaz, 4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala"),
         website: "https://pensionbonifaz.com.gt",
     },
     {
@@ -48,9 +53,9 @@ const hotels: Hotel[] = [
         rating: 4.5,
         tags: ["Boutique", "Jardines", "Tranquilo"],
         phone: "+502 7765 0620",
-        address: "12 Avenida 8-21, Zona 1, Quetzaltenango",
-        mapLink: "https://maps.app.goo.gl/Z3Z3Z3Z3Z3",
-        wazeLink: "https://waze.com/ul/h9fx5",
+        address: "12 Avenida 8-21, Zona 1, Quetzaltenango, Guatemala",
+        mapLink: buildGoogleMapsLink("Hotel Casa Morasan, 12 Avenida 8-21, Zona 1, Quetzaltenango, Guatemala"),
+        wazeLink: buildWazeLink("Hotel Casa Morasan, 12 Avenida 8-21, Zona 1, Quetzaltenango, Guatemala"),
     },
     {
         name: "Hotel Modelo",
@@ -58,19 +63,19 @@ const hotels: Hotel[] = [
         rating: 4,
         tags: ["Histórico", "Acogedor", "Familiar"],
         phone: "+502 7761 2529",
-        address: "14 Avenida 'A' 2-31, Zona 1, Quetzaltenango",
-        mapLink: "https://maps.app.goo.gl/W4W4W4W4W4",
-        wazeLink: "https://waze.com/ul/h9fx5",
+        address: "14 Avenida A 2-31, Zona 1, Quetzaltenango, Guatemala",
+        mapLink: buildGoogleMapsLink("Hotel Modelo, 14 Avenida A 2-31, Zona 1, Quetzaltenango, Guatemala"),
+        wazeLink: buildWazeLink("Hotel Modelo, 14 Avenida A 2-31, Zona 1, Quetzaltenango, Guatemala"),
     },
     {
-        name: "Hotel Real de la Plaza",
+        name: "Hotel Villa Real Plaza",
         description: "Ubicado a pocos pasos del Parque Central, ofrece comodidad y un servicio excelente en un edificio clásico.",
         rating: 4,
         tags: ["Ubicación", "Clásico", "Servicio"],
         phone: "+502 7761 0588",
-        address: "4 Calle 11-29, Zona 1, Quetzaltenango",
-        mapLink: "https://maps.app.goo.gl/V5V5V5V5V5",
-        wazeLink: "https://waze.com/ul/h9fx5",
+        address: "4a Calle 12-22, Zona 1, Quetzaltenango, Guatemala",
+        mapLink: buildGoogleMapsLink("Hotel Villa Real Plaza, 4a Calle 12-22, Zona 1, Quetzaltenango, Guatemala"),
+        wazeLink: buildWazeLink("Hotel Villa Real Plaza, 4a Calle 12-22, Zona 1, Quetzaltenango, Guatemala"),
     }
 ];
 
@@ -78,6 +83,9 @@ export function Accommodation({ id }: { id?: string }) {
     const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReducedMotion) return;
+
         const ctx = gsap.context(() => {
             // Title Animation
             gsap.fromTo(

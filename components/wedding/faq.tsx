@@ -62,6 +62,9 @@ export function FAQ({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       // Title animation
       gsap.fromTo(

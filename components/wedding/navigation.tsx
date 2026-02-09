@@ -21,8 +21,13 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const menuBtnRef = useRef<HTMLButtonElement>(null);
+  const motionAllowedRef = useRef(true);
+  const canHoverRef = useRef(true);
 
   useEffect(() => {
+    motionAllowedRef.current = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    canHoverRef.current = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
     };
@@ -32,6 +37,8 @@ export function Navigation() {
   }, []);
 
   useEffect(() => {
+    if (!motionAllowedRef.current) return;
+
     // Nav entrance animation
     gsap.fromTo(
       navRef.current,
@@ -41,6 +48,7 @@ export function Navigation() {
   }, []);
 
   useEffect(() => {
+    if (!motionAllowedRef.current) return;
     if (isOpen) {
       // Mobile menu open animation
       gsap.fromTo(
@@ -75,6 +83,7 @@ export function Navigation() {
 
   // Animate menu button on hover
   const handleMenuBtnHover = (entering: boolean) => {
+    if (!motionAllowedRef.current || !canHoverRef.current) return;
     gsap.to(menuBtnRef.current, {
       scale: entering ? 1.1 : 1,
       duration: 0.3,

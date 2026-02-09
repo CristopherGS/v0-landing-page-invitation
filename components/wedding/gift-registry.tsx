@@ -14,6 +14,11 @@ export function GiftRegistry({ id }: { id?: string }) {
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
       // Title animation
       gsap.fromTo(
@@ -88,16 +93,24 @@ export function GiftRegistry({ id }: { id?: string }) {
       );
 
       // Hover effects for cards
-      gsap.utils.toArray(".gift-card").forEach((card: any) => {
-        card.addEventListener("mouseenter", () => {
-          gsap.to(card, { y: -10, scale: 1.02, duration: 0.3 });
-          gsap.to(card.querySelector(".card-glow"), { opacity: 1, duration: 0.3 });
+      if (canHover) {
+        gsap.utils.toArray<HTMLElement>(".gift-card").forEach((card) => {
+          const onEnter = () => {
+            gsap.to(card, { y: -10, scale: 1.02, duration: 0.3 });
+            gsap.to(card.querySelector(".card-glow"), { opacity: 1, duration: 0.3 });
+          };
+          const onLeave = () => {
+            gsap.to(card, { y: 0, scale: 1, duration: 0.3 });
+            gsap.to(card.querySelector(".card-glow"), { opacity: 0, duration: 0.3 });
+          };
+          card.addEventListener("mouseenter", onEnter);
+          card.addEventListener("mouseleave", onLeave);
+          cleanupFns.push(() => {
+            card.removeEventListener("mouseenter", onEnter);
+            card.removeEventListener("mouseleave", onLeave);
+          });
         });
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card, { y: 0, scale: 1, duration: 0.3 });
-          gsap.to(card.querySelector(".card-glow"), { opacity: 0, duration: 0.3 });
-        });
-      });
+      }
 
       // Floating icon animation
       gsap.to(".floating-gift", {
@@ -109,7 +122,10 @@ export function GiftRegistry({ id }: { id?: string }) {
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   const copyToClipboard = (text: string, field: string) => {

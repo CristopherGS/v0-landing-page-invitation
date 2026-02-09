@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatedHeart, AnimatedFlower } from "./animated-icons";
@@ -12,6 +13,11 @@ export function OurStory({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
       // Title animation with split
       gsap.fromTo(
@@ -50,7 +56,7 @@ export function OurStory({ id }: { id?: string }) {
       );
 
       // Photos with parallax and stagger
-      gsap.utils.toArray(".story-photo").forEach((photo: any, index) => {
+      gsap.utils.toArray<HTMLElement>(".story-photo").forEach((photo, index) => {
         // Entrance animation
         gsap.fromTo(
           photo,
@@ -89,14 +95,22 @@ export function OurStory({ id }: { id?: string }) {
         });
 
         // Hover effect
-        photo.addEventListener("mouseenter", () => {
-          gsap.to(photo, { scale: 1.05, duration: 0.4, ease: "power2.out" });
-          gsap.to(photo.querySelector(".photo-overlay"), { opacity: 1, duration: 0.3 });
-        });
-        photo.addEventListener("mouseleave", () => {
-          gsap.to(photo, { scale: 1, duration: 0.4, ease: "power2.out" });
-          gsap.to(photo.querySelector(".photo-overlay"), { opacity: 0, duration: 0.3 });
-        });
+        if (canHover) {
+          const onEnter = () => {
+            gsap.to(photo, { scale: 1.05, duration: 0.4, ease: "power2.out" });
+            gsap.to(photo.querySelector(".photo-overlay"), { opacity: 1, duration: 0.3 });
+          };
+          const onLeave = () => {
+            gsap.to(photo, { scale: 1, duration: 0.4, ease: "power2.out" });
+            gsap.to(photo.querySelector(".photo-overlay"), { opacity: 0, duration: 0.3 });
+          };
+          photo.addEventListener("mouseenter", onEnter);
+          photo.addEventListener("mouseleave", onLeave);
+          cleanupFns.push(() => {
+            photo.removeEventListener("mouseenter", onEnter);
+            photo.removeEventListener("mouseleave", onLeave);
+          });
+        }
       });
 
       // Text reveal with line animation
@@ -135,7 +149,10 @@ export function OurStory({ id }: { id?: string }) {
       );
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   const titleText = "Nuestra Historia";
@@ -198,10 +215,12 @@ export function OurStory({ id }: { id?: string }) {
             >
               {/* Photo Image */}
               {item.src ? (
-                <img
+                <Image
                   src={item.src}
                   alt={item.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                  fill
+                  sizes="(min-width: 768px) 25vw, 50vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                 />
               ) : (
                 /* Photo placeholder (fallback) */

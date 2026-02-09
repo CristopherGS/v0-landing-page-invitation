@@ -136,7 +136,7 @@
   /* Aplica scroll snap solo en pantallas grandes */
   @media (min-width: 1024px) {
     html {
-      scroll-snap-type: y mandatory;
+      scroll-snap-type: y proximity;
     }
   }
 
@@ -159,19 +159,13 @@
     /* Por defecto en móvil: altura mínima, overflow permitido */
     min-height: 100dvh;
     overflow-x: hidden;
-
-    /* Hardware acceleration for smoother scrolling */
-    transform: translateZ(0);
-    will-change: transform;
   }
 
   /* En pantallas grandes, restauramos el comportamiento tipo "slide" */
   @media (min-width: 1024px) {
     section {
       scroll-snap-align: start;
-      scroll-snap-stop: always;
-      height: 100dvh;
-      overflow: hidden;
+      min-height: 100dvh;
     }
   }
 
@@ -182,5 +176,20 @@
   .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }

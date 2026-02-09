@@ -71,6 +71,11 @@ export function Itinerary({ id }: { id?: string }) {
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
       // Title animation
       gsap.fromTo(
@@ -149,22 +154,32 @@ export function Itinerary({ id }: { id?: string }) {
       });
 
       // Hover effects for items
-      gsap.utils.toArray(".itinerary-item").forEach((item: any) => {
-        const card = item.querySelector(".item-card");
-        const icon = item.querySelector(".item-icon");
-
-        item.addEventListener("mouseenter", () => {
-          gsap.to(card, { scale: 1.03, y: -5, duration: 0.3 });
-          gsap.to(icon, { scale: 1.2, rotation: 10, duration: 0.3 });
+      if (canHover) {
+        gsap.utils.toArray<HTMLElement>(".itinerary-item").forEach((item) => {
+          const card = item.querySelector(".item-card");
+          const icon = item.querySelector(".item-icon");
+          const onEnter = () => {
+            gsap.to(card, { scale: 1.03, y: -5, duration: 0.3 });
+            gsap.to(icon, { scale: 1.2, rotation: 10, duration: 0.3 });
+          };
+          const onLeave = () => {
+            gsap.to(card, { scale: 1, y: 0, duration: 0.3 });
+            gsap.to(icon, { scale: 1, rotation: 0, duration: 0.3 });
+          };
+          item.addEventListener("mouseenter", onEnter);
+          item.addEventListener("mouseleave", onLeave);
+          cleanupFns.push(() => {
+            item.removeEventListener("mouseenter", onEnter);
+            item.removeEventListener("mouseleave", onLeave);
+          });
         });
-        item.addEventListener("mouseleave", () => {
-          gsap.to(card, { scale: 1, y: 0, duration: 0.3 });
-          gsap.to(icon, { scale: 1, rotation: 0, duration: 0.3 });
-        });
-      });
+      }
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   return (

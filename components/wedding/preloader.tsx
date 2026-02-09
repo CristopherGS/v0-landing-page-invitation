@@ -11,6 +11,13 @@ export function Preloader() {
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReducedMotion) {
+            setIsVisible(false);
+            document.body.style.overflow = "";
+            return;
+        }
+
         // Lock scroll when preloader is visible
         document.body.style.overflow = "hidden";
 
@@ -57,7 +64,10 @@ export function Preloader() {
 
         }, containerRef);
 
-        return () => ctx.revert();
+        return () => {
+            document.body.style.overflow = "";
+            ctx.revert();
+        };
     }, []);
 
     if (!isVisible) return null;

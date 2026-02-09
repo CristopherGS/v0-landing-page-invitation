@@ -1,23 +1,25 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { AnimatedRings, AnimatedHeart, FloatingParticles } from "./animated-icons";
+import { AnimatedHeart, FloatingParticles } from "./animated-icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function HeroSection() {
   const containerRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const dateRef = useRef<HTMLParagraphElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-  const photoFrameRef = useRef<HTMLDivElement>(null);
   const ornamentTopRef = useRef<HTMLDivElement>(null);
   const ornamentBottomRef = useRef<HTMLDivElement>(null);
-  const bgElementsRef = useRef<HTMLDivElement>(null);
+  const [bgError, setBgError] = useState(false);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -98,15 +100,17 @@ export function HeroSection() {
       <div className="absolute inset-0 z-0">
         {/* Background Photo */}
         <div className="absolute inset-0">
-          <img
-            src="/assets/placeholder-user.jpg"
-            alt="Background"
-            className="w-full h-full object-cover object-center opacity-50"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              e.currentTarget.parentElement!.style.background = 'linear-gradient(to bottom right, #0f172a, #1e3a5f, #0a1628)';
-            }}
-          />
+          {!bgError && (
+            <Image
+              src="/assets/placeholder-user.jpg"
+              alt="Background"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center opacity-50"
+              onError={() => setBgError(true)}
+            />
+          )}
         </div>
 
         {/* Fallback Gradient (visible if image fails or behind image) */}

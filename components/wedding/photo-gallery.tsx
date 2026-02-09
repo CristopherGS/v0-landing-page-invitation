@@ -12,6 +12,11 @@ export function PhotoGallery({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
       // Title animation
       gsap.fromTo(
@@ -55,25 +60,34 @@ export function PhotoGallery({ id }: { id?: string }) {
       );
 
       // Hover effects for gallery items
-      gsap.utils.toArray(".gallery-item").forEach((item: any) => {
-        const overlay = item.querySelector(".gallery-overlay");
-        const icon = item.querySelector(".gallery-icon");
-        const heart = item.querySelector(".gallery-heart");
+      if (canHover) {
+        gsap.utils.toArray<HTMLElement>(".gallery-item").forEach((item) => {
+          const overlay = item.querySelector(".gallery-overlay");
+          const icon = item.querySelector(".gallery-icon");
+          const heart = item.querySelector(".gallery-heart");
 
-        item.addEventListener("mouseenter", () => {
-          gsap.to(item, { scale: 1.03, duration: 0.4, ease: "power2.out" });
-          gsap.to(overlay, { opacity: 1, duration: 0.3 });
-          gsap.to(icon, { scale: 1.2, rotation: 10, duration: 0.3 });
-          gsap.fromTo(heart, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" });
-        });
+          const onEnter = () => {
+            gsap.to(item, { scale: 1.03, duration: 0.4, ease: "power2.out" });
+            gsap.to(overlay, { opacity: 1, duration: 0.3 });
+            gsap.to(icon, { scale: 1.2, rotation: 10, duration: 0.3 });
+            gsap.fromTo(heart, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" });
+          };
 
-        item.addEventListener("mouseleave", () => {
-          gsap.to(item, { scale: 1, duration: 0.4, ease: "power2.out" });
-          gsap.to(overlay, { opacity: 0, duration: 0.3 });
-          gsap.to(icon, { scale: 1, rotation: 0, duration: 0.3 });
-          gsap.to(heart, { scale: 0, opacity: 0, duration: 0.2 });
+          const onLeave = () => {
+            gsap.to(item, { scale: 1, duration: 0.4, ease: "power2.out" });
+            gsap.to(overlay, { opacity: 0, duration: 0.3 });
+            gsap.to(icon, { scale: 1, rotation: 0, duration: 0.3 });
+            gsap.to(heart, { scale: 0, opacity: 0, duration: 0.2 });
+          };
+
+          item.addEventListener("mouseenter", onEnter);
+          item.addEventListener("mouseleave", onLeave);
+          cleanupFns.push(() => {
+            item.removeEventListener("mouseenter", onEnter);
+            item.removeEventListener("mouseleave", onLeave);
+          });
         });
-      });
+      }
 
       // Floating camera icon
       gsap.to(".floating-camera", {
@@ -86,7 +100,10 @@ export function PhotoGallery({ id }: { id?: string }) {
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   // Layout pattern for masonry-like grid
