@@ -236,11 +236,12 @@ export function RSVPForm({ id }: { id?: string }) {
           <p className="text-white/60 font-sans mt-6 mb-2 text-lg">
             Por favor confirma tu asistencia antes del
           </p>
-          <p className="text-[#c9a959] font-serif text-2xl mb-4">15 de Marzo, 2026</p>
+          <p className="text-[#c9a959] font-serif text-2xl mb-4">11 de Abril, 2026</p>
 
           <div className="bg-[#c9a959]/10 border border-[#c9a959]/30 rounded-xl p-4 max-w-lg mx-auto mt-4">
             <p className="text-[#c9a959] font-sans text-sm font-semibold">
-              ⚠️ IMPORTANTE: Por favor, agrega manualmente a cada persona que confirmará su asistencia de forma individual. para poder asignarle su lugar en la mesa correspondiente.
+                ⚠️ IMPORTANTE: Para ayudarnos con la organización, te pedimos que agregues manualmente a cada persona invitada que asistirá, de manera individual.
+                Esto nos permite asignar lugares en mesa; si alguien no está registrado, no podremos considerarlo en la lista final.
             </p>
           </div>
         </div>
@@ -253,7 +254,7 @@ export function RSVPForm({ id }: { id?: string }) {
             </div>
             <div>
               <p className="text-white/40 text-xs font-sans tracking-wide uppercase">Fecha</p>
-              <p className="text-white font-sans font-medium">15 de Junio, 2026</p>
+              <p className="text-white font-sans font-medium">11 de Abril, 2026</p>
             </div>
           </div>
           <div className="info-card bg-white/5 backdrop-blur-sm rounded-2xl p-5 flex items-center gap-4 border border-white/10 cursor-default">
@@ -263,15 +264,6 @@ export function RSVPForm({ id }: { id?: string }) {
             <div>
               <p className="text-white/40 text-xs font-sans tracking-wide uppercase">Hora</p>
               <p className="text-white font-sans font-medium">16:00 hrs</p>
-            </div>
-          </div>
-          <div className="info-card bg-white/5 backdrop-blur-sm rounded-2xl p-5 flex items-center gap-4 border border-white/10 cursor-default">
-            <div className="info-icon w-12 h-12 rounded-xl bg-[#c9a959]/20 flex items-center justify-center">
-              <Users className="w-6 h-6 text-[#c9a959]" />
-            </div>
-            <div>
-              <p className="text-white/40 text-xs font-sans tracking-wide uppercase">Evento</p>
-              <p className="text-white font-sans font-medium">Solo adultos</p>
             </div>
           </div>
         </div>

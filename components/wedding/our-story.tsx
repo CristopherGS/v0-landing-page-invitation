@@ -205,9 +205,9 @@ export function OurStory({ id }: { id?: string }) {
         <div className="story-photos grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
           {[
             { num: 1, size: "aspect-[3/4]", title: "Nuestro primer encuentro", src: "/assets/IMG_2850.jpg" },
-            { num: 2, size: "aspect-square mt-8", title: "La primera cita", src: "/assets/IMG_4321.jpg" },
-            { num: 3, size: "aspect-square", title: "El viaje que lo cambio todo", src: "/assets/IMG_3458.jpg" },
-            { num: 4, size: "aspect-[3/4] mt-4", title: "La propuesta", src: "/assets/IMG_3458.jpg" },
+            { num: 2, size: "aspect-square mt-8", title: "La primera cita", src: "/assets/formales.jpg" },
+            { num: 3, size: "aspect-square", title: "El viaje que lo cambio todo", src: "/assets/IMG_4321.jpg" },
+            { num: 4, size: "aspect-[3/4] mt-4", title: "La propuesta", src: "/assets/anillo.jpg" },
           ].map((item) => (
             <div
               key={item.num}
@@ -252,19 +252,29 @@ export function OurStory({ id }: { id?: string }) {
           <div className="flex justify-center mb-8">
             <AnimatedHeart className="w-8 h-8 text-[#c9a959]" />
           </div>
+            <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl">
+                Nos conocimos en un momento inesperado, y desde ese día supimos que Dios cruzó nuestros caminos con un propósito especial.
+                Con el tiempo entendimos que Él estaba guiando cada paso, afirmando nuestro amor y nuestra fe.
+            </p>
 
-          <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl">
-            Nos conocimos en un momento inesperado, y desde ese dia supimos que Dios cruzo nuestros caminos con un proposito especial.
-          </p>
-          <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
-            Despues de tantos momentos compartidos, risas y aventuras, con la bendicion de Dios y llenos de fe, decidimos dar el siguiente paso para unir nuestras vidas para siempre.
-          </p>
-          <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
-            Queremos compartir este momento tan especial contigo, porque formas
-            parte importante de nuestra historia.
-          </p>
+            <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
+                Después de tantos momentos compartidos, risas y aventuras, con la bendición de Dios y llenos de fe,
+                decidimos dar el siguiente paso: unir nuestras vidas para siempre, poniendo a Dios en el centro.
+            </p>
 
-          {/* Bottom decoration */}
+            <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6 italic">
+                “Lo que Dios ha unido, que no lo separe el hombre.” — Mateo 19:6
+            </p>
+
+            <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6 italic">
+                “El amor todo lo soporta… todo lo puede.” — 1 Corintios 13:7
+            </p>
+
+            <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
+                Queremos compartir este momento tan especial contigo, porque formas parte importante de nuestra historia
+                y porque tu presencia también es una bendición para nosotros.
+            </p>
+            {/* Bottom decoration */}
           <div className="story-text-line mt-10">
             <svg
               viewBox="0 0 200 30"

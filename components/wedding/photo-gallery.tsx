@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Camera, Heart } from "lucide-react";
@@ -108,12 +109,12 @@ export function PhotoGallery({ id }: { id?: string }) {
 
   // Layout pattern for masonry-like grid
   const galleryItems = [
-    { id: 1, span: "col-span-2 row-span-2", label: "Foto Principal", aspect: "aspect-square" },
-    { id: 2, span: "col-span-1 row-span-1", label: "Foto 2", aspect: "aspect-square" },
-    { id: 3, span: "col-span-1 row-span-1", label: "Foto 3", aspect: "aspect-square" },
-    { id: 4, span: "col-span-1 row-span-2", label: "Foto 4", aspect: "aspect-[3/4]" },
-    { id: 5, span: "col-span-1 row-span-1", label: "Foto 5", aspect: "aspect-square" },
-    { id: 6, span: "col-span-2 row-span-1", label: "Foto 6", aspect: "aspect-[2/1]" },
+    { id: 1, span: "col-span-2 row-span-2", label: "Nosotros", src: "/assets/tikal.jpg" },
+    { id: 2, span: "col-span-1 row-span-1", label: "Momentos", src: "/assets/animados.jpg" },
+    { id: 3, span: "col-span-1 row-span-1", label: "Recuerdos", src: "/assets/IMG_3496.jpg" },
+    { id: 4, span: "col-span-1 row-span-2", label: "Historia", src: "/assets/sentados_banca.jpg" },
+    { id: 5, span: "col-span-1 row-span-1", label: "Juntos", src: "/assets/oda.jpg" },
+    { id: 6, span: "col-span-2 row-span-1", label: "Amor", src: "/assets/sentadosverde.jpg" },
   ];
 
   return (
@@ -160,18 +161,29 @@ export function PhotoGallery({ id }: { id?: string }) {
               key={item.id}
               className={`gallery-item ${item.span} relative bg-gradient-to-br from-[#1e3a5f] to-[#0a1628] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center group cursor-pointer shadow-lg`}
             >
-              {/* Placeholder content */}
-              <div className="text-center p-4 relative z-10">
-                <div className="gallery-icon w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3 shadow-md backdrop-blur-sm">
-                  <Camera className="w-6 h-6 text-white/40" />
+              {item.src ? (
+                <Image
+                  src={item.src}
+                  alt={item.label}
+                  fill
+                  sizes="(min-width: 768px) 25vw, 50vw"
+                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+              ) : (
+                <div className="text-center p-4 relative z-10">
+                  <div className="gallery-icon w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3 shadow-md backdrop-blur-sm">
+                    <Camera className="w-6 h-6 text-white/40" />
+                  </div>
+                  <span className="text-white/40 font-sans text-sm">
+                    {item.label}
+                  </span>
                 </div>
-                <span className="text-white/40 font-sans text-sm">
-                  {item.label}
-                </span>
-              </div>
+              )}
+
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/50 via-[#0a1628]/15 to-transparent" />
 
               {/* Hover overlay */}
-              <div className="gallery-overlay absolute inset-0 bg-gradient-to-t from-[#0a1628]/90 via-[#0a1628]/50 to-transparent opacity-0 flex flex-col items-center justify-end p-6">
+              <div className="gallery-overlay absolute inset-0 bg-gradient-to-t from-[#0a1628]/90 via-[#0a1628]/50 to-transparent opacity-0 flex flex-col items-center justify-end p-6 z-10">
                 <Heart className="gallery-heart w-8 h-8 text-[#c9a959] mb-3" />
                 <p className="text-white font-sans text-sm text-center">
                   {item.label}

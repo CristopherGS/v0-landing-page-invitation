@@ -5,6 +5,12 @@ import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import gsap from "gsap";
 import { AnimatedMusic } from "./animated-icons";
 
+const TRACK = {
+  title: "Un Pacto Con Dios - Rabito",
+  artist: "Raul Tirado",
+  src: "/music/pacto.mp3",
+};
+
 export function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -73,7 +79,7 @@ export function MusicPlayer() {
     }
   }, [isPlaying]);
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
     if (!hasInteracted) {
       setHasInteracted(true);
       if (motionAllowedRef.current) {
@@ -84,13 +90,17 @@ export function MusicPlayer() {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
         if (motionAllowedRef.current) {
           gsap.to(playerRef.current, { scale: 1, duration: 0.3 });
         }
       } else {
-        audioRef.current.play().catch(() => {
-          // Autoplay was prevented
-        });
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+        } catch {
+          return;
+        }
         if (motionAllowedRef.current) {
           gsap.fromTo(
             playerRef.current,
@@ -99,7 +109,6 @@ export function MusicPlayer() {
           );
         }
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -128,6 +137,39 @@ export function MusicPlayer() {
     }
   }, []);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.75;
+    }
+  }, []);
+
+  useEffect(() => {
+    const playAudio = async () => {
+      if (!audioRef.current) return;
+      if (!audioRef.current.paused) return;
+
+      setHasInteracted(true);
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch {
+        // Browser blocked autoplay; user can still tap play.
+      }
+    };
+
+    // Best-effort autoplay on page load (works only in permissive browsers).
+    void playAudio();
+
+    const handlePreloaderContinue = () => {
+      void playAudio();
+    };
+    window.addEventListener("wedding:preloader-continue", handlePreloaderContinue);
+
+    return () => {
+      window.removeEventListener("wedding:preloader-continue", handlePreloaderContinue);
+    };
+  }, []);
+
   const toggleExpand = () => {
     const newState = !isExpanded;
     setIsExpanded(newState);
@@ -146,7 +188,7 @@ export function MusicPlayer() {
     <>
       {/* Audio element */}
       <audio ref={audioRef} loop preload="auto">
-        {/* <source src="/music/wedding-song.mp3" type="audio/mpeg" /> */}
+        <source src={TRACK.src} type="audio/mpeg" />
       </audio>
 
       {/* Floating music player */}
@@ -246,6 +288,11 @@ export function MusicPlayer() {
                   </button>
                 )}
               </div>
+              {isExpanded && (
+                <p className="mt-2 text-center text-[11px] text-white/55 font-sans">
+                  {TRACK.title} · {TRACK.artist}
+                </p>
+              )}
             </div>
           </div>
         </div>

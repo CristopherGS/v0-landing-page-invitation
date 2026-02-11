@@ -144,10 +144,10 @@ export function GiftRegistry({ id }: { id?: string }) {
   };
 
   const bankDetails = {
-    bank: "Nombre del Banco",
-    accountHolder: "Nombre del Titular",
-    accountNumber: "0000 0000 0000 0000",
-    clabe: "000000000000000000",
+    bank: "Baco Industreal",
+    accountHolder: "Cristopher Guerra",
+    accountNumber: "4130047253",
+    clabe: "Monetaria",
   };
 
   return (
@@ -182,10 +182,9 @@ export function GiftRegistry({ id }: { id?: string }) {
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
           </div>
 
-          <p className="text-white/60 font-sans mt-6 text-lg max-w-xl mx-auto">
-            Tu presencia es nuestro mejor regalo. Sin embargo, si deseas obsequiarnos algo,
-            aqui te dejamos algunas opciones.
-          </p>
+            <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
+                ¡Gracias por creer en nosotros y por acompañarnos en esta ocasión tan especial! Preferimos recibir nuestros regalos de boda en nuestra cuenta bancaria.
+            </p>
         </div>
 
         <div className="gift-cards grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -244,7 +243,7 @@ export function GiftRegistry({ id }: { id?: string }) {
               </div>
 
               <div className="bank-info-item bg-white/5 rounded-xl p-4 border border-white/5">
-                <p className="text-white/40 text-xs font-sans mb-1 tracking-wide uppercase">CLABE Interbancaria</p>
+                <p className="text-white/40 text-xs font-sans mb-1 tracking-wide uppercase">Tipo de Cuenta</p>
                 <div className="flex items-center justify-between">
                   <p className="text-white font-mono tracking-wider">{bankDetails.clabe}</p>
                   <button
@@ -259,54 +258,6 @@ export function GiftRegistry({ id }: { id?: string }) {
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Gift registry links */}
-          <div className="gift-card relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 overflow-hidden">
-            {/* Glow effect */}
-            <div className="card-glow absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0" />
-
-            {/* Corner accents */}
-            <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-[#c9a959]/20 rounded-tr-3xl" />
-            <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-[#c9a959]/20 rounded-bl-3xl" />
-
-            <div className="flex items-center gap-4 mb-8 relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#c9a959]/30 to-[#c9a959]/10 flex items-center justify-center shadow-lg">
-                <CreditCard className="w-7 h-7 text-[#c9a959]" />
-              </div>
-              <div>
-                <h3 className="font-serif text-2xl text-white">Mesas de Regalos</h3>
-                <p className="text-white/50 text-sm font-sans">Tiendas en linea</p>
-              </div>
-            </div>
-
-            <div className="store-links space-y-4 relative z-10">
-              {[
-                { name: "Tienda 1", desc: "Próximamente" },
-                { name: "Tienda 2", desc: "Próximamente" },
-                { name: "Efectivo", desc: "Sobre el día del evento" },
-              ].map((store, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="store-link block bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-all group border border-white/5 hover:border-[#c9a959]/30"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-white font-sans font-medium group-hover:text-[#c9a959] transition-colors">
-                        {store.name}
-                      </p>
-                      <p className="text-white/40 text-sm font-sans">{store.desc}</p>
-                    </div>
-                    <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-[#c9a959]/20 transition-all">
-                      <ExternalLink className="w-5 h-5 text-white/40 group-hover:text-[#c9a959] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                    </div>
-                  </div>
-                </a>
-              ))}
             </div>
           </div>
         </div>

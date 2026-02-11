@@ -12,7 +12,6 @@ const navItems = [
   { label: "Itinerario", href: "#itinerario" },
   { label: "Galeria", href: "#galeria" },
   { label: "Regalos", href: "#regalos" },
-  { label: "FAQ", href: "#faq" },
   { label: "RSVP", href: "#rsvp" },
 ];
 
