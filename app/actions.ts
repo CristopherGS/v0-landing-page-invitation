@@ -14,7 +14,6 @@ export async function submitRSVP(formData: FormData) {
 
     const data = {
         name: formData.get("name") as string,
-        email: formData.get("email") as string,
         phone: formData.get("phone") as string,
         attendance: attendance,
         family: formData.get("family") as string,

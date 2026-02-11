@@ -291,20 +291,6 @@ export function RSVPForm({ id }: { id?: string }) {
                   className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
                 />
               </div>
-
-              <div className="form-field space-y-2">
-                <Label htmlFor="email" className="text-white font-sans font-medium">
-                  Correo Electronico *
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="tu@email.com"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
-                />
-              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -175,7 +175,7 @@ export function HeroSection() {
         <div ref={dateRef} className="mt-10 md:mt-12 flex flex-col items-center gap-4 relative">
           <div className="w-px h-16 bg-gradient-to-b from-transparent via-[#c9a959] to-transparent" />
           <p className="font-serif text-2xl md:text-3xl text-white tracking-widest uppercase">
-            11 . 07 . 2026
+            11 . 04 . 2026
           </p>
           <p className="font-sans text-sm tracking-[0.3em] uppercase text-white/60">
             Quetzaltenango, Guatemala
