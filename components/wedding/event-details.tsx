@@ -260,7 +260,7 @@ export function EventDetails({ id }: { id?: string }) {
           <DetailCard
             icon={<AnimatedClock className="w-10 h-10" />}
             title="Hora"
-            details={["Recepcion: 15:30 hrs"]}
+            details={["Recepcion: 15:00 hrs"]}
             delay={150}
           />
           <DetailCard
