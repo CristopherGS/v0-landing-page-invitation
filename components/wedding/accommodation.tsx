@@ -29,39 +29,18 @@ const hotels: Hotel[] = [
         name: "Latam Hotel Plaza Pradera",
         description: "Hotel moderno ubicado en el centro comercial Pradera Xela. Ofrece piscina en la azotea, gimnasio y vistas espectaculares.",
         rating: 5,
-        tags: ["Moderno", "Piscina", "CÃ©ntrico"],
+        tags: ["Moderno", "Piscina"],
         phone: "+502 7740 4040",
-        address: "Avenida Las AmÃ©ricas 7-04, Zona 3, Quetzaltenango, Guatemala",
-        mapLink: buildGoogleMapsLink("Latam Hotel Plaza Pradera, Avenida Las AmÃ©ricas 7-04, Zona 3, Quetzaltenango, Guatemala"),
-        wazeLink: buildWazeLink("Latam Hotel Plaza Pradera, Avenida Las AmÃ©ricas 7-04, Zona 3, Quetzaltenango, Guatemala"),
+        address: "Avenida Las Américas 7-04, Zona 3, Quetzaltenango, Guatemala",
+        mapLink: buildGoogleMapsLink("Latam Hotel Plaza Pradera, Avenida Las Américas 7-04, Zona 3, Quetzaltenango, Guatemala"),
+        wazeLink: buildWazeLink("Latam Hotel Plaza Pradera, Avenida Las Américas 7-04, Zona 3, Quetzaltenango, Guatemala"),
         website: "https://latamhotel.com",
     },
     {
-        name: "PensiÃ³n Bonifaz",
-        description: "El hotel mÃ¡s icÃ³nico de Xela frente al Parque Central. TradiciÃ³n, elegancia y la mejor ubicaciÃ³n en el Centro HistÃ³rico.",
-        rating: 5,
-        tags: ["HistÃ³rico", "Lujo", "Tradicional"],
-        phone: "+502 7761 2182",
-        address: "4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala",
-        mapLink: buildGoogleMapsLink("PensiÃ³n Bonifaz, 4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala"),
-        wazeLink: buildWazeLink("PensiÃ³n Bonifaz, 4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala"),
-        website: "https://pensionbonifaz.com.gt",
-    },
-    {
-        name: "Hotel Casa Morasan",
-        description: "Boutique hotel con encanto colonial y jardines hermosos. Una opciÃ³n tranquila y exclusiva en el corazÃ³n de la zona 1.",
-        rating: 4.5,
-        tags: ["Boutique", "Jardines", "Tranquilo"],
-        phone: "+502 7765 0620",
-        address: "12 Avenida 8-21, Zona 1, Quetzaltenango, Guatemala",
-        mapLink: buildGoogleMapsLink("Hotel Casa Morasan, 12 Avenida 8-21, Zona 1, Quetzaltenango, Guatemala"),
-        wazeLink: buildWazeLink("Hotel Casa Morasan, 12 Avenida 8-21, Zona 1, Quetzaltenango, Guatemala"),
-    },
-    {
         name: "Hotel Modelo",
-        description: "Fundado en 1892, es uno de los hoteles con mÃ¡s historia de la ciudad. Ambiente familiar y acogedor.",
+        description: "Fundado en 1892, es uno de los hoteles con más historia de la ciudad. Ambiente familiar y acogedor.",
         rating: 4,
-        tags: ["HistÃ³rico", "Acogedor", "Familiar"],
+        tags: [ "Acogedor", "Familiar"],
         phone: "+502 7761 2529",
         address: "14 Avenida A 2-31, Zona 1, Quetzaltenango, Guatemala",
         mapLink: buildGoogleMapsLink("Hotel Modelo, 14 Avenida A 2-31, Zona 1, Quetzaltenango, Guatemala"),
@@ -69,9 +48,9 @@ const hotels: Hotel[] = [
     },
     {
         name: "Hotel Villa Real Plaza",
-        description: "Ubicado a pocos pasos del Parque Central, ofrece comodidad y un servicio excelente en un edificio clÃ¡sico.",
+        description: "Ubicado a pocos pasos del Parque Central, ofrece comodidad y un servicio excelente en un edificio clásico.",
         rating: 4,
-        tags: ["UbicaciÃ³n", "ClÃ¡sico", "Servicio"],
+        tags: ["Ubicación", "Clásico", "Servicio"],
         phone: "+502 7761 0588",
         address: "4a Calle 12-22, Zona 1, Quetzaltenango, Guatemala",
         mapLink: buildGoogleMapsLink("Hotel Villa Real Plaza, 4a Calle 12-22, Zona 1, Quetzaltenango, Guatemala"),
@@ -213,28 +192,8 @@ export function Accommodation({ id }: { id?: string }) {
                                     ))}
                                 </div>
 
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-3 text-white/70 text-sm">
-                                        <MapPin className="w-4 h-4 text-[#c9a959]" />
-                                        <span>{hotel.address}</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 text-white/70 text-sm">
-                                        <Phone className="w-4 h-4 text-[#c9a959]" />
-                                        <span>{hotel.phone}</span>
-                                    </div>
-                                </div>
-
                                 {/* Action Buttons */}
                                 <div className="mt-8 grid grid-cols-2 gap-3">
-                                    <a
-                                        href={hotel.wazeLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#0a1628] hover:bg-[#1e3a5f] text-white text-xs font-bold transition-all border border-white/10"
-                                    >
-                                        <Navigation className="w-3 h-3" />
-                                        Waze
-                                    </a>
                                     <a
                                         href={hotel.mapLink}
                                         target="_blank"

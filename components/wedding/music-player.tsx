@@ -290,7 +290,7 @@ export function MusicPlayer() {
               </div>
               {isExpanded && (
                 <p className="mt-2 text-center text-[11px] text-white/55 font-sans">
-                  {TRACK.title} Â· {TRACK.artist}
+                  {TRACK.title} · {TRACK.artist}
                 </p>
               )}
             </div>

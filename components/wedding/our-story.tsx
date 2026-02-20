@@ -196,7 +196,7 @@ export function OurStory({ id }: { id?: string }) {
         <div className="story-subtitle flex items-center justify-center gap-4 mb-16">
           <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#c9a959]/50" />
           <p className="text-white/60 font-sans text-center">
-            El amor nos unio y juntos escribimos nuestra historia
+            El amor nos unió y juntos escribimos nuestra historia
           </p>
           <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
         </div>
@@ -253,26 +253,26 @@ export function OurStory({ id }: { id?: string }) {
             <AnimatedHeart className="w-8 h-8 text-[#c9a959]" />
           </div>
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl">
-                Nos conocimos en un momento inesperado, y desde ese dÃ­a supimos que Dios cruzÃ³ nuestros caminos con un propÃ³sito especial.
-                Con el tiempo entendimos que Ã‰l estaba guiando cada paso, afirmando nuestro amor y nuestra fe.
+                Nos conocimos en un momento inesperado, y desde ese día supimos que Dios cruzó nuestros caminos con un propósito especial.
+                Con el tiempo entendimos que Él estaba guiando cada paso, afirmando nuestro amor y nuestra fe.
             </p>
 
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
-                DespuÃ©s de tantos momentos compartidos, risas y aventuras, con la bendiciÃ³n de Dios y llenos de fe,
+                Después de tantos momentos compartidos, risas y aventuras, con la bendición de Dios y llenos de fe,
                 decidimos dar el siguiente paso: unir nuestras vidas para siempre, poniendo a Dios en el centro.
             </p>
 
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6 italic">
-                â€œLo que Dios ha unido, que no lo separe el hombre.â€ â€” Mateo 19:6
+                "Lo que Dios ha unido, que no lo separe el hombre." - Mateo 19:6
             </p>
 
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6 italic">
-                â€œEl amor todo lo soportaâ€¦ todo lo puede.â€ â€” 1 Corintios 13:7
+                "El amor todo lo soporta... todo lo puede." - 1 Corintios 13:7
             </p>
 
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
                 Queremos compartir este momento tan especial contigo, porque formas parte importante de nuestra historia
-                y porque tu presencia tambiÃ©n es una bendiciÃ³n para nosotros.
+                y porque tu presencia también es una bendición para nosotros.
             </p>
             {/* Bottom decoration */}
           <div className="story-text-line mt-10">

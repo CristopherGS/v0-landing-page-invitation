@@ -128,7 +128,7 @@ export function Footer() {
         </div>
 
         <p className="footer-element font-sans text-white/60 text-center tracking-widest mb-12 text-lg">
-          11 de Abril, 2026
+          11 de abril, 2026
         </p>
 
         {/* Contact info */}
@@ -162,7 +162,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="footer-element pt-10 border-t border-white/10 text-center">
           <p className="font-sans text-sm text-white/50 mb-2">
-            Damos gracias a Dios por el regalo de habernos encontrado y por permitirnos celebrar este sacramento rodeados de las personas que mÃ¡s amamos. Su presencia es el reflejo de las bendiciones que el SeÃ±or ha derramado en nuestras vidas y nos llena de gozo compartir este nuevo comienzo con ustedes
+            Damos gracias a Dios por el regalo de habernos encontrado y por permitirnos celebrar este sacramento rodeados de las personas que más amamos. Su presencia es el reflejo de las bendiciones que el Señor ha derramado en nuestras vidas y nos llena de gozo compartir este nuevo comienzo con ustedes.
           </p>
           <div className="flex items-center justify-center gap-2 text-white/30">
             <span className="text-xs font-sans">Hecho con</span>

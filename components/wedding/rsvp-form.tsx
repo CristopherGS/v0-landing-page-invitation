@@ -189,11 +189,11 @@ export function RSVPForm({ id }: { id?: string }) {
           }
         );
       } else {
-        toast.error("Hubo un error al enviar tu confirmaciÃ³n. Por favor intenta de nuevo.");
+        toast.error("Hubo un error al enviar tu confirmación. Por favor intenta de nuevo.");
         console.error("Submission error:", result.error);
       }
     } catch (error) {
-      toast.error("Error de conexiÃ³n. Por favor revisa tu internet.");
+      toast.error("Error de conexión. Por favor revisa tu internet.");
       console.error("Connection error:", error);
     } finally {
       setIsSubmitting(false);
@@ -240,11 +240,11 @@ export function RSVPForm({ id }: { id?: string }) {
           <p className="text-white/60 font-sans mt-6 mb-2 text-lg">
             Por favor confirma tu asistencia antes del
           </p>
-          <p className="text-[#c9a959] font-serif text-2xl mb-4">11 de Abril, 2026</p>
+              <p className="text-[#c9a959] font-serif text-2xl mb-4">11 de abril, 2026</p>
 
           <div className="bg-[#c9a959]/10 border border-[#c9a959]/30 rounded-xl p-6 max-w-xl mx-auto mt-8">
             <p className="text-[#c9a959] font-sans text-sm font-semibold">
-                Importante: Para ayudarnos con la organización del evento, les pedimos registrar de forma individual a cada persona invitada que asistirá. Esto nos permitirá asignar correctamente los lugares en mesa. Solo podremos considerar en la lista final a quienes estén previamente registrados.”
+                Importante: Para ayudarnos con la organización del evento, les pedimos registrar de forma individual a cada persona invitada que asistirá. Esto nos permitirá asignar correctamente los lugares en mesa. Solo podremos considerar en la lista final a quienes estén previamente registrados.
             </p>
           </div>
         </div>
@@ -257,7 +257,7 @@ export function RSVPForm({ id }: { id?: string }) {
             </div>
             <div>
               <p className="text-white/40 text-xs font-sans tracking-wide uppercase">Fecha</p>
-              <p className="text-white font-sans font-medium">11 de Abril, 2026</p>
+              <p className="text-white font-sans font-medium">11 de abril, 2026</p>
             </div>
           </div>
           <div className="info-card bg-white/5 backdrop-blur-sm rounded-2xl p-5 flex items-center gap-4 border border-white/10 cursor-default">
@@ -309,7 +309,7 @@ export function RSVPForm({ id }: { id?: string }) {
                     required
                     placeholder="1234 5678"
                     pattern="[0-9]{4}[ ]?[0-9]{4}|[0-9]{8}"
-                    title="Por favor ingresa un nÃºmero de 8 dÃ­gitos de Guatemala"
+                    title="Por favor ingresa un número de 8 dígitos de Guatemala"
                     className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-7 text-base"
                   />
                 </div>
@@ -320,7 +320,7 @@ export function RSVPForm({ id }: { id?: string }) {
                   </Label>
                   <Select name="family" required>
                     <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-7 text-base">
-                      <SelectValue placeholder="Selecciona una opciÃ³n" />
+                      <SelectValue placeholder="Selecciona una opción" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#0a1628] border-white/10 text-white">
                       <SelectItem value="bride">Familiar de la Novia (Gabriela)</SelectItem>
@@ -334,7 +334,7 @@ export function RSVPForm({ id }: { id?: string }) {
             <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 space-y-6">
               <div className="form-field space-y-5">
                 <Label className="text-white font-sans font-semibold text-base md:text-lg">
-                  Asistiras al evento? *
+                  ¿Asistirás al evento? *
                 </Label>
                 <RadioGroup
                   defaultValue="yes"
@@ -344,13 +344,13 @@ export function RSVPForm({ id }: { id?: string }) {
                   <div className="min-h-14 flex items-center space-x-3 bg-white/5 px-6 py-4 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
                     <RadioGroupItem value="yes" id="yes" className="border-white text-[#c9a959]" />
                     <Label htmlFor="yes" className="font-normal cursor-pointer text-white leading-relaxed">
-                      Si, ahi estare
+                      Sí, ahí estaré
                     </Label>
                   </div>
                   <div className="min-h-14 flex items-center space-x-3 bg-white/5 px-6 py-4 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
                     <RadioGroupItem value="no" id="no" className="border-white text-[#c9a959]" />
                     <Label htmlFor="no" className="font-normal cursor-pointer text-white leading-relaxed">
-                      No podre asistir
+                      No podré asistir
                     </Label>
                   </div>
                 </RadioGroup>
@@ -408,8 +408,8 @@ export function RSVPForm({ id }: { id?: string }) {
               Gracias por Confirmar
             </h3>
             <p className="text-white/60 font-sans max-w-md mx-auto text-lg leading-relaxed">
-              Hemos recibido tu confirmacion. Estamos muy emocionados de
-              celebrar este dia tan especial contigo. Te enviaremos un
+              Hemos recibido tu confirmación. Estamos muy emocionados de
+              celebrar este día tan especial contigo. Te enviaremos un
               recordatorio antes del evento.
             </p>
 
