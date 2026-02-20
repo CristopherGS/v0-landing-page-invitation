@@ -1,10 +1,9 @@
-﻿import { getRSVPs } from "@/lib/rsvp-store";
+import { getRSVPs } from "@/lib/rsvp-store";
 
 export const dynamic = "force-dynamic";
 
 export default async function ListadoPage() {
-  const records = await getRSVPs();
-  const sorted = [...records].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const sorted = await getRSVPs();
 
   return (
     <main className="min-h-screen bg-[#0a1628] text-white p-6 md:p-10">
