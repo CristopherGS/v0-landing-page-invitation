@@ -1,5 +1,4 @@
-﻿import { promises as fs } from "node:fs";
-import path from "node:path";
+import { neon } from "@neondatabase/serverless";
 
 export type RSVPRecord = {
   id: string;
@@ -11,42 +10,41 @@ export type RSVPRecord = {
   createdAt: string;
 };
 
-const dataDir = path.join(process.cwd(), "data");
-const dataFile = path.join(dataDir, "rsvps.json");
-
-async function ensureStore() {
-  await fs.mkdir(dataDir, { recursive: true });
-
-  try {
-    await fs.access(dataFile);
-  } catch {
-    await fs.writeFile(dataFile, "[]", "utf8");
+function getSQL() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error("DATABASE_URL is not set");
   }
+  return neon(process.env.DATABASE_URL);
 }
 
 export async function getRSVPs(): Promise<RSVPRecord[]> {
-  await ensureStore();
-  const raw = await fs.readFile(dataFile, "utf8");
+  const sql = getSQL();
+  const rows = await sql`SELECT id, name, phone, attendance, family, message, created_at FROM rsvps ORDER BY created_at DESC`;
 
-  try {
-    const parsed = JSON.parse(raw) as RSVPRecord[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  return rows.map((row) => ({
+    id: row.id,
+    name: row.name,
+    phone: row.phone,
+    attendance: row.attendance,
+    family: row.family,
+    message: row.message ?? "",
+    createdAt: row.created_at,
+  }));
 }
 
 export async function addRSVP(input: Omit<RSVPRecord, "id" | "createdAt">) {
-  const current = await getRSVPs();
+  const sql = getSQL();
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
 
-  const newRecord: RSVPRecord = {
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
+  await sql`
+    INSERT INTO rsvps (id, name, phone, attendance, family, message, created_at)
+    VALUES (${id}, ${input.name}, ${input.phone}, ${input.attendance}, ${input.family}, ${input.message}, ${now})
+  `;
+
+  return {
+    id,
+    createdAt: now,
     ...input,
   };
-
-  current.push(newRecord);
-  await fs.writeFile(dataFile, JSON.stringify(current, null, 2), "utf8");
-
-  return newRecord;
 }
