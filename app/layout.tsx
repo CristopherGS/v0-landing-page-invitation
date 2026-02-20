@@ -1,41 +1,40 @@
-import React from "react"
-import type { Metadata } from 'next'
-import { Cormorant_Garamond, Montserrat } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
+﻿import React from "react"
+import type { Metadata } from "next"
+import { Cormorant_Garamond, Montserrat } from "next/font/google"
+import "./globals.css"
 
-const cormorant = Cormorant_Garamond({ 
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-serif"
-});
+  variable: "--font-serif",
+})
 
-const montserrat = Montserrat({ 
+const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
-  variable: "--font-sans"
-});
+  variable: "--font-sans",
+})
 
 export const metadata: Metadata = {
-  title: 'Nuestra Boda - Te Invitamos',
-  description: 'Estamos felices de invitarte a celebrar nuestra boda. Confirma tu asistencia.',
-  generator: 'v0.app',
+  title: "Nuestra Boda - Te Invitamos",
+  description: "Estamos felices de invitarte a celebrar nuestra boda. Confirma tu asistencia.",
+  generator: "v0.app",
   icons: {
     icon: [
       {
-        url: '/assets/boda.png',
-        media: '(prefers-color-scheme: light)',
+        url: "/assets/boda.png",
+        media: "(prefers-color-scheme: light)",
       },
       {
-        url: '/assets/boda.png',
-        media: '(prefers-color-scheme: dark)',
+        url: "/assets/boda.png",
+        media: "(prefers-color-scheme: dark)",
       },
       {
-        url: '/assets/boda.svg',
-        type: 'image/svg+xml',
+        url: "/assets/boda.svg",
+        type: "image/svg+xml",
       },
     ],
-    apple: '/apple-icon.png',
+    apple: "/apple-icon.png",
   },
 }
 
@@ -48,7 +47,6 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${cormorant.variable} ${montserrat.variable} font-sans antialiased`}>
         {children}
-        <Analytics />
       </body>
     </html>
   )

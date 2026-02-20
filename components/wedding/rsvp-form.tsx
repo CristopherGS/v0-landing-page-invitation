@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
@@ -20,22 +20,24 @@ import { toast } from "sonner";
 import { CheckCircle2, Calendar, Clock, Users } from "lucide-react";
 import { AnimatedHeart, AnimatedCalendar } from "./animated-icons";
 import { submitRSVP } from "@/app/actions";
+import { useMotionSettings } from "./use-motion-settings";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function RSVPForm({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const { prefersReducedMotion, canHover, allowHeavyAnimation } = useMotionSettings();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
+      gsap.set(".form-field, .info-card", { willChange: "transform, opacity" });
+
       // Title animation
       gsap.fromTo(
         ".rsvp-title-word",
@@ -109,24 +111,26 @@ export function RSVPForm({ id }: { id?: string }) {
       );
 
       // Floating icon
-      gsap.to(".floating-rsvp-icon", {
-        y: -10,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
+      if (allowHeavyAnimation) {
+        gsap.to(".floating-rsvp-icon", {
+          y: -8,
+          duration: 2.4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
 
       // Info card hover effects
       if (canHover) {
         gsap.utils.toArray<HTMLElement>(".info-card").forEach((card) => {
           const onEnter = () => {
             gsap.to(card, { y: -5, scale: 1.02, duration: 0.3 });
-            gsap.to(card.querySelector(".info-icon"), { scale: 1.2, rotation: 10, duration: 0.3 });
+            const iconEl = card.querySelector(".info-icon"); if (iconEl) gsap.to(iconEl, { scale: 1.2, rotation: 10, duration: 0.3 });
           };
           const onLeave = () => {
             gsap.to(card, { y: 0, scale: 1, duration: 0.3 });
-            gsap.to(card.querySelector(".info-icon"), { scale: 1, rotation: 0, duration: 0.3 });
+            const iconEl = card.querySelector(".info-icon"); if (iconEl) gsap.to(iconEl, { scale: 1, rotation: 0, duration: 0.3 });
           };
           card.addEventListener("mouseenter", onEnter);
           card.addEventListener("mouseleave", onLeave);
@@ -142,7 +146,7 @@ export function RSVPForm({ id }: { id?: string }) {
       cleanupFns.forEach((fn) => fn());
       ctx.revert();
     };
-  }, []);
+  }, [allowHeavyAnimation, canHover, prefersReducedMotion]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -185,11 +189,11 @@ export function RSVPForm({ id }: { id?: string }) {
           }
         );
       } else {
-        toast.error("Hubo un error al enviar tu confirmación. Por favor intenta de nuevo.");
+        toast.error("Hubo un error al enviar tu confirmaciÃ³n. Por favor intenta de nuevo.");
         console.error("Submission error:", result.error);
       }
     } catch (error) {
-      toast.error("Error de conexión. Por favor revisa tu internet.");
+      toast.error("Error de conexiÃ³n. Por favor revisa tu internet.");
       console.error("Connection error:", error);
     } finally {
       setIsSubmitting(false);
@@ -201,7 +205,7 @@ export function RSVPForm({ id }: { id?: string }) {
     <section
       ref={sectionRef}
       id={id}
-      className="relative flex flex-col justify-center py-12 md:py-16 px-4 md:px-6 bg-[#0a1628] overflow-hidden snap-start"
+      className="relative flex flex-col justify-center py-20 md:py-28 px-4 md:px-6 bg-[#0a1628] overflow-hidden snap-start"
     >
       {/* Background pattern */}
       <div
@@ -214,7 +218,7 @@ export function RSVPForm({ id }: { id?: string }) {
 
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Title section */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-16 md:mb-20">
           <div className="floating-rsvp-icon w-24 h-24 rounded-full bg-gradient-to-br from-[#c9a959]/30 to-[#c9a959]/10 flex items-center justify-center mx-auto mb-8 shadow-xl border border-white/10">
             <AnimatedCalendar className="w-12 h-12" />
           </div>
@@ -238,16 +242,15 @@ export function RSVPForm({ id }: { id?: string }) {
           </p>
           <p className="text-[#c9a959] font-serif text-2xl mb-4">11 de Abril, 2026</p>
 
-          <div className="bg-[#c9a959]/10 border border-[#c9a959]/30 rounded-xl p-4 max-w-lg mx-auto mt-4">
+          <div className="bg-[#c9a959]/10 border border-[#c9a959]/30 rounded-xl p-6 max-w-xl mx-auto mt-8">
             <p className="text-[#c9a959] font-sans text-sm font-semibold">
-                ⚠️ IMPORTANTE: Para ayudarnos con la organización, te pedimos que agregues manualmente a cada persona invitada que asistirá, de manera individual.
-                Esto nos permite asignar lugares en mesa; si alguien no está registrado, no podremos considerarlo en la lista final.
+                Importante: Para ayudarnos con la organización del evento, les pedimos registrar de forma individual a cada persona invitada que asistirá. Esto nos permitirá asignar correctamente los lugares en mesa. Solo podremos considerar en la lista final a quienes estén previamente registrados.”
             </p>
           </div>
         </div>
 
         {/* Quick info cards */}
-        <div className="info-cards grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div className="info-cards grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 max-w-2xl mx-auto">
           <div className="info-card bg-white/5 backdrop-blur-sm rounded-2xl p-5 flex items-center gap-4 border border-white/10 cursor-default">
             <div className="info-icon w-12 h-12 rounded-xl bg-[#c9a959]/20 flex items-center justify-center">
               <Calendar className="w-6 h-6 text-[#c9a959]" />
@@ -272,15 +275,15 @@ export function RSVPForm({ id }: { id?: string }) {
           <form
             ref={formRef}
             onSubmit={handleSubmit}
-            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl space-y-6 relative overflow-hidden"
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-12 lg:p-14 shadow-2xl space-y-10 md:space-y-12 relative overflow-hidden max-w-3xl mx-auto"
           >
             {/* Decorative corners */}
             <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-[#c9a959]/20 rounded-tr-3xl" />
             <div className="absolute bottom-0 left-0 w-24 h-24 border-b-2 border-l-2 border-[#c9a959]/20 rounded-bl-3xl" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="form-field space-y-2">
-                <Label htmlFor="name" className="text-white font-sans font-medium">
+            <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 space-y-6">
+              <div className="form-field space-y-3">
+                <Label htmlFor="name" className="text-white font-sans font-semibold text-base md:text-lg">
                   Nombre Completo *
                 </Label>
                 <Input
@@ -288,85 +291,91 @@ export function RSVPForm({ id }: { id?: string }) {
                   name="name"
                   required
                   placeholder="Tu nombre completo"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="form-field space-y-2">
-                <Label htmlFor="phone" className="text-white font-sans font-medium">
-                  Telefono / WhatsApp *
-                </Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  required
-                  placeholder="1234 5678"
-                  pattern="[0-9]{4}[ ]?[0-9]{4}|[0-9]{8}"
-                  title="Por favor ingresa un número de 8 dígitos de Guatemala"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-7 text-base"
                 />
               </div>
 
-              <div className="form-field space-y-2">
-                <Label htmlFor="family" className="text-white font-sans font-medium">
-                  Familiar de: *
-                </Label>
-                <Select name="family" required>
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-6">
-                    <SelectValue placeholder="Selecciona una opción" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#0a1628] border-white/10 text-white">
-                    <SelectItem value="bride">Familiar de la Novia (Gabriela)</SelectItem>
-                    <SelectItem value="groom">Familiar del Novio (Cristopher)</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="form-field space-y-3">
+                  <Label htmlFor="phone" className="text-white font-sans font-semibold text-base md:text-lg">
+                    Telefono / WhatsApp *
+                  </Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    placeholder="1234 5678"
+                    pattern="[0-9]{4}[ ]?[0-9]{4}|[0-9]{8}"
+                    title="Por favor ingresa un nÃºmero de 8 dÃ­gitos de Guatemala"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-7 text-base"
+                  />
+                </div>
+
+                <div className="form-field space-y-3">
+                  <Label htmlFor="family" className="text-white font-sans font-semibold text-base md:text-lg">
+                    Familiar de: *
+                  </Label>
+                  <Select name="family" required>
+                    <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#c9a959] focus:ring-[#c9a959] rounded-xl py-7 text-base">
+                      <SelectValue placeholder="Selecciona una opciÃ³n" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#0a1628] border-white/10 text-white">
+                      <SelectItem value="bride">Familiar de la Novia (Gabriela)</SelectItem>
+                      <SelectItem value="groom">Familiar del Novio (Cristopher)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
 
-            <div className="form-field space-y-3">
-              <Label className="text-white font-sans font-medium">
-                Asistiras al evento? *
-              </Label>
-              <RadioGroup
-                defaultValue="yes"
-                name="attendance"
-                className="flex flex-wrap gap-4"
-              >
-                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                  <RadioGroupItem value="yes" id="yes" className="border-white text-[#c9a959]" />
-                  <Label htmlFor="yes" className="font-normal cursor-pointer text-white">
-                    Si, ahi estare
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 bg-white/5 px-4 py-3 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
-                  <RadioGroupItem value="no" id="no" className="border-white text-[#c9a959]" />
-                  <Label htmlFor="no" className="font-normal cursor-pointer text-white">
-                    No podre asistir
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
+            <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 space-y-6">
+              <div className="form-field space-y-5">
+                <Label className="text-white font-sans font-semibold text-base md:text-lg">
+                  Asistiras al evento? *
+                </Label>
+                <RadioGroup
+                  defaultValue="yes"
+                  name="attendance"
+                  className="flex flex-col sm:flex-row flex-wrap gap-6 md:gap-8"
+                >
+                  <div className="min-h-14 flex items-center space-x-3 bg-white/5 px-6 py-4 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
+                    <RadioGroupItem value="yes" id="yes" className="border-white text-[#c9a959]" />
+                    <Label htmlFor="yes" className="font-normal cursor-pointer text-white leading-relaxed">
+                      Si, ahi estare
+                    </Label>
+                  </div>
+                  <div className="min-h-14 flex items-center space-x-3 bg-white/5 px-6 py-4 rounded-xl border border-transparent hover:border-[#c9a959]/30 transition-colors">
+                    <RadioGroupItem value="no" id="no" className="border-white text-[#c9a959]" />
+                    <Label htmlFor="no" className="font-normal cursor-pointer text-white leading-relaxed">
+                      No podre asistir
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
 
-            <div className="form-field space-y-2">
-              <Label htmlFor="message" className="text-white font-sans font-medium">
-                Mensaje para los Novios (Opcional)
-              </Label>
-              <Textarea
-                id="message"
-                name="message"
-                placeholder="Escribe un mensaje especial para los novios..."
-                rows={4}
-                className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] resize-none rounded-xl"
-              />
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+              <div className="form-field space-y-3">
+                <Label htmlFor="message" className="text-white font-sans font-semibold text-base md:text-lg">
+                  Mensaje para los Novios (Opcional)
+                </Label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  placeholder="Escribe un mensaje especial para los novios..."
+                  rows={5}
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#c9a959] focus:ring-[#c9a959] resize-none rounded-xl p-4 text-base"
+                />
+              </div>
             </div>
 
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="submit-btn w-full bg-[#c9a959] hover:bg-[#b8963d] text-[#0a1628] font-bold font-sans tracking-wide py-7 text-lg rounded-xl transition-all duration-500 hover:shadow-xl hover:shadow-[#c9a959]/20"
+              className="submit-btn w-full bg-[#c9a959] hover:bg-[#b8963d] text-[#0a1628] font-bold font-sans tracking-wide py-7 text-lg rounded-xl transition-all duration-500 hover:shadow-xl hover:shadow-[#c9a959]/20 mt-2"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">

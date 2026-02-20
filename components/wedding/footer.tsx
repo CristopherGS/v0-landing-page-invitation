@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -12,7 +12,7 @@ export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     if (prefersReducedMotion) return;
 
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -57,11 +57,11 @@ export function Footer() {
         gsap.utils.toArray<HTMLElement>(".contact-card").forEach((card) => {
           const onEnter = () => {
             gsap.to(card, { y: -5, scale: 1.02, duration: 0.3 });
-            gsap.to(card.querySelector(".contact-icon"), { scale: 1.2, rotation: 10, duration: 0.3 });
+            const iconEl = card.querySelector(".contact-icon"); if (iconEl) gsap.to(iconEl, { scale: 1.2, rotation: 10, duration: 0.3 });
           };
           const onLeave = () => {
             gsap.to(card, { y: 0, scale: 1, duration: 0.3 });
-            gsap.to(card.querySelector(".contact-icon"), { scale: 1, rotation: 0, duration: 0.3 });
+            const iconEl = card.querySelector(".contact-icon"); if (iconEl) gsap.to(iconEl, { scale: 1, rotation: 0, duration: 0.3 });
           };
           card.addEventListener("mouseenter", onEnter);
           card.addEventListener("mouseleave", onLeave);
@@ -88,7 +88,7 @@ export function Footer() {
     };
   }, []);
 
-  const names = "Gabriela & Christopher";
+  const names = "Gabriela & Cristopher";
 
   return (
     <section ref={footerRef} className="relative min-h-screen flex flex-col justify-center items-center py-10 px-6 bg-[#0a1628] text-white overflow-hidden snap-start">
@@ -132,7 +132,7 @@ export function Footer() {
         </p>
 
         {/* Contact info */}
-        <div className="footer-element grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div className="footer-element grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 max-w-2xl mx-auto">
           <a
             href="tel:+50246842943"
             className="contact-card flex items-center justify-center gap-4 bg-white/5 rounded-2xl p-5 hover:bg-white/10 transition-all group border border-white/5"
@@ -162,7 +162,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="footer-element pt-10 border-t border-white/10 text-center">
           <p className="font-sans text-sm text-white/50 mb-2">
-            Damos gracias a Dios por el regalo de habernos encontrado y por permitirnos celebrar este sacramento rodeados de las personas que más amamos. Su presencia es el reflejo de las bendiciones que el Señor ha derramado en nuestras vidas y nos llena de gozo compartir este nuevo comienzo con ustedes
+            Damos gracias a Dios por el regalo de habernos encontrado y por permitirnos celebrar este sacramento rodeados de las personas que mÃ¡s amamos. Su presencia es el reflejo de las bendiciones que el SeÃ±or ha derramado en nuestras vidas y nos llena de gozo compartir este nuevo comienzo con ustedes
           </p>
           <div className="flex items-center justify-center gap-2 text-white/30">
             <span className="text-xs font-sans">Hecho con</span>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -29,27 +29,27 @@ const hotels: Hotel[] = [
         name: "Latam Hotel Plaza Pradera",
         description: "Hotel moderno ubicado en el centro comercial Pradera Xela. Ofrece piscina en la azotea, gimnasio y vistas espectaculares.",
         rating: 5,
-        tags: ["Moderno", "Piscina", "Céntrico"],
+        tags: ["Moderno", "Piscina", "CÃ©ntrico"],
         phone: "+502 7740 4040",
-        address: "Avenida Las Américas 7-04, Zona 3, Quetzaltenango, Guatemala",
-        mapLink: buildGoogleMapsLink("Latam Hotel Plaza Pradera, Avenida Las Américas 7-04, Zona 3, Quetzaltenango, Guatemala"),
-        wazeLink: buildWazeLink("Latam Hotel Plaza Pradera, Avenida Las Américas 7-04, Zona 3, Quetzaltenango, Guatemala"),
+        address: "Avenida Las AmÃ©ricas 7-04, Zona 3, Quetzaltenango, Guatemala",
+        mapLink: buildGoogleMapsLink("Latam Hotel Plaza Pradera, Avenida Las AmÃ©ricas 7-04, Zona 3, Quetzaltenango, Guatemala"),
+        wazeLink: buildWazeLink("Latam Hotel Plaza Pradera, Avenida Las AmÃ©ricas 7-04, Zona 3, Quetzaltenango, Guatemala"),
         website: "https://latamhotel.com",
     },
     {
-        name: "Pensión Bonifaz",
-        description: "El hotel más icónico de Xela frente al Parque Central. Tradición, elegancia y la mejor ubicación en el Centro Histórico.",
+        name: "PensiÃ³n Bonifaz",
+        description: "El hotel mÃ¡s icÃ³nico de Xela frente al Parque Central. TradiciÃ³n, elegancia y la mejor ubicaciÃ³n en el Centro HistÃ³rico.",
         rating: 5,
-        tags: ["Histórico", "Lujo", "Tradicional"],
+        tags: ["HistÃ³rico", "Lujo", "Tradicional"],
         phone: "+502 7761 2182",
         address: "4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala",
-        mapLink: buildGoogleMapsLink("Pensión Bonifaz, 4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala"),
-        wazeLink: buildWazeLink("Pensión Bonifaz, 4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala"),
+        mapLink: buildGoogleMapsLink("PensiÃ³n Bonifaz, 4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala"),
+        wazeLink: buildWazeLink("PensiÃ³n Bonifaz, 4a Calle 10-50, Zona 1, Quetzaltenango, Guatemala"),
         website: "https://pensionbonifaz.com.gt",
     },
     {
         name: "Hotel Casa Morasan",
-        description: "Boutique hotel con encanto colonial y jardines hermosos. Una opción tranquila y exclusiva en el corazón de la zona 1.",
+        description: "Boutique hotel con encanto colonial y jardines hermosos. Una opciÃ³n tranquila y exclusiva en el corazÃ³n de la zona 1.",
         rating: 4.5,
         tags: ["Boutique", "Jardines", "Tranquilo"],
         phone: "+502 7765 0620",
@@ -59,9 +59,9 @@ const hotels: Hotel[] = [
     },
     {
         name: "Hotel Modelo",
-        description: "Fundado en 1892, es uno de los hoteles con más historia de la ciudad. Ambiente familiar y acogedor.",
+        description: "Fundado en 1892, es uno de los hoteles con mÃ¡s historia de la ciudad. Ambiente familiar y acogedor.",
         rating: 4,
-        tags: ["Histórico", "Acogedor", "Familiar"],
+        tags: ["HistÃ³rico", "Acogedor", "Familiar"],
         phone: "+502 7761 2529",
         address: "14 Avenida A 2-31, Zona 1, Quetzaltenango, Guatemala",
         mapLink: buildGoogleMapsLink("Hotel Modelo, 14 Avenida A 2-31, Zona 1, Quetzaltenango, Guatemala"),
@@ -69,9 +69,9 @@ const hotels: Hotel[] = [
     },
     {
         name: "Hotel Villa Real Plaza",
-        description: "Ubicado a pocos pasos del Parque Central, ofrece comodidad y un servicio excelente en un edificio clásico.",
+        description: "Ubicado a pocos pasos del Parque Central, ofrece comodidad y un servicio excelente en un edificio clÃ¡sico.",
         rating: 4,
-        tags: ["Ubicación", "Clásico", "Servicio"],
+        tags: ["UbicaciÃ³n", "ClÃ¡sico", "Servicio"],
         phone: "+502 7761 0588",
         address: "4a Calle 12-22, Zona 1, Quetzaltenango, Guatemala",
         mapLink: buildGoogleMapsLink("Hotel Villa Real Plaza, 4a Calle 12-22, Zona 1, Quetzaltenango, Guatemala"),
@@ -83,7 +83,7 @@ export function Accommodation({ id }: { id?: string }) {
     const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const prefersReducedMotion = false;
         if (prefersReducedMotion) return;
 
         const ctx = gsap.context(() => {

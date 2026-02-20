@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -11,7 +11,7 @@ function AnimatedDress({ className = "w-12 h-12" }: { className?: string }) {
   const dressRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
@@ -39,7 +39,7 @@ function AnimatedSuit({ className = "w-12 h-12" }: { className?: string }) {
   const suitRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
@@ -68,7 +68,7 @@ export function DressCode({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     if (prefersReducedMotion) return;
 
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;

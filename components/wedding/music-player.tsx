@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
@@ -21,7 +21,7 @@ export function MusicPlayer() {
   const motionAllowedRef = useRef(true);
 
   useEffect(() => {
-    motionAllowedRef.current = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    motionAllowedRef.current = !false;
     if (!motionAllowedRef.current) return;
 
     const ctx = gsap.context(() => {
@@ -290,7 +290,7 @@ export function MusicPlayer() {
               </div>
               {isExpanded && (
                 <p className="mt-2 text-center text-[11px] text-white/55 font-sans">
-                  {TRACK.title} · {TRACK.artist}
+                  {TRACK.title} Â· {TRACK.artist}
                 </p>
               )}
             </div>

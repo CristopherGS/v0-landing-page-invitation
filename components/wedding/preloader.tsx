@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -24,7 +24,7 @@ export function Preloader() {
   useEffect(() => {
     if (!isVisible) return;
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     const ctx = gsap.context(() => {
       gsap.set([ringLeftRef.current, ringRightRef.current], { opacity: 0 });
       gsap.set([namesRef.current, messageRef.current, continueRef.current], { opacity: 0, y: 16 });
@@ -84,7 +84,7 @@ export function Preloader() {
   const handleContinue = () => {
     window.dispatchEvent(new Event("wedding:preloader-continue"));
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     if (prefersReducedMotion) {
       setIsVisible(false);
       return;

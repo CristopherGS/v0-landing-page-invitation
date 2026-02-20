@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
@@ -13,7 +13,7 @@ export function OurStory({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     if (prefersReducedMotion) return;
 
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -98,11 +98,11 @@ export function OurStory({ id }: { id?: string }) {
         if (canHover) {
           const onEnter = () => {
             gsap.to(photo, { scale: 1.05, duration: 0.4, ease: "power2.out" });
-            gsap.to(photo.querySelector(".photo-overlay"), { opacity: 1, duration: 0.3 });
+            const overlayEl = photo.querySelector(".photo-overlay"); if (overlayEl) gsap.to(overlayEl, { opacity: 1, duration: 0.3 });
           };
           const onLeave = () => {
             gsap.to(photo, { scale: 1, duration: 0.4, ease: "power2.out" });
-            gsap.to(photo.querySelector(".photo-overlay"), { opacity: 0, duration: 0.3 });
+            const overlayEl = photo.querySelector(".photo-overlay"); if (overlayEl) gsap.to(overlayEl, { opacity: 0, duration: 0.3 });
           };
           photo.addEventListener("mouseenter", onEnter);
           photo.addEventListener("mouseleave", onLeave);
@@ -253,26 +253,26 @@ export function OurStory({ id }: { id?: string }) {
             <AnimatedHeart className="w-8 h-8 text-[#c9a959]" />
           </div>
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl">
-                Nos conocimos en un momento inesperado, y desde ese día supimos que Dios cruzó nuestros caminos con un propósito especial.
-                Con el tiempo entendimos que Él estaba guiando cada paso, afirmando nuestro amor y nuestra fe.
+                Nos conocimos en un momento inesperado, y desde ese dÃ­a supimos que Dios cruzÃ³ nuestros caminos con un propÃ³sito especial.
+                Con el tiempo entendimos que Ã‰l estaba guiando cada paso, afirmando nuestro amor y nuestra fe.
             </p>
 
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
-                Después de tantos momentos compartidos, risas y aventuras, con la bendición de Dios y llenos de fe,
+                DespuÃ©s de tantos momentos compartidos, risas y aventuras, con la bendiciÃ³n de Dios y llenos de fe,
                 decidimos dar el siguiente paso: unir nuestras vidas para siempre, poniendo a Dios en el centro.
             </p>
 
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6 italic">
-                “Lo que Dios ha unido, que no lo separe el hombre.” — Mateo 19:6
+                â€œLo que Dios ha unido, que no lo separe el hombre.â€ â€” Mateo 19:6
             </p>
 
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6 italic">
-                “El amor todo lo soporta… todo lo puede.” — 1 Corintios 13:7
+                â€œEl amor todo lo soportaâ€¦ todo lo puede.â€ â€” 1 Corintios 13:7
             </p>
 
             <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
                 Queremos compartir este momento tan especial contigo, porque formas parte importante de nuestra historia
-                y porque tu presencia también es una bendición para nosotros.
+                y porque tu presencia tambiÃ©n es una bendiciÃ³n para nosotros.
             </p>
             {/* Bottom decoration */}
           <div className="story-text-line mt-10">

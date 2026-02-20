@@ -1,10 +1,11 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatedHeart, FloatingParticles } from "./animated-icons";
+import { useMotionSettings } from "./use-motion-settings";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,9 +16,9 @@ export function HeroSection() {
   const ornamentTopRef = useRef<HTMLDivElement>(null);
   const ornamentBottomRef = useRef<HTMLDivElement>(null);
   const [bgError, setBgError] = useState(false);
+  const { prefersReducedMotion, allowHeavyAnimation } = useMotionSettings();
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
@@ -58,6 +59,18 @@ export function HeroSection() {
         "-=1"
       )
         .fromTo(
+          ".subtitle",
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6 },
+          "-=0.5"
+        )
+        .fromTo(
+          ".title-word, .ampersand",
+          { y: 28, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, stagger: 0.08, ease: "power2.out" },
+          "-=0.35"
+        )
+        .fromTo(
           dateRef.current,
           { y: 40, opacity: 0, scale: 0.9 },
           { y: 0, opacity: 1, scale: 1, duration: 0.8 },
@@ -77,16 +90,16 @@ export function HeroSection() {
         );
 
       gsap.to(scrollIndicatorRef.current, {
-        y: 15,
+        y: 12,
         repeat: -1,
         yoyo: true,
-        duration: 1.2,
+        duration: 1.4,
         ease: "power1.inOut",
       });
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [prefersReducedMotion]);
 
   const brideName = "Cristopher";
   const groomName = "Gabriela";
@@ -120,9 +133,11 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
 
         {/* Animated Particles - Reduced opacity for subtle effect */}
-        <div className="opacity-60">
-          <FloatingParticles />
-        </div>
+        {allowHeavyAnimation && (
+          <div className="opacity-60">
+            <FloatingParticles />
+          </div>
+        )}
       </div>
 
       {/* Main Content */}
@@ -191,7 +206,7 @@ export function HeroSection() {
       >
         <span className="text-[10px] tracking-[0.2em] uppercase text-white/50">Descubre</span>
         <div className="w-6 h-10 border border-white/20 rounded-full flex justify-center p-1">
-          <div className="w-1 h-2 bg-[#c9a959] rounded-full animate-bounce mt-1" />
+          <div className="w-1 h-2 bg-[#c9a959] rounded-full mt-1" />
         </div>
       </div>
     </section>

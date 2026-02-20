@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
@@ -6,17 +6,17 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Camera, Heart } from "lucide-react";
 import { AnimatedHeart } from "./animated-icons";
+import { useMotionSettings } from "./use-motion-settings";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function PhotoGallery({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const { prefersReducedMotion, canHover, allowHeavyAnimation } = useMotionSettings();
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
       // Title animation
@@ -48,8 +48,8 @@ export function PhotoGallery({ id }: { id?: string }) {
           y: 0,
           duration: 0.8,
           stagger: {
-            amount: 0.8,
-            from: "random",
+            amount: allowHeavyAnimation ? 0.8 : 0.35,
+            from: "start",
           },
           ease: "back.out(1.4)",
           scrollTrigger: {
@@ -69,16 +69,18 @@ export function PhotoGallery({ id }: { id?: string }) {
 
           const onEnter = () => {
             gsap.to(item, { scale: 1.03, duration: 0.4, ease: "power2.out" });
-            gsap.to(overlay, { opacity: 1, duration: 0.3 });
-            gsap.to(icon, { scale: 1.2, rotation: 10, duration: 0.3 });
-            gsap.fromTo(heart, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" });
+            if (overlay) gsap.to(overlay, { opacity: 1, duration: 0.3 });
+            if (icon) gsap.to(icon, { scale: 1.2, rotation: 10, duration: 0.3 });
+            if (heart) {
+              gsap.fromTo(heart, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" });
+            }
           };
 
           const onLeave = () => {
             gsap.to(item, { scale: 1, duration: 0.4, ease: "power2.out" });
-            gsap.to(overlay, { opacity: 0, duration: 0.3 });
-            gsap.to(icon, { scale: 1, rotation: 0, duration: 0.3 });
-            gsap.to(heart, { scale: 0, opacity: 0, duration: 0.2 });
+            if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3 });
+            if (icon) gsap.to(icon, { scale: 1, rotation: 0, duration: 0.3 });
+            if (heart) gsap.to(heart, { scale: 0, opacity: 0, duration: 0.2 });
           };
 
           item.addEventListener("mouseenter", onEnter);
@@ -91,21 +93,23 @@ export function PhotoGallery({ id }: { id?: string }) {
       }
 
       // Floating camera icon
-      gsap.to(".floating-camera", {
-        y: -8,
-        rotation: 5,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
+      if (allowHeavyAnimation) {
+        gsap.to(".floating-camera", {
+          y: -8,
+          rotation: 4,
+          duration: 2.2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
     }, sectionRef);
 
     return () => {
       cleanupFns.forEach((fn) => fn());
       ctx.revert();
     };
-  }, []);
+  }, [allowHeavyAnimation, canHover, prefersReducedMotion]);
 
   // Layout pattern for masonry-like grid
   const galleryItems = [

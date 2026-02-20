@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
@@ -9,10 +9,8 @@ const navItems = [
   { label: "Inicio", href: "#" },
   { label: "Nuestra Historia", href: "#historia" },
   { label: "Evento", href: "#evento" },
-  { label: "Itinerario", href: "#itinerario" },
   { label: "Galeria", href: "#galeria" },
   { label: "Regalos", href: "#regalos" },
-  { label: "RSVP", href: "#rsvp" },
 ];
 
 export function Navigation() {
@@ -24,7 +22,7 @@ export function Navigation() {
   const canHoverRef = useRef(true);
 
   useEffect(() => {
-    motionAllowedRef.current = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    motionAllowedRef.current = !false;
     canHoverRef.current = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     const handleScroll = () => {

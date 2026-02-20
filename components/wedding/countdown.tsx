@@ -1,9 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatedHeart, AnimatedSparkles, AnimatedRings } from "./animated-icons";
+import { useMotionSettings } from "./use-motion-settings";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,7 @@ interface TimeLeft {
 
 export function Countdown({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const { prefersReducedMotion, canHover, allowHeavyAnimation } = useMotionSettings();
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -51,12 +53,12 @@ export function Countdown({ id }: { id?: string }) {
   }, []);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const cleanupFns: Array<() => void> = [];
     const ctx = gsap.context(() => {
+      gsap.set(".countdown-item, .countdown-deco", { willChange: "transform, opacity" });
+
       gsap.fromTo(
         ".countdown-title-word",
         { y: 80, opacity: 0, rotationX: -45 },
@@ -113,11 +115,11 @@ export function Countdown({ id }: { id?: string }) {
         gsap.utils.toArray<HTMLElement>(".countdown-item").forEach((item) => {
           const onEnter = () => {
             gsap.to(item, { y: -10, scale: 1.05, duration: 0.3 });
-            gsap.to(item.querySelector(".countdown-number"), { scale: 1.1, duration: 0.3 });
+            const numberEl = item.querySelector(".countdown-number"); if (numberEl) gsap.to(numberEl, { scale: 1.1, duration: 0.3 });
           };
           const onLeave = () => {
             gsap.to(item, { y: 0, scale: 1, duration: 0.3 });
-            gsap.to(item.querySelector(".countdown-number"), { scale: 1, duration: 0.3 });
+            const numberEl = item.querySelector(".countdown-number"); if (numberEl) gsap.to(numberEl, { scale: 1, duration: 0.3 });
           };
           item.addEventListener("mouseenter", onEnter);
           item.addEventListener("mouseleave", onLeave);
@@ -128,29 +130,30 @@ export function Countdown({ id }: { id?: string }) {
         });
       }
 
-      gsap.to(".countdown-bg-pattern", {
-        backgroundPosition: "100px 100px",
-        duration: 20,
-        repeat: -1,
-        ease: "linear",
-      });
+      if (allowHeavyAnimation) {
+        gsap.to(".countdown-bg-pattern", {
+          backgroundPosition: "100px 100px",
+          duration: 28,
+          repeat: -1,
+          ease: "linear",
+        });
 
-      // Floating decorative elements
-      gsap.to(".floating-deco", {
-        y: -15,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        stagger: 0.5,
-      });
+        gsap.to(".floating-deco", {
+          y: -10,
+          duration: 3.5,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          stagger: 0.8,
+        });
+      }
     }, sectionRef);
 
     return () => {
       cleanupFns.forEach((fn) => fn());
       ctx.revert();
     };
-  }, []);
+  }, [allowHeavyAnimation, canHover, prefersReducedMotion]);
 
   const timeUnits = [
     { value: timeLeft.days, label: "Dias", suffix: "d" },
@@ -204,7 +207,7 @@ export function Countdown({ id }: { id?: string }) {
               <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
             </div>
             <p className="text-white/70 font-serif text-2xl md:text-3xl mb-4">
-              Gabriela & Christopher
+              Gabriela & Cristopher
             </p>
             <p className="text-[#c9a959] font-sans text-lg tracking-wider">
               11 de Abril, 2026

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type React from "react";
 import { useEffect, useRef } from "react";
@@ -23,7 +23,7 @@ function DetailCard({ icon, title, details, googleMapsLink, wazeLink, delay }: D
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     if (prefersReducedMotion) return;
 
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -33,14 +33,18 @@ function DetailCard({ icon, title, details, googleMapsLink, wazeLink, delay }: D
       const card = cardRef.current;
       if (card && canHover) {
         const onEnter = () => {
+          const iconEl = card.querySelector(".card-icon");
+          const glowEl = card.querySelector(".card-glow");
           gsap.to(card, { y: -10, scale: 1.02, duration: 0.4, ease: "power2.out" });
-          gsap.to(card.querySelector(".card-icon"), { scale: 1.2, rotation: 10, duration: 0.4 });
-          gsap.to(card.querySelector(".card-glow"), { opacity: 1, duration: 0.4 });
+          if (iconEl) gsap.to(iconEl, { scale: 1.2, rotation: 10, duration: 0.4 });
+          if (glowEl) gsap.to(glowEl, { opacity: 1, duration: 0.4 });
         };
         const onLeave = () => {
+          const iconEl = card.querySelector(".card-icon");
+          const glowEl = card.querySelector(".card-glow");
           gsap.to(card, { y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
-          gsap.to(card.querySelector(".card-icon"), { scale: 1, rotation: 0, duration: 0.4 });
-          gsap.to(card.querySelector(".card-glow"), { opacity: 0, duration: 0.4 });
+          if (iconEl) gsap.to(iconEl, { scale: 1, rotation: 0, duration: 0.4 });
+          if (glowEl) gsap.to(glowEl, { opacity: 0, duration: 0.4 });
         };
         card.addEventListener("mouseenter", onEnter);
         card.addEventListener("mouseleave", onLeave);
@@ -168,22 +172,25 @@ export function EventDetails({ id }: { id?: string }) {
       );
 
       // Map reveal animation
-      gsap.fromTo(
-        ".map-container",
-        { y: 60, opacity: 0, scale: 0.95 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".map-container",
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+      const mapContainer = sectionRef.current?.querySelector(".map-container");
+      if (mapContainer) {
+        gsap.fromTo(
+          mapContainer,
+          { y: 60, opacity: 0, scale: 0.95 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: mapContainer,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
 
       // Decorative lines animation
       gsap.fromTo(
@@ -253,7 +260,7 @@ export function EventDetails({ id }: { id?: string }) {
           <DetailCard
             icon={<AnimatedClock className="w-10 h-10" />}
             title="Hora"
-            details={["Recepcion: 11:00 hrs"]}
+            details={["Recepcion: 16:00 hrs"]}
             delay={150}
           />
           <DetailCard

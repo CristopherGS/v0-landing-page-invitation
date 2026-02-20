@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -71,7 +71,7 @@ export function Itinerary({ id }: { id?: string }) {
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     if (prefersReducedMotion) return;
 
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;

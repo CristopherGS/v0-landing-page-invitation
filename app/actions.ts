@@ -1,33 +1,25 @@
-"use server";
+﻿"use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { addRSVP } from "@/lib/rsvp-store";
 
 export async function submitRSVP(formData: FormData) {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-        console.error("Missing Supabase environment variables");
-        return { success: false, error: "Error de configuración en el servidor. Las variables de entorno no están configuradas." };
-    }
+  const data = {
+    name: (formData.get("name") as string)?.trim(),
+    phone: (formData.get("phone") as string)?.trim(),
+    attendance: formData.get("attendance") as string,
+    family: formData.get("family") as string,
+    message: ((formData.get("message") as string) || "").trim(),
+  };
 
-    const supabase = await createClient();
+  if (!data.name || !data.phone || !data.attendance || !data.family) {
+    return { success: false, error: "Faltan campos obligatorios." };
+  }
 
-    const attendance = formData.get("attendance") as string;
-
-    const data = {
-        name: formData.get("name") as string,
-        phone: formData.get("phone") as string,
-        attendance: attendance,
-        family: formData.get("family") as string,
-        message: formData.get("message") as string,
-    };
-
-    const { error } = await supabase
-        .from("wedding_guests")
-        .insert([data]);
-
-    if (error) {
-        console.error("Error submitting RSVP:", error);
-        return { success: false, error: error.message };
-    }
-
+  try {
+    await addRSVP(data);
     return { success: true };
+  } catch (error) {
+    console.error("Error submitting RSVP:", error);
+    return { success: false, error: "No se pudo guardar la confirmacion." };
+  }
 }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -14,7 +14,7 @@ export function GiftRegistry({ id }: { id?: string }) {
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = false;
     if (prefersReducedMotion) return;
 
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -97,11 +97,11 @@ export function GiftRegistry({ id }: { id?: string }) {
         gsap.utils.toArray<HTMLElement>(".gift-card").forEach((card) => {
           const onEnter = () => {
             gsap.to(card, { y: -10, scale: 1.02, duration: 0.3 });
-            gsap.to(card.querySelector(".card-glow"), { opacity: 1, duration: 0.3 });
+            const glowEl = card.querySelector(".card-glow"); if (glowEl) gsap.to(glowEl, { opacity: 1, duration: 0.3 });
           };
           const onLeave = () => {
             gsap.to(card, { y: 0, scale: 1, duration: 0.3 });
-            gsap.to(card.querySelector(".card-glow"), { opacity: 0, duration: 0.3 });
+            const glowEl = card.querySelector(".card-glow"); if (glowEl) gsap.to(glowEl, { opacity: 0, duration: 0.3 });
           };
           card.addEventListener("mouseenter", onEnter);
           card.addEventListener("mouseleave", onLeave);
@@ -182,14 +182,17 @@ export function GiftRegistry({ id }: { id?: string }) {
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9a959]/50" />
           </div>
 
-            <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl mt-6">
-                ¡Gracias por creer en nosotros y por acompañarnos en esta ocasión tan especial! Preferimos recibir nuestros regalos de boda en nuestra cuenta bancaria.
+          <div className="mt-6 space-y-4">
+            <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl">
+              ¡Gracias por creer en nosotros y por acompañarnos en esta ocasión tan especial!
             </p>
+            <p className="story-text-line text-white/70 font-sans leading-relaxed text-lg md:text-xl">
+              Si desean hacernos un obsequio, les agradeceremos que sea en efectivo, ya sea en un sobre el día del evento o mediante transferencia bancaria.            </p>
+          </div>
         </div>
-
-        <div className="gift-cards grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="gift-cards grid grid-cols-1 gap-6 justify-items-center">
           {/* Bank transfer card */}
-          <div className="gift-card relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 overflow-hidden">
+          <div className="gift-card w-full max-w-2xl relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 overflow-hidden">
             {/* Glow effect */}
             <div className="card-glow absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0" />
 

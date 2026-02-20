@@ -1,13 +1,16 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { useMotionSettings } from "./use-motion-settings";
 
 // Animated Heart Icon
 export function AnimatedHeart({ className = "w-12 h-12", color = "#c9a959" }: { className?: string; color?: string }) {
   const heartRef = useRef<SVGSVGElement>(null);
+  const { allowHeavyAnimation } = useMotionSettings();
 
   useEffect(() => {
+    if (!allowHeavyAnimation) return;
     const ctx = gsap.context(() => {
       gsap.to(heartRef.current, {
         scale: 1.1,
@@ -18,7 +21,7 @@ export function AnimatedHeart({ className = "w-12 h-12", color = "#c9a959" }: { 
       });
     });
     return () => ctx.revert();
-  }, []);
+  }, [allowHeavyAnimation]);
 
   return (
     <svg ref={heartRef} className={className} viewBox="0 0 24 24" fill={color}>
@@ -31,8 +34,10 @@ export function AnimatedHeart({ className = "w-12 h-12", color = "#c9a959" }: { 
 export function AnimatedRings({ className = "w-16 h-16", color = "#c9a959" }: { className?: string; color?: string }) {
   const ring1Ref = useRef<SVGCircleElement>(null);
   const ring2Ref = useRef<SVGCircleElement>(null);
+  const { allowHeavyAnimation } = useMotionSettings();
 
   useEffect(() => {
+    if (!allowHeavyAnimation) return;
     const ctx = gsap.context(() => {
       gsap.to(ring1Ref.current, {
         rotation: 360,
@@ -50,7 +55,7 @@ export function AnimatedRings({ className = "w-16 h-16", color = "#c9a959" }: { 
       });
     });
     return () => ctx.revert();
-  }, []);
+  }, [allowHeavyAnimation]);
 
   return (
     <svg className={className} viewBox="0 0 100 60" fill="none">
@@ -63,8 +68,10 @@ export function AnimatedRings({ className = "w-16 h-16", color = "#c9a959" }: { 
 // Animated Sparkles
 export function AnimatedSparkles({ className = "w-20 h-20", color = "#c9a959" }: { className?: string; color?: string }) {
   const containerRef = useRef<SVGSVGElement>(null);
+  const { allowHeavyAnimation } = useMotionSettings();
 
   useEffect(() => {
+    if (!allowHeavyAnimation) return;
     const ctx = gsap.context(() => {
       gsap.to(".sparkle", {
         scale: 0.5,
@@ -79,7 +86,7 @@ export function AnimatedSparkles({ className = "w-20 h-20", color = "#c9a959" }:
       });
     }, containerRef);
     return () => ctx.revert();
-  }, []);
+  }, [allowHeavyAnimation]);
 
   return (
     <svg ref={containerRef} className={className} viewBox="0 0 100 100" fill={color}>
@@ -165,8 +172,10 @@ export function AnimatedFlower({ className = "w-16 h-16", color = "#c9a959" }: {
 // Animated Calendar
 export function AnimatedCalendar({ className = "w-12 h-12", color = "#c9a959" }: { className?: string; color?: string }) {
   const checkRef = useRef<SVGPathElement>(null);
+  const { allowHeavyAnimation } = useMotionSettings();
 
   useEffect(() => {
+    if (!allowHeavyAnimation) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         checkRef.current,
@@ -181,7 +190,7 @@ export function AnimatedCalendar({ className = "w-12 h-12", color = "#c9a959" }:
       );
     });
     return () => ctx.revert();
-  }, []);
+  }, [allowHeavyAnimation]);
 
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5">
@@ -320,10 +329,17 @@ export function AnimatedGift({ className = "w-12 h-12", color = "#c9a959" }: { c
 export function AnimatedMusic({ className = "w-12 h-12", color = "#c9a959" }: { className?: string; color?: string }) {
   const note1Ref = useRef<SVGGElement>(null);
   const note2Ref = useRef<SVGGElement>(null);
+  const { allowHeavyAnimation } = useMotionSettings();
 
   useEffect(() => {
+    if (!allowHeavyAnimation) return;
+
     const ctx = gsap.context(() => {
-      gsap.to(note1Ref.current, {
+      const note1 = note1Ref.current;
+      const note2 = note2Ref.current;
+      if (!note1) return;
+
+      gsap.to(note1, {
         y: -5,
         rotation: 10,
         duration: 0.8,
@@ -331,18 +347,21 @@ export function AnimatedMusic({ className = "w-12 h-12", color = "#c9a959" }: { 
         yoyo: true,
         ease: "power1.inOut",
       });
-      gsap.to(note2Ref.current, {
-        y: -3,
-        rotation: -8,
-        duration: 1,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut",
-        delay: 0.3,
-      });
+
+      if (note2) {
+        gsap.to(note2, {
+          y: -3,
+          rotation: -8,
+          duration: 1,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut",
+          delay: 0.3,
+        });
+      }
     });
     return () => ctx.revert();
-  }, []);
+  }, [allowHeavyAnimation]);
 
   return (
     <svg className={className} viewBox="0 0 24 24" fill={color}>
@@ -350,6 +369,11 @@ export function AnimatedMusic({ className = "w-12 h-12", color = "#c9a959" }: { 
         <ellipse cx="7" cy="18" rx="3" ry="2.5" />
         <rect x="9.5" y="6" width="1.5" height="12" />
         <path d="M11 6 Q15 4 18 6 L18 10 Q15 8 11 10 Z" />
+      </g>
+      <g ref={note2Ref} opacity="0.75">
+        <ellipse cx="16.5" cy="16.5" rx="2.2" ry="2" />
+        <rect x="17.8" y="5.5" width="1.2" height="11" />
+        <path d="M19 5.5 Q21 4.5 22.5 5.5 L22.5 8 Q21 7 19 8 Z" />
       </g>
     </svg>
   );
@@ -400,18 +424,24 @@ export function AnimatedChurch({ className = "w-12 h-12", color = "#c9a959" }: {
 export function FloatingParticles() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [particles, setParticles] = useState<Array<{ left: string; top: string }>>([]);
+  const { allowHeavyAnimation } = useMotionSettings();
 
   useEffect(() => {
+    if (!allowHeavyAnimation) {
+      setParticles([]);
+      return;
+    }
+
     // Generate particles only on client-side to avoid hydration mismatch
-    const newParticles = [...Array(8)].map(() => ({
+    const newParticles = [...Array(5)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
     }));
     setParticles(newParticles);
-  }, []);
+  }, [allowHeavyAnimation]);
 
   useEffect(() => {
-    if (particles.length === 0) return;
+    if (!allowHeavyAnimation || particles.length === 0) return;
 
     const ctx = gsap.context(() => {
       gsap.utils.toArray(".particle").forEach((particle: any, i) => {
@@ -423,12 +453,12 @@ export function FloatingParticles() {
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
-          delay: i * 0.5,
+          delay: i * 0.6,
         });
       });
     }, containerRef);
     return () => ctx.revert();
-  }, [particles]);
+  }, [particles, allowHeavyAnimation]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none">
