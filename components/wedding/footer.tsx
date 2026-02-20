@@ -88,7 +88,7 @@ export function Footer() {
     };
   }, []);
 
-  const names = "Gabriela & Cristopher";
+  const names = "Cristopher & Gabriela";
 
   return (
     <section ref={footerRef} className="relative min-h-screen flex flex-col justify-center items-center py-10 px-6 bg-[#0a1628] text-white overflow-hidden snap-start">

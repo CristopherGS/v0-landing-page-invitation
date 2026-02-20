@@ -144,7 +144,7 @@ export function GiftRegistry({ id }: { id?: string }) {
   };
 
   const bankDetails = {
-    bank: "Baco Industreal",
+    bank: "Banco Industrial",
     accountHolder: "Cristopher Guerra",
     accountNumber: "4130047253",
     clabe: "Monetaria",

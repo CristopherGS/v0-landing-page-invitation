@@ -266,7 +266,7 @@ export function RSVPForm({ id }: { id?: string }) {
             </div>
             <div>
               <p className="text-white/40 text-xs font-sans tracking-wide uppercase">Hora</p>
-              <p className="text-white font-sans font-medium">16:00 hrs</p>
+              <p className="text-white font-sans font-medium">15:00 hrs</p>
             </div>
           </div>
         </div>

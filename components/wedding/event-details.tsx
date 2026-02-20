@@ -63,26 +63,26 @@ function DetailCard({ icon, title, details, googleMapsLink, wazeLink, delay }: D
   return (
     <div
       ref={cardRef}
-      className="detail-card relative flex flex-col items-center text-center p-8 bg-white rounded-3xl shadow-xl border border-[#0a1628]/5 overflow-hidden cursor-default"
+      className="detail-card relative flex flex-col items-center text-center p-8 bg-gradient-to-br from-[#13213a] to-[#0a1628] rounded-3xl shadow-xl border border-white/10 overflow-hidden cursor-default"
       style={{ transitionDelay: `${delay}ms` }}
     >
       {/* Glow effect */}
-      <div className="card-glow pointer-events-none absolute inset-0 bg-gradient-to-t from-[#c9a959]/10 to-transparent opacity-0 transition-opacity" />
+      <div className="card-glow pointer-events-none absolute inset-0 bg-gradient-to-t from-[#c9a959]/20 to-transparent opacity-0 transition-opacity" />
 
       <div className="relative z-10 w-full flex flex-col items-center">
         {/* Icon container */}
-        <div className="card-icon relative w-20 h-20 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a5f] flex items-center justify-center text-[#c9a959] mb-6 shadow-lg">
+        <div className="card-icon relative w-20 h-20 rounded-full bg-white flex items-center justify-center text-[#0a1628] mb-6 shadow-lg">
           {icon}
           {/* Animated ring */}
           <div className="absolute inset-0 rounded-full border-2 border-[#c9a959]/30 animate-ping" style={{ animationDuration: "2s" }} />
         </div>
 
-        <h3 className="font-serif text-2xl text-[#0a1628] mb-4">{title}</h3>
+        <h3 className="font-serif text-2xl text-white mb-4">{title}</h3>
 
         {details.map((detail, index) => (
           <p
             key={index}
-            className="text-[#0a1628]/60 font-sans text-sm leading-relaxed"
+            className="text-white/70 font-sans text-sm leading-relaxed"
           >
             {detail}
           </p>
@@ -107,7 +107,7 @@ function DetailCard({ icon, title, details, googleMapsLink, wazeLink, delay }: D
                 href={googleMapsLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white hover:bg-gray-50 text-[#0a1628] border border-[#0a1628]/10 text-xs font-bold transition-all flex-1 min-w-[100px]"
+                className="flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 text-xs font-bold transition-all flex-1 min-w-[100px]"
               >
                 <MapPin className="w-3 h-3" />
                 Maps
@@ -260,7 +260,7 @@ export function EventDetails({ id }: { id?: string }) {
           <DetailCard
             icon={<AnimatedClock className="w-10 h-10" />}
             title="Hora"
-            details={["Recepcion: 16:00 hrs"]}
+            details={["Recepcion: 15:30 hrs"]}
             delay={150}
           />
           <DetailCard

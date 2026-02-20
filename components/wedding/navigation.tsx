@@ -107,7 +107,7 @@ export function Navigation() {
             >
               <AnimatedHeart className="w-5 h-5 group-hover:scale-125 transition-transform" />
               <span className="font-serif text-xl text-white hover:text-[#c9a959] transition-colors">
-                G & C
+                C & G
               </span>
             </button>
 

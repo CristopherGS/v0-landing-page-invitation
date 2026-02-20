@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const itineraryItems = [
   {
-    time: "16:00",
+    time: "15:00",
     title: "Ceremonia Religiosa",
     description: "Parroquia San Antonio",
     icon: Church,
